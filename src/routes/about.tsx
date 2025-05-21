@@ -122,7 +122,7 @@ function About() {
 			</section>
 
 			{/* Teams */}
-			<section className='bg-gray-100'>
+			<section>
 				<ScrollFadeSection className='flex flex-col items-center p-12 md:min-h-screen'>
 					<h2 className='text-center text-4xl font-bold md:text-6xl 2xl:text-8xl'>
 						People behind Booksyde
