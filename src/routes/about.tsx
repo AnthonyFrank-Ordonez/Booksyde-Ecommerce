@@ -25,7 +25,7 @@ function About() {
 					</div>
 
 					<div className='h-full w-full max-w-5xl px-7 md:mt-10 2xl:max-w-7xl'>
-						<div className='h-64 max-h-64 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-400 md:h-96 md:max-h-96 2xl:h-[500px] 2xl:max-h-[500px]'>
+						<div className='h-64 max-h-64 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-400 md:h-[5000px] md:max-h-[500px] 2xl:h-[600px] 2xl:max-h-[600px]'>
 							<img
 								src='https://picsum.photos/id/437/200/300'
 								alt='dog'
@@ -65,8 +65,64 @@ function About() {
 				</ScrollFadeSection>
 			</section>
 
-			{/* Teams */}
+			{/* Core Values */}
 			<section>
+				<ScrollFadeSection className='flex flex-col p-12 md:min-h-screen'>
+					<div className='flex flex-col items-center justify-center gap-5 2xl:gap-8'>
+						<h2 className='text-4xl font-bold md:text-6xl 2xl:text-7xl'>
+							Our Core values
+						</h2>
+						<p className='text-md md:text-md text-center text-gray-500 md:max-w-3xl 2xl:max-w-5xl 2xl:text-xl'>
+							At Booksyde, we believe in the power of stories to inspire and
+							connect people. Our core values guide us in everything we do:
+						</p>
+					</div>
+
+					<div className='mt-10 flex flex-col flex-wrap items-center justify-center gap-5 md:flex-row 2xl:mt-20 2xl:gap-8'>
+						<div className='flex-1 rounded-xl bg-gray-100 p-10 text-center shadow-md shadow-gray-300 md:max-w-md 2xl:h-58 2xl:max-h-58 2xl:w-[550px] 2xl:max-w-[550px] 2xl:p-12'>
+							<h2 className='mb-3 text-xl font-bold 2xl:text-2xl'>
+								Customer Focus
+							</h2>
+							<p className='text-md text-gray-600'>
+								We put our customers at the heart of everything we do, ensuring
+								that their needs and preferences are always our top priority.
+							</p>
+						</div>
+
+						<div className='flex-1 rounded-xl bg-gray-100 p-10 text-center shadow-md shadow-gray-300 md:max-w-md 2xl:h-58 2xl:max-h-58 2xl:w-[550px] 2xl:max-w-[550px] 2xl:p-12'>
+							<h2 className='mb-3 text-xl font-bold 2xl:text-2xl'>Integrity</h2>
+							<p className='text-md text-gray-600'>
+								We are committed to honesty and transparency in all our
+								interactions, building trust with our customers and partners.
+							</p>
+						</div>
+					</div>
+
+					<div className='mt-5 flex flex-col flex-wrap items-center justify-center gap-5 md:flex-row 2xl:mt-8 2xl:gap-8'>
+						<div className='flex-1 rounded-xl bg-gray-100 p-10 text-center shadow-md shadow-gray-300 md:max-w-md 2xl:h-58 2xl:max-h-58 2xl:w-[550px] 2xl:max-w-[550px] 2xl:p-12'>
+							<h2 className='mb-3 text-xl font-bold 2xl:text-2xl'>
+								Innovation
+							</h2>
+							<p className='text-md text-gray-600'>
+								We embrace creativity and innovation, constantly seeking new
+								ways to enhance the reading experience for our customers.
+							</p>
+						</div>
+
+						<div className='flex-1 rounded-xl bg-gray-100 p-10 text-center shadow-md shadow-gray-300 md:max-w-md 2xl:h-58 2xl:max-h-58 2xl:w-[550px] 2xl:max-w-[550px] 2xl:p-12'>
+							<h2 className='mb-3 text-xl font-bold 2xl:text-2xl'>Community</h2>
+							<p className='text-md text-gray-600'>
+								We believe in the power of community and strive to create a
+								welcoming space for all book lovers to connect and share their
+								passion.
+							</p>
+						</div>
+					</div>
+				</ScrollFadeSection>
+			</section>
+
+			{/* Teams */}
+			<section className='bg-gray-100'>
 				<ScrollFadeSection className='flex flex-col items-center p-12 md:min-h-screen'>
 					<h2 className='text-center text-4xl font-bold md:text-6xl 2xl:text-8xl'>
 						People behind Booksyde
@@ -135,57 +191,6 @@ function About() {
 					</div>
 				</ScrollFadeSection>
 			</section>
-
-			{/* 
-
-			<section>
-				<ScrollFadeSection className='flex h-screen w-full flex-col md:flex-row'>
-					<div className='flex w-full flex-col items-center p-20 2xl:p-30'>
-						<h2 className='text-center text-5xl font-bold md:text-6xl 2xl:text-8xl'>
-							People behind Booksyde
-						</h2>
-
-						<p className='mt-5 w-full text-center text-lg font-normal md:max-w-5xl 2xl:text-xl'>
-							Our team is made up of book enthusiasts, tech experts, and
-							designers who are committed to providing the best possible
-							experience for our users. We believe that everyone should have
-							access to the stories that inspire and entertain
-						</p>
-
-						<div className='mt-15 flex h-full w-full flex-col items-center justify-center gap-5 md:flex-row'>
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='h-full w-full max-w-md items-center justify-center rounded-lg bg-black px-10 shadow-lg shadow-gray-500 md:w-1/4'
-							>
-								<h2 className='py-10 text-center text-2xl font-bold text-white 2xl:text-5xl'>
-									Books
-								</h2>
-								<p className='mb-10 px-10 font-medium text-white 2xl:py-20'></p>
-							</motion.div>
-
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='h-full w-full max-w-md items-center justify-center rounded-lg bg-black shadow-lg shadow-gray-500 md:w-1/4'
-							>
-								<h2 className='py-10 text-center text-2xl font-bold text-white 2xl:text-5xl'>
-									Manga
-								</h2>
-								<p className='mb-10 px-10 font-medium text-white 2xl:py-20'></p>
-							</motion.div>
-
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='h-full w-full max-w-md items-center justify-center rounded-lg bg-black shadow-lg shadow-gray-500 md:w-1/4'
-							>
-								<h2 className='py-10 text-center text-2xl font-bold text-white 2xl:text-5xl'>
-									Novels
-								</h2>
-								<p className='mb-10 px-10 font-medium text-white 2xl:py-20'></p>
-							</motion.div>
-						</div>
-					</div>
-				</ScrollFadeSection>
-			</section> */}
 		</div>
 	);
 }

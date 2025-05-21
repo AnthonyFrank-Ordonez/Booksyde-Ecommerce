@@ -13,10 +13,10 @@ function Home() {
 			<section className='bg-gray-100'>
 				<ScrollFadeSection className='flex w-full flex-col gap-x-10 md:min-h-screen md:flex-row'>
 					<div className='mx-auto flex w-full max-w-2xl flex-col justify-center px-12 py-12 text-center md:w-1/3 md:text-left 2xl:w-1/3 2xl:max-w-3xl'>
-						<h2 className='text-5xl font-bold md:-ml-1 md:text-8xl 2xl:text-9xl'>
+						<h2 className='text-5xl font-bold md:-ml-1 md:text-7xl 2xl:text-9xl'>
 							Booksyde:
 						</h2>
-						<h2 className='mb-5 text-5xl font-bold md:mb-2 md:text-4xl 2xl:mt-5 2xl:mb-5 2xl:text-6xl'>
+						<h2 className='mb-5 text-5xl font-bold md:mb-2 md:text-3xl 2xl:mt-5 2xl:mb-5 2xl:text-6xl'>
 							Ecommerce for Books and Manga
 						</h2>
 						<p className='text-lg font-normal 2xl:text-xl'>
@@ -231,7 +231,7 @@ function Home() {
 
 			{/* Why shop with us */}
 			<section>
-				<ScrollFadeSection className='flex w-full flex-col items-center p-12 md:min-h-screen'>
+				<ScrollFadeSection className='flex h-full w-full flex-col items-center p-12 md:min-h-screen'>
 					<div className='max-w-m w-full md:max-w-5xl 2xl:max-w-7xl'>
 						<h2 className='text-center text-5xl font-bold md:text-6xl 2xl:text-8xl'>
 							Why Shop with Booksyde
