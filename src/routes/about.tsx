@@ -8,7 +8,7 @@ export const Route = createFileRoute('/about')({
 
 function About() {
 	return (
-		<div className='col-span-1 md:col-span-8'>
+		<div className='col-span-1 md:col-span-12'>
 			<section>
 				<ScrollFadeSection className='flex w-full flex-col md:min-h-screen md:flex-row'>
 					<div className='flex w-full flex-col items-center p-20 2xl:p-30'>

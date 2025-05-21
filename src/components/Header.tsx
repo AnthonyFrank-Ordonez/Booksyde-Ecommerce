@@ -35,7 +35,7 @@ export default function Header() {
 						to='/about'
 						aria-label='About'
 						className='hover:underline'
-						activeProps={{ className: 'font-bold hover:underline0' }}
+						activeProps={{ className: 'font-bold hover:underline' }}
 					>
 						About
 					</Link>

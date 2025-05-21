@@ -53,7 +53,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				<Header />
-				<main className='grid grid-cols-1 md:grid-cols-8'>{children}</main>
+				<main className='grid grid-cols-1 md:grid-cols-12'>{children}</main>
 				<Footer />
 				<Scripts />
 			</body>

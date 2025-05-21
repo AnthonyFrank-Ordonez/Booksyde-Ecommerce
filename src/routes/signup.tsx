@@ -20,7 +20,7 @@ export const Route = createFileRoute('/signup')({
 
 function SignUp() {
 	return (
-		<ScrollFadeSection className='col-span-1 md:col-span-8'>
+		<ScrollFadeSection className='col-span-1 md:col-span-12'>
 			<div className='flex min-h-screen items-center justify-center p-10'>
 				<div className='w-full max-w-md'>
 					<div className='rounded-3xl border border-black bg-white p-8'>
