@@ -12,14 +12,14 @@ function Home() {
 			{/* Intro */}
 			<section className='bg-gray-100'>
 				<ScrollFadeSection className='flex w-full flex-col gap-x-10 md:min-h-screen md:flex-row'>
-					<div className='mx-auto flex w-full max-w-2xl flex-col justify-center px-12 py-12 text-center md:w-1/3 md:text-left 2xl:w-1/3 2xl:max-w-3xl'>
+					<div className='mx-auto flex w-full max-w-3xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:text-left 2xl:w-1/3 2xl:max-w-3xl'>
 						<h2 className='text-5xl font-bold md:-ml-1 md:text-7xl 2xl:text-9xl'>
 							Booksyde:
 						</h2>
 						<h2 className='mb-5 text-5xl font-bold md:mb-2 md:text-3xl 2xl:mt-5 2xl:mb-5 2xl:text-6xl'>
 							Ecommerce for Books and Manga
 						</h2>
-						<p className='text-lg font-normal 2xl:text-xl'>
+						<p className='text-lg font-normal text-gray-500 2xl:text-xl'>
 							Booksyde is your go-to ecommerce platform for all things books and
 							manga. Whether you're a casual reader or a hardcore collector, we
 							have something for everyone.
@@ -33,9 +33,9 @@ function Home() {
 						</Link>
 					</div>
 
-					<div className='mx-auto flex w-full flex-row justify-center gap-5 px-10 py-12 md:mt-14 md:w-1/2 2xl:w-1/3'>
+					<div className='mx-auto flex w-full flex-row justify-center gap-5 px-10 py-12 md:mt-14 md:w-[40rem] 2xl:w-1/3'>
 						<div className='flex max-h-[85%] flex-col items-end justify-end space-y-5'>
-							<div className='h-full w-full items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
+							<div className='md:w- h-full w-full items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
 								<img
 									src='https://picsum.photos/id/237/200/300'
 									alt='dog'
@@ -148,7 +148,7 @@ function Home() {
 			{/* Best Sellers */}
 			<section className='bg-gray-100'>
 				<ScrollFadeSection className='flex w-full flex-col md:min-h-screen md:flex-row'>
-					<div className='mx-auto flex w-full max-w-xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:text-left 2xl:w-1/3 2xl:max-w-5xl'>
+					<div className='mx-auto flex w-full max-w-xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:px-5 md:text-left 2xl:w-1/3 2xl:max-w-5xl'>
 						<h2 className='text-5xl font-bold md:text-7xl 2xl:text-9xl'>
 							Booksyde:
 						</h2>
@@ -162,7 +162,7 @@ function Home() {
 						</p>
 					</div>
 
-					<div className='mx-auto flex w-full max-w-lg flex-col gap-5 px-12 py-12 md:w-1/2 md:max-w-xl md:flex-row md:px-2 md:py-12 2xl:mt-10 2xl:w-1/2 2xl:max-w-2xl'>
+					<div className='mx-auto flex w-full max-w-lg flex-col gap-5 px-12 py-12 md:w-3/4 md:max-w-2xl md:flex-row md:px-2 md:py-12 2xl:mt-10 2xl:w-1/2 2xl:max-w-2xl'>
 						<motion.div
 							whileHover={{ scale: 1.03 }}
 							className='relative h-full w-full max-w-xl items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'
