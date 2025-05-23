@@ -12,7 +12,7 @@ function Home() {
 			{/* Intro */}
 			<section className='bg-gray-100'>
 				<ScrollFadeSection className='flex w-full flex-col gap-x-10 md:min-h-screen md:flex-row'>
-					<div className='mx-auto flex w-full max-w-3xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:text-left 2xl:w-1/3 2xl:max-w-3xl'>
+					<div className='mx-auto flex w-full max-w-3xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:text-left 2xl:w-1/2 2xl:max-w-3xl'>
 						<h2 className='text-5xl font-bold md:-ml-1 md:text-7xl 2xl:text-9xl'>
 							Booksyde:
 						</h2>
@@ -33,7 +33,7 @@ function Home() {
 						</Link>
 					</div>
 
-					<div className='mx-auto flex w-full flex-row justify-center gap-5 px-10 py-12 md:mt-14 md:w-[40rem] 2xl:w-1/3'>
+					<div className='mx-auto flex w-full flex-row justify-center gap-5 px-10 py-12 md:mt-14 md:w-[40rem] 2xl:w-1/2'>
 						<div className='flex max-h-[85%] flex-col items-end justify-end space-y-5'>
 							<div className='md:w- h-full w-full items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
 								<img
@@ -72,7 +72,7 @@ function Home() {
 						What we offer
 					</h2>
 
-					<p className='mt-5 w-full text-center text-lg font-normal md:max-w-4xl 2xl:max-w-6xl 2xl:text-xl'>
+					<p className='mt-5 w-full text-center text-lg font-normal text-gray-500 md:max-w-4xl 2xl:max-w-6xl 2xl:text-xl'>
 						Booksyde offers a wide range of features to enhance your shopping
 						experience. From personalized recommendations to exclusive deals,
 						we've got you covered.
@@ -148,21 +148,21 @@ function Home() {
 			{/* Best Sellers */}
 			<section className='bg-gray-100'>
 				<ScrollFadeSection className='flex w-full flex-col md:min-h-screen md:flex-row'>
-					<div className='mx-auto flex w-full max-w-xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:px-5 md:text-left 2xl:w-1/3 2xl:max-w-5xl'>
+					<div className='mx-auto flex w-full max-w-xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:px-5 md:text-left 2xl:w-1/2 2xl:max-w-5xl 2xl:px-12'>
 						<h2 className='text-5xl font-bold md:text-7xl 2xl:text-9xl'>
 							Booksyde:
 						</h2>
 						<h2 className='mb-5 text-5xl font-bold md:text-7xl 2xl:mt-5 2xl:mb-8 2xl:text-8xl'>
 							Best Sellers
 						</h2>
-						<p className='text-lg font-normal md:max-w-lg 2xl:max-w-3xl 2xl:text-xl'>
+						<p className='text-lg font-normal text-gray-500 md:max-w-lg 2xl:max-w-3xl 2xl:text-xl'>
 							Discover our best-selling books and mangas that have captured the
 							hearts of readers worldwide. From timeless classics to the latest
 							hits, our collection has something for everyone.
 						</p>
 					</div>
 
-					<div className='mx-auto flex w-full max-w-lg flex-col gap-5 px-12 py-12 md:w-3/4 md:max-w-2xl md:flex-row md:px-2 md:py-12 2xl:mt-10 2xl:w-1/2 2xl:max-w-2xl'>
+					<div className='mx-auto flex w-full max-w-lg flex-col gap-5 px-12 py-12 md:w-3/4 md:max-w-2xl md:flex-row md:px-2 md:py-12 2xl:mt-10 2xl:mr-20 2xl:max-h-[70rem] 2xl:w-1/2 2xl:max-w-4xl 2xl:py-10'>
 						<motion.div
 							whileHover={{ scale: 1.03 }}
 							className='relative h-full w-full max-w-xl items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'
@@ -237,7 +237,7 @@ function Home() {
 							Why Shop with Booksyde
 						</h2>
 
-						<p className='mt-5 w-full text-center text-lg font-normal md:max-w-5xl 2xl:mt-10 2xl:max-w-7xl 2xl:text-xl'>
+						<p className='mt-5 w-full text-center text-lg font-normal text-gray-500 md:max-w-5xl 2xl:mt-10 2xl:max-w-7xl 2xl:text-xl'>
 							Why shop with us? Booksyde is committed to providing the best
 							shopping experience for our customers. With a user-friendly
 							interface, secure payment options, and fast shipping, we make it
