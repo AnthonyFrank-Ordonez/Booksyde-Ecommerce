@@ -17,6 +17,9 @@ import { Route as ContactImport } from './routes/contact'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as ProductsNovelsIndexImport } from './routes/products/novels/index'
+import { Route as ProductsMangaIndexImport } from './routes/products/manga/index'
+import { Route as ProductsBooksIndexImport } from './routes/products/books/index'
 
 // Create/Update Routes
 
@@ -53,6 +56,24 @@ const IndexRoute = IndexImport.update({
 const ProductsIndexRoute = ProductsIndexImport.update({
   id: '/products/',
   path: '/products/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsNovelsIndexRoute = ProductsNovelsIndexImport.update({
+  id: '/products/novels/',
+  path: '/products/novels/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsMangaIndexRoute = ProductsMangaIndexImport.update({
+  id: '/products/manga/',
+  path: '/products/manga/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsBooksIndexRoute = ProductsBooksIndexImport.update({
+  id: '/products/books/',
+  path: '/products/books/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,6 +123,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/products/books/': {
+      id: '/products/books/'
+      path: '/products/books'
+      fullPath: '/products/books'
+      preLoaderRoute: typeof ProductsBooksIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/products/manga/': {
+      id: '/products/manga/'
+      path: '/products/manga'
+      fullPath: '/products/manga'
+      preLoaderRoute: typeof ProductsMangaIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/products/novels/': {
+      id: '/products/novels/'
+      path: '/products/novels'
+      fullPath: '/products/novels'
+      preLoaderRoute: typeof ProductsNovelsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -114,6 +156,9 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/products': typeof ProductsIndexRoute
+  '/products/books': typeof ProductsBooksIndexRoute
+  '/products/manga': typeof ProductsMangaIndexRoute
+  '/products/novels': typeof ProductsNovelsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -123,6 +168,9 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/products': typeof ProductsIndexRoute
+  '/products/books': typeof ProductsBooksIndexRoute
+  '/products/manga': typeof ProductsMangaIndexRoute
+  '/products/novels': typeof ProductsNovelsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -133,13 +181,34 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/products/': typeof ProductsIndexRoute
+  '/products/books/': typeof ProductsBooksIndexRoute
+  '/products/manga/': typeof ProductsMangaIndexRoute
+  '/products/novels/': typeof ProductsNovelsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/signin' | '/signup' | '/products'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/signin'
+    | '/signup'
+    | '/products'
+    | '/products/books'
+    | '/products/manga'
+    | '/products/novels'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/signin' | '/signup' | '/products'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/signin'
+    | '/signup'
+    | '/products'
+    | '/products/books'
+    | '/products/manga'
+    | '/products/novels'
   id:
     | '__root__'
     | '/'
@@ -148,6 +217,9 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/products/'
+    | '/products/books/'
+    | '/products/manga/'
+    | '/products/novels/'
   fileRoutesById: FileRoutesById
 }
 
@@ -158,6 +230,9 @@ export interface RootRouteChildren {
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  ProductsBooksIndexRoute: typeof ProductsBooksIndexRoute
+  ProductsMangaIndexRoute: typeof ProductsMangaIndexRoute
+  ProductsNovelsIndexRoute: typeof ProductsNovelsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -167,6 +242,9 @@ const rootRouteChildren: RootRouteChildren = {
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  ProductsBooksIndexRoute: ProductsBooksIndexRoute,
+  ProductsMangaIndexRoute: ProductsMangaIndexRoute,
+  ProductsNovelsIndexRoute: ProductsNovelsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -184,7 +262,10 @@ export const routeTree = rootRoute
         "/contact",
         "/signin",
         "/signup",
-        "/products/"
+        "/products/",
+        "/products/books/",
+        "/products/manga/",
+        "/products/novels/"
       ]
     },
     "/": {
@@ -204,6 +285,15 @@ export const routeTree = rootRoute
     },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/products/books/": {
+      "filePath": "products/books/index.tsx"
+    },
+    "/products/manga/": {
+      "filePath": "products/manga/index.tsx"
+    },
+    "/products/novels/": {
+      "filePath": "products/novels/index.tsx"
     }
   }
 }

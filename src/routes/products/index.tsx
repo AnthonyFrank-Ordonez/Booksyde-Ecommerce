@@ -32,7 +32,7 @@ function ProductsIndex() {
 					</h2>
 
 					<div className='mt-5 flex flex-col gap-3 px-5 md:flex-row md:px-0'>
-						<Link to='/'>
+						<Link to='/products/books'>
 							<motion.div
 								whileHover={{ scale: 1.03 }}
 								className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'
