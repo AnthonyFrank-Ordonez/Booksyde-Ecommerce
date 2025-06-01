@@ -10,6 +10,8 @@
 		"test": "vitest run"
 	},
 	"dependencies": {
+		"@prisma/client": "^6.8.2",
+		"@prisma/extension-accelerate": "^2.0.1",
 		"@tailwindcss/vite": "^4.0.6",
 		"@tanstack/react-router": "^1.114.3",
 		"@tanstack/react-router-devtools": "^1.114.3",
@@ -33,6 +35,8 @@
 		"jsdom": "^26.0.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
+		"prisma": "^6.8.2",
+		"tsx": "^4.19.4",
 		"typescript": "^5.7.2",
 		"vite": "^6.1.0",
 		"vite-tsconfig-paths": "^5.1.4",
