@@ -1,6 +1,6 @@
+import HoverContainer from '@/components/HoverContainer';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { motion } from 'motion/react';
 
 export const Route = createFileRoute('/')({
 	component: Home,
@@ -79,10 +79,7 @@ function Home() {
 					</p>
 
 					<div className='mt-15 flex w-full max-w-5xl flex-col items-center justify-center gap-5 md:flex-row 2xl:max-w-7xl'>
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'
-						>
+						<HoverContainer className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -98,12 +95,9 @@ function Home() {
 									</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'
-						>
+						<HoverContainer className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -119,12 +113,9 @@ function Home() {
 									</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'
-						>
+						<HoverContainer className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -140,7 +131,7 @@ function Home() {
 									</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 					</div>
 				</ScrollFadeSection>
 			</section>
@@ -163,10 +154,7 @@ function Home() {
 					</div>
 
 					<div className='mx-auto flex w-full max-w-lg flex-col gap-5 px-12 py-12 md:w-3/4 md:max-w-2xl md:flex-row md:px-2 md:py-12 2xl:mt-10 2xl:mr-20 2xl:max-h-[70rem] 2xl:w-1/2 2xl:max-w-4xl 2xl:py-10'>
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative h-full w-full max-w-xl items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'
-						>
+						<HoverContainer className='relative h-full w-full max-w-xl items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -182,12 +170,9 @@ function Home() {
 									</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative h-full w-full items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'
-						>
+						<HoverContainer className='relative h-full w-full items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -203,12 +188,9 @@ function Home() {
 									</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative h-full w-full items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'
-						>
+						<HoverContainer className='relative h-full w-full items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -224,7 +206,7 @@ function Home() {
 									</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 					</div>
 				</ScrollFadeSection>
 			</section>
@@ -246,10 +228,7 @@ function Home() {
 					</div>
 
 					<div className='mt-15 flex flex-wrap justify-center gap-4 px-4 md:flex-row md:px-8 2xl:mt-30'>
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:max-h-[80%] 2xl:w-74'
-						>
+						<HoverContainer className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:max-h-[80%] 2xl:w-74'>
 							<h2 className='mb-4 text-center text-xl font-bold 2xl:text-2xl'>
 								Authenticity
 							</h2>
@@ -257,12 +236,9 @@ function Home() {
 								We guarantee that all products sold on Booksyde are 100%
 								authenticated and genuine. No fakes, no counterfeits.
 							</p>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:w-74'
-						>
+						<HoverContainer className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:w-74'>
 							<h2 className='mb-4 text-center text-xl font-bold 2xl:text-2xl'>
 								Delivery
 							</h2>
@@ -270,12 +246,9 @@ function Home() {
 								We offer fast and reliable delivery options to ensure that your
 								books and manga arrive at your doorstep in perfect condition.
 							</p>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:w-74'
-						>
+						<HoverContainer className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:w-74'>
 							<h2 className='mb-4 text-center text-xl font-bold 2xl:text-2xl'>
 								Payments
 							</h2>
@@ -284,12 +257,9 @@ function Home() {
 								shopping experience as smooth as possible. Choose the one that
 								works best for you.
 							</p>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:w-74'
-						>
+						<HoverContainer className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:w-74'>
 							<h2 className='mb-4 text-center text-xl font-bold 2xl:text-2xl'>
 								Easy Returns
 							</h2>
@@ -297,7 +267,7 @@ function Home() {
 								If you're not satisfied with your purchase, we offer easy
 								returns and exchanges. Your satisfaction is our priority.
 							</p>
-						</motion.div>
+						</HoverContainer>
 					</div>
 				</ScrollFadeSection>
 			</section>

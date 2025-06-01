@@ -1,3 +1,4 @@
+import HoverContainer from '@/components/HoverContainer';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { createFileRoute } from '@tanstack/react-router';
 import { motion } from 'motion/react';
@@ -136,10 +137,7 @@ function About() {
 					</p>
 
 					<div className='mt-10 flex flex-col flex-wrap items-center justify-center gap-5 md:mt-15 md:flex-row'>
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'
-						>
+						<HoverContainer className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -152,12 +150,9 @@ function About() {
 									<p className='text-sm font-light 2xl:text-lg'>Position</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'
-						>
+						<HoverContainer className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -170,11 +165,8 @@ function About() {
 									<p className='text-sm font-light 2xl:text-lg'>Position</p>
 								</div>
 							</div>
-						</motion.div>
-						<motion.div
-							whileHover={{ scale: 1.03 }}
-							className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'
-						>
+						</HoverContainer>
+						<HoverContainer className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'>
 							<img
 								src='https://picsum.photos/id/237/200/300'
 								alt='dog'
@@ -187,7 +179,7 @@ function About() {
 									<p className='text-sm font-light 2xl:text-lg'>Position</p>
 								</div>
 							</div>
-						</motion.div>
+						</HoverContainer>
 					</div>
 				</ScrollFadeSection>
 			</section>

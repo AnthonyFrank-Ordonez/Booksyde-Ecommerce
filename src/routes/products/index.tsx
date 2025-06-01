@@ -4,6 +4,7 @@ import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 
 import Carousel from '@/components/Carousel';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
+import HoverContainer from '@/components/HoverContainer';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
@@ -33,10 +34,7 @@ function ProductsIndex() {
 
 					<div className='mt-5 flex flex-col gap-3 px-5 md:flex-row md:px-0'>
 						<Link to='/products/books'>
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'
-							>
+							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
 								<img
 									src='https://picsum.photos/id/10/800/400'
 									alt='dog'
@@ -51,14 +49,11 @@ function ProductsIndex() {
 										</p>
 									</div>
 								</div>
-							</motion.div>
+							</HoverContainer>
 						</Link>
 
 						<Link to='/'>
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'
-							>
+							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
 								<img
 									src='https://picsum.photos/id/10/800/400'
 									alt='dog'
@@ -73,14 +68,11 @@ function ProductsIndex() {
 										</p>
 									</div>
 								</div>
-							</motion.div>
+							</HoverContainer>
 						</Link>
 
 						<Link to='/'>
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'
-							>
+							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
 								<img
 									src='https://picsum.photos/id/10/800/400'
 									alt='dog'
@@ -95,7 +87,7 @@ function ProductsIndex() {
 										</p>
 									</div>
 								</div>
-							</motion.div>
+							</HoverContainer>
 						</Link>
 					</div>
 				</ScrollFadeSection>
@@ -404,10 +396,7 @@ function ProductsIndex() {
 								</h2>
 
 								<div className='mt-10 grid grid-cols-2 gap-5 px-3 md:mt-7 md:grid-cols-5 md:pr-12 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-7'>
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -423,12 +412,9 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -444,12 +430,9 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -465,12 +448,9 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -486,12 +466,9 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative hidden h-full max-h-54 w-auto overflow-hidden rounded-xl md:flex md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative hidden h-full max-h-54 w-auto overflow-hidden rounded-xl md:flex md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -507,12 +484,9 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:flex lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:flex lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -528,12 +502,9 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:hidden lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:flex xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:flex 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
-									>
+									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:hidden lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:flex xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:flex 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
 											src='https://picsum.photos/id/237/200/300'
 											alt='dog'
@@ -549,157 +520,8 @@ function ProductsIndex() {
 												</h2>
 											</div>
 										</div>
-									</motion.div>
+									</HoverContainer>
 								</div>
-
-								{/* <div className='mt-10 flex flex-col items-center justify-center gap-5 md:mt-1 md:flex-row md:py-5 md:pr-8 2xl:items-start 2xl:justify-start'>
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-
-									<motion.div
-										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
-									>
-										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
-											className='object-fit h-full w-full'
-										/>
-
-										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
-
-										<div className='absolute top-0 right-0 left-0'>
-											<div className='p-4 pt-8 text-white'>
-												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
-												</h2>
-											</div>
-										</div>
-									</motion.div>
-								</div> */}
 							</div>
 						</div>
 					</div>
@@ -1522,10 +1344,7 @@ function ProductsIndex() {
 						</h2>
 
 						<div className='mt-5 grid w-full grid-cols-1 gap-3 md:grid-cols-3'>
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='w-full overflow-hidden rounded-b-lg shadow-md'
-							>
+							<HoverContainer className='w-full overflow-hidden rounded-b-lg shadow-md'>
 								<div className='relative'>
 									<img
 										src='https://picsum.photos/id/12/800/400'
@@ -1541,12 +1360,9 @@ function ProductsIndex() {
 										We have a list of frequently asked questions to help you.
 									</p>
 								</div>
-							</motion.div>
+							</HoverContainer>
 
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='w-full overflow-hidden rounded-b-lg shadow-md'
-							>
+							<HoverContainer className='w-full overflow-hidden rounded-b-lg shadow-md'>
 								<div className='relative'>
 									<img
 										src='https://picsum.photos/id/12/800/400'
@@ -1563,12 +1379,9 @@ function ProductsIndex() {
 										issues.
 									</p>
 								</div>
-							</motion.div>
+							</HoverContainer>
 
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='w-full overflow-hidden rounded-b-lg shadow-md'
-							>
+							<HoverContainer className='w-full overflow-hidden rounded-b-lg shadow-md'>
 								<div className='relative'>
 									<img
 										src='https://picsum.photos/id/12/800/400'
@@ -1585,75 +1398,8 @@ function ProductsIndex() {
 										status.
 									</p>
 								</div>
-							</motion.div>
+							</HoverContainer>
 						</div>
-
-						{/* <div className='mt-5 flex w-full flex-col flex-wrap items-center justify-center gap-6 md:flex-row md:gap-3 2xl:gap-5'>
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='w-74 flex-1 overflow-hidden rounded-b-lg shadow-md'
-							>
-								<div className='relative'>
-									<img
-										src='https://picsum.photos/id/12/800/400'
-										alt='dog'
-										className='object-fit h-full w-full'
-									/>
-								</div>
-								<div className='px-5 py-3'>
-									<h2 className='max-w-[20rem] text-xl font-bold'>
-										Frequently Asked Questions{' '}
-									</h2>
-									<p className='mt-2 max-w-[18rem] text-sm font-light text-gray-600'>
-										We have a list of frequently asked questions to help you.
-									</p>
-								</div>
-							</motion.div>
-
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='w-74 flex-1 overflow-hidden rounded-b-lg shadow-md'
-							>
-								<div className='relative'>
-									<img
-										src='https://picsum.photos/id/12/800/400'
-										alt='dog'
-										className='object-fit h-full w-full'
-									/>
-								</div>
-								<div className='px-5 py-3'>
-									<h2 className='max-w-[15rem] text-xl font-bold'>
-										Customer Support
-									</h2>
-									<p className='mt-2 max-w-[18rem] text-sm font-light text-gray-600'>
-										Customer support is available 24/7 to assist you with any
-										issues.
-									</p>
-								</div>
-							</motion.div>
-
-							<motion.div
-								whileHover={{ scale: 1.03 }}
-								className='w-74 flex-1 overflow-hidden rounded-b-lg shadow-md'
-							>
-								<div className='relative'>
-									<img
-										src='https://picsum.photos/id/12/800/400'
-										alt='dog'
-										className='object-fit h-full w-full'
-									/>
-								</div>
-								<div className='px-5 py-3'>
-									<h2 className='max-w-[20rem] text-xl font-bold'>
-										Payment and Shipping Report
-									</h2>
-									<p className='mt-2 max-w-[18rem] text-sm font-light text-gray-600'>
-										We provide a detailed report of your payment and shipping
-										status.
-									</p>
-								</div>
-							</motion.div>
-						</div> */}
 					</div>
 				</ScrollFadeSection>
 			</section>
