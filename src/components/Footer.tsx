@@ -37,8 +37,8 @@ export default function Footer() {
 			</div>
 
 			<div className='col-span-1 mt-10 md:col-span-2 md:mt-0'>
-				<div className='flex flex-col items-start justify-center gap-3 md:ml-50 md:gap-1 2xl:ml-80 2xl:gap-3'>
-					<p className='text-md font-bold md:font-medium 2xl:text-xl'>
+				<div className='flex flex-col items-start justify-center gap-3 md:ml-18 md:gap-1 lg:ml-30 xl:ml-45 2xl:ml-80 2xl:gap-3'>
+					<p className='text-md font-bold md:font-medium 2xl:w-32 2xl:text-xl'>
 						Quick Links
 					</p>
 					<Link
@@ -76,7 +76,7 @@ export default function Footer() {
 			</div>
 
 			<div className='col-span-1 mt-10 md:col-span-1 md:mt-0'>
-				<div className='flex flex-col items-start justify-center gap-3 md:ml-15 md:gap-1 2xl:ml-30 2xl:gap-3'>
+				<div className='flex flex-col items-start justify-center gap-3 md:ml-0 md:gap-1 lg:ml-5 xl:ml-10 2xl:ml-30 2xl:gap-3'>
 					<p className='text-md font-bold md:font-medium 2xl:text-xl'>
 						Services
 					</p>
@@ -87,7 +87,7 @@ export default function Footer() {
 			</div>
 
 			<div className='col-span-1 mt-10 md:col-span-2 md:mt-0'>
-				<div className='flex flex-col items-start justify-center gap-3 md:ml-10 md:gap-1 2xl:ml-30 2xl:gap-3'>
+				<div className='flex flex-col items-start justify-center gap-3 md:ml-0 md:gap-1 lg:ml-5 xl:ml-10 2xl:ml-30 2xl:gap-3'>
 					<p className='text-md font-bold md:font-medium 2xl:text-xl'>
 						Contacts
 					</p>
