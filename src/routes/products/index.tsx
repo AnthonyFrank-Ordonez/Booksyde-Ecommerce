@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { motion } from 'motion/react';
 import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 
 import Carousel from '@/components/Carousel';
