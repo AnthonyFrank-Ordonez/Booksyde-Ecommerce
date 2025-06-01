@@ -191,35 +191,39 @@ export default function Header() {
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.3 }}
 					>
-						<div className='flex flex-col space-y-2 px-6 py-2'>
+						<div className='flex flex-col space-y-5 px-6 py-2'>
 							<Link
 								to='/'
+								className='font-medium'
 								activeProps={{
-									className: 'font-medium hover:text-gray-300 py-2',
+									className: 'font-bold underline',
 								}}
 							>
 								Home
 							</Link>
 							<Link
 								to='/'
+								className='font-medium'
 								activeProps={{
-									className: 'font-medium hover:text-gray-300 py-2',
+									className: 'font-bold underline',
 								}}
 							>
 								About
 							</Link>
 							<Link
 								to='/'
+								className='font-medium'
 								activeProps={{
-									className: 'font-medium hover:text-gray-300 py-2',
+									className: 'font-bold underline',
 								}}
 							>
 								Products
 							</Link>
 							<Link
 								to='/'
+								className='font-medium'
 								activeProps={{
-									className: 'font-medium hover:text-gray-300 py-2',
+									className: 'font-bold underline',
 								}}
 							>
 								Contact
@@ -227,8 +231,9 @@ export default function Header() {
 
 							<Link
 								to='/'
+								className='font-medium'
 								activeProps={{
-									className: 'font-medium hover:text-gray-300 py-2',
+									className: 'font-bold underline',
 								}}
 							>
 								Account

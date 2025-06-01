@@ -388,25 +388,25 @@ function ProductsIndex() {
 
 				{/* Choose by Genres */}
 				<ScrollFadeSection className='px-5 py-10 md:px-0'>
-					<div className='relative h-[70rem] w-full overflow-hidden rounded-lg shadow-lg shadow-gray-500 md:h-96 md:w-full 2xl:h-[35rem]'>
+					<div className='relative h-[56rem] w-full overflow-hidden rounded-lg shadow-lg shadow-gray-500 md:h-96 md:w-full lg:h-[24rem] xl:h-[25rem] 2xl:h-[30rem]'>
 						<img
 							src='https://picsum.photos/id/11/800/400'
 							alt='dog'
 							className='object-fit h-full w-full'
 						/>
 
-						<div className='absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80'></div>
+						<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-black to-black/90'></div>
 
 						<div className='absolute top-10 right-0 left-0 md:left-10'>
-							<div className='p-4 pt-8 font-bold text-white'>
+							<div className='p-4 pt-8 font-bold text-white md:pt-1'>
 								<h2 className='text-center text-4xl md:text-left md:text-4xl 2xl:text-5xl'>
 									Choose by Genres
 								</h2>
 
-								<div className='mt-10 flex flex-col items-center justify-center gap-5 md:mt-1 md:flex-row md:py-5 md:pr-8 2xl:items-start 2xl:justify-start'>
+								<div className='mt-10 grid grid-cols-2 gap-5 px-3 md:mt-7 md:grid-cols-5 md:pr-12 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-7'>
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -427,7 +427,7 @@ function ProductsIndex() {
 
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -448,7 +448,7 @@ function ProductsIndex() {
 
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -469,7 +469,7 @@ function ProductsIndex() {
 
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -490,7 +490,7 @@ function ProductsIndex() {
 
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative hidden h-full max-h-54 w-auto overflow-hidden rounded-xl md:flex md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -511,7 +511,7 @@ function ProductsIndex() {
 
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:flex lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -532,7 +532,7 @@ function ProductsIndex() {
 
 									<motion.div
 										whileHover={{ scale: 1.03 }}
-										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+										className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:hidden lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:flex xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:flex 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'
 									>
 										<img
 											src='https://picsum.photos/id/237/200/300'
@@ -551,6 +551,155 @@ function ProductsIndex() {
 										</div>
 									</motion.div>
 								</div>
+
+								{/* <div className='mt-10 flex flex-col items-center justify-center gap-5 md:mt-1 md:flex-row md:py-5 md:pr-8 2xl:items-start 2xl:justify-start'>
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+
+									<motion.div
+										whileHover={{ scale: 1.03 }}
+										className='relative h-28 w-3/4 overflow-hidden rounded-xl md:h-54 md:w-36 2xl:h-82 2xl:w-55'
+									>
+										<img
+											src='https://picsum.photos/id/237/200/300'
+											alt='dog'
+											className='object-fit h-full w-full'
+										/>
+
+										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
+
+										<div className='absolute top-0 right-0 left-0'>
+											<div className='p-4 pt-8 text-white'>
+												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
+													Name
+												</h2>
+											</div>
+										</div>
+									</motion.div>
+								</div> */}
 							</div>
 						</div>
 					</div>
