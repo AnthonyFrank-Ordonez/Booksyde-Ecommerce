@@ -3,9 +3,9 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vinxi dev",
+		"dev": "prisma generate && vinxi dev",
 		"start": "vinxi start",
-		"build": "vinxi build",
+		"build": "prisma generate && vinxi build",
 		"serve": "vite preview",
 		"test": "vitest run"
 	},

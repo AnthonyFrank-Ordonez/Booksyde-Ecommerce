@@ -7,3 +7,6 @@ dist-ssr
 .vinxi
 .env
 .vscode
+
+# Prisma
+src/generated/prisma
