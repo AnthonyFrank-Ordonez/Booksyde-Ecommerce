@@ -1,0 +1,25 @@
+import { z } from 'zod';
+
+export const signUpSchema = z
+	.object({
+		email: z.string().email('Must be valid email'),
+		username: z.string().min(8, 'Username must be atleast 8 or more'),
+		password: z
+			.string()
+			.min(8, 'Pasword length must be 8 or more')
+			.regex(/^(?=.*?[0-9]).+$/, 'Password nust have atleast 1 digit')
+			.regex(
+				/^(?=.*?[A-Z]).+$/,
+				'Password must have alteast one capital letter'
+			),
+		confirmPassword: z.string(),
+	})
+	.superRefine(({ confirmPassword, password }, ctx) => {
+		if (confirmPassword !== password) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Password is not match',
+				path: ['confirmPassword'],
+			});
+		}
+	});
