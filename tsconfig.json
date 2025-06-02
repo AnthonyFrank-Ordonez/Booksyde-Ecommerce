@@ -1,5 +1,16 @@
 {
 	"include": ["**/*.ts", "**/*.tsx"],
+	"ignores": [
+		"**/node_modules",
+		"**/dist",
+		"**/build",
+		"**/coverage",
+		"**/.next",
+		"**/.nuxt",
+		"**/.output",
+		"**/.cache",
+		"**/.turbo"
+	],
 	"compilerOptions": {
 		"target": "ES2022",
 		"jsx": "react-jsx",
