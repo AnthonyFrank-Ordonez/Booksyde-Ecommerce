@@ -1,9 +1,5 @@
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import {
-	getUserID,
-	// signUpUser
-} from '@/utils/auth-server';
-import {
 	createFileRoute,
 	Link,
 	redirect,
@@ -12,7 +8,6 @@ import {
 import { useForm } from '@tanstack/react-form';
 import { signUpSchema } from '@/utils/zodSchema';
 import FieldInfo from '@/components/FieldInfo';
-// import { auth } from '@/utils/auth';
 import { signUp } from '@/utils/auth-client';
 
 export const Route = createFileRoute('/signup')({

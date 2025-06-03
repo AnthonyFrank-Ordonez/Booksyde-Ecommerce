@@ -4,7 +4,6 @@ import { createFileRoute, redirect } from '@tanstack/react-router';
 import { FaArrowLeft, FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 import { useState } from 'react';
 import { FaX } from 'react-icons/fa6';
-import { getUserID } from '@/utils/auth-server';
 
 export const Route = createFileRoute('/products/books/')({
 	component: BooksIndex,
