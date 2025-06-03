@@ -25,7 +25,6 @@ function Login() {
 			password: '',
 		},
 		onSubmit: async ({ value }) => {
-			console.log('🚀 ~ onSubmit: ~ value:', value);
 			console.log('======= Signing In =======');
 			await signIn.email(
 				{
