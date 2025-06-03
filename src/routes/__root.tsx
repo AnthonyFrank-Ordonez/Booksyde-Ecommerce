@@ -11,7 +11,7 @@ import appCss from '../styles.css?url';
 import { seo } from '@/utils/seo';
 import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
-import { getUserID } from '@/utils/auth-server';
+import { getUserID } from '@/utils/servers/auth-server';
 
 export const Route = createRootRoute({
 	beforeLoad: async () => {
