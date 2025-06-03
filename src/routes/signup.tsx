@@ -1,8 +1,15 @@
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useRouter,
+} from '@tanstack/react-router';
 import { useForm } from '@tanstack/react-form';
+
 import { signUpSchema } from '@/utils/zod';
 import FieldInfo from '@/components/FieldInfo';
+import { signUp } from '@/utils/auth-client';
 
 export const Route = createFileRoute('/signup')({
 	component: SignUp,
@@ -12,6 +19,8 @@ export const Route = createFileRoute('/signup')({
 });
 
 function SignUp() {
+	const router = useRouter();
+
 	const form = useForm({
 		defaultValues: {
 			email: '',
@@ -24,7 +33,22 @@ function SignUp() {
 		},
 		onSubmit: async ({ value }) => {
 			console.log('🚀 ~ onSubmit: ~ value:', value);
-			//
+			await signUp.email(
+				{
+					email: value.email,
+					name: value.username,
+					password: value.password,
+				},
+				{
+					onSuccess: () => {
+						router.navigate({ to: '/signin' });
+						router.invalidate();
+					},
+					onError: (ctx) => {
+						console.log('Error on signup.tsx ==> ', ctx.error);
+					},
+				}
+			);
 		},
 	});
 
