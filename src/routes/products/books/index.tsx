@@ -8,16 +8,10 @@ import { getUserID } from '@/utils/auth-server';
 
 export const Route = createFileRoute('/products/books/')({
 	component: BooksIndex,
-	beforeLoad: async () => {
-		const userID = await getUserID();
-
-		return {
-			userID,
-		};
-	},
-
-	loader: async ({ context }) => {
-		if (!context.userID) throw redirect({ to: '/signin' });
+	beforeLoad: async ({ context }) => {
+		if (!context.userId) {
+			throw redirect({ to: '/signin' });
+		}
 	},
 });
 

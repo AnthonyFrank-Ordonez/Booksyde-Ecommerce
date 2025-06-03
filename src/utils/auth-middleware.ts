@@ -1,6 +1,10 @@
 import { createMiddleware } from '@tanstack/react-start';
-import { getHeaders } from '@tanstack/react-start/server';
+import {
+	getHeaders,
+	// getWebRequest,
+} from '@tanstack/react-start/server';
 import { getSession } from './auth-client';
+// import { auth } from './auth';
 
 export const authMiddleware = createMiddleware().server(async ({ next }) => {
 	const { data: session } = await getSession({
@@ -8,6 +12,16 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
 			headers: getHeaders() as HeadersInit,
 		},
 	});
+
+	// const request = getWebRequest()!;
+
+	// const session = await auth.api.getSession({
+	// 	query: {
+	// 		disableCookieCache: true,
+	// 	},
+	// 	headers: request.headers,
+	// });
+
 	return await next({
 		context: {
 			user: {

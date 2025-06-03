@@ -7,15 +7,8 @@ import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
-	beforeLoad: async () => {
-		const userID = await getUserID();
-
-		return {
-			userID,
-		};
-	},
-	loader: async ({ context }) => {
-		if (context.userID) {
+	beforeLoad: async ({ context }) => {
+		if (context.userId) {
 			throw redirect({ to: '/' });
 		}
 	},

@@ -1,27 +1,32 @@
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
-import { getUserID } from '@/utils/auth-server';
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import {
+	getUserID,
+	// signUpUser
+} from '@/utils/auth-server';
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useRouter,
+} from '@tanstack/react-router';
 import { useForm } from '@tanstack/react-form';
 import { signUpSchema } from '@/utils/zodSchema';
 import FieldInfo from '@/components/FieldInfo';
+// import { auth } from '@/utils/auth';
+import { signUp } from '@/utils/auth-client';
 
 export const Route = createFileRoute('/signup')({
 	component: SignUp,
-	beforeLoad: async () => {
-		const userID = await getUserID();
-
-		return {
-			userID,
-		};
-	},
-	loader: async ({ context }) => {
-		if (context.userID) {
+	beforeLoad: async ({ context }) => {
+		if (context.userId) {
 			throw redirect({ to: '/' });
 		}
 	},
 });
 
 function SignUp() {
+	const router = useRouter();
+
 	const form = useForm({
 		defaultValues: {
 			email: '',
@@ -33,8 +38,24 @@ function SignUp() {
 			onChange: signUpSchema,
 		},
 		onSubmit: async ({ value }) => {
-			console.log('🚀 ~ onSubmit: ~ value:', value);
-			//
+			await signUp.email(
+				{
+					email: value.email,
+					name: value.username,
+					password: value.password,
+				},
+				{
+					onRequest: () => {
+						//
+					},
+					onSuccess: () => {
+						router.navigate({ to: '/signin' });
+					},
+					onError: (ctx) => {
+						console.error('Error during sign up:', ctx.error);
+					},
+				}
+			);
 		},
 	});
 
@@ -195,7 +216,7 @@ function SignUp() {
 														<rect
 															fill='#FFFFFF'
 															stroke='#FFFFFF'
-															stroke-width='15'
+															strokeWidth='15'
 															width='30'
 															height='30'
 															x='85'

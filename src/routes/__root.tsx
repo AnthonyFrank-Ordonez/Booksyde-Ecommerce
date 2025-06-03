@@ -12,8 +12,16 @@ import appCss from '../styles.css?url';
 import { seo } from '@/utils/seo';
 import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
+import { getUserID } from '@/utils/auth-server';
 
 export const Route = createRootRoute({
+	beforeLoad: async () => {
+		const userId = await getUserID();
+
+		return {
+			userId,
+		};
+	},
 	head: () => ({
 		meta: [
 			{
