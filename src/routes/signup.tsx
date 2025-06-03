@@ -32,7 +32,6 @@ function SignUp() {
 			onChange: signUpSchema,
 		},
 		onSubmit: async ({ value }) => {
-			console.log('🚀 ~ onSubmit: ~ value:', value);
 			await signUp.email(
 				{
 					email: value.email,
@@ -177,7 +176,7 @@ function SignUp() {
 										<div>
 											<button
 												type='submit'
-												aria-label='signUp'
+												aria-label='signUp btn'
 												disabled={!canSubmit || isSubmitting}
 												className='w-full cursor-pointer rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-black/85 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
 											>
