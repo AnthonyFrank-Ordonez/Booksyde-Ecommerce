@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  comment String
+  userId String
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("comments")
+}
+
+model User {
+  id            String    @id
+  createdAt     DateTime
+  updatedAt     DateTime
+  
+  name          String
+  email         String @unique
+  emailVerified Boolean
+  image         String?
+  sessions      Session[]
+  accounts      Account[]
+  comment       Comment[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime
+  updatedAt DateTime
+
+  expiresAt DateTime
+  token     String @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("accounts")
+}
+
+model Verification {
+  id         String    @id
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@map("verifications")
+}
