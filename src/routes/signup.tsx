@@ -40,9 +40,6 @@ function SignUp() {
 					password: value.password,
 				},
 				{
-					onRequest: () => {
-						//
-					},
 					onSuccess: () => {
 						router.navigate({ to: '/signin' });
 					},
@@ -230,7 +227,7 @@ function SignUp() {
 														<rect
 															fill='#FFFFFF'
 															stroke='#FFFFFF'
-															stroke-width='15'
+															strokeWidth='15'
 															width='30'
 															height='30'
 															x='145'
