@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useRouter,
+} from '@tanstack/react-router';
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 
 import { signIn } from '@/utils/auth-client';
@@ -13,6 +18,7 @@ export const Route = createFileRoute('/signin')({
 });
 
 function Login() {
+	const router = useRouter();
 	const form = useForm({
 		defaultValues: {
 			email: '',
@@ -21,6 +27,21 @@ function Login() {
 		onSubmit: async ({ value }) => {
 			console.log('🚀 ~ onSubmit: ~ value:', value);
 			console.log('======= Signing In =======');
+			await signIn.email(
+				{
+					email: value.email,
+					password: value.password,
+				},
+				{
+					onSuccess: () => {
+						router.navigate({ to: '/products' });
+						router.invalidate();
+					},
+					onError: (ctx) => {
+						console.log(`Error on signin.tsx ==> `, ctx.error);
+					},
+				}
+			);
 		},
 	});
 
