@@ -13,6 +13,7 @@
 		"@prisma/client": "^6.8.2",
 		"@prisma/extension-accelerate": "^2.0.1",
 		"@tailwindcss/vite": "^4.0.6",
+		"@tanstack/react-form": "^1.12.0",
 		"@tanstack/react-router": "^1.114.3",
 		"@tanstack/react-router-devtools": "^1.114.3",
 		"@tanstack/react-router-with-query": "^1.114.3",
@@ -24,7 +25,8 @@
 		"react-dom": "^19.0.0",
 		"react-icons": "^5.5.0",
 		"tailwindcss": "^4.0.6",
-		"vinxi": "^0.5.3"
+		"vinxi": "^0.5.3",
+		"zod": "^3.25.49"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.0",
