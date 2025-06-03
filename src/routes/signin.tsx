@@ -2,22 +2,12 @@ import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 
 import { signIn } from '@/utils/auth-client';
-import { getUserID } from '@/utils/auth-server';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
-	beforeLoad: async () => {
-		const userID = await getUserID();
-
-		return {
-			userID,
-		};
-	},
-	loader: async ({ context }) => {
-		if (context.userID) {
-			throw redirect({ to: '/' });
-		}
+	beforeLoad: async ({ context }) => {
+		if (context.userID) throw redirect({ to: '/' });
 	},
 });
 

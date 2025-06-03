@@ -1,5 +1,4 @@
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
-import { getUserID } from '@/utils/auth-server';
 import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { useForm } from '@tanstack/react-form';
 import { signUpSchema } from '@/utils/zod';
@@ -7,17 +6,8 @@ import FieldInfo from '@/components/FieldInfo';
 
 export const Route = createFileRoute('/signup')({
 	component: SignUp,
-	beforeLoad: async () => {
-		const userID = await getUserID();
-
-		return {
-			userID,
-		};
-	},
-	loader: async ({ context }) => {
-		if (context.userID) {
-			throw redirect({ to: '/' });
-		}
+	beforeLoad: async ({ context }) => {
+		if (context.userID) throw redirect({ to: '/' });
 	},
 });
 
