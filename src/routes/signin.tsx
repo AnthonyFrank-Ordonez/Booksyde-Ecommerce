@@ -9,7 +9,7 @@ import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
-import { signInServer } from '@/utils/servers/user';
+// import { signInServer } from '@/utils/servers/user';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -26,36 +26,21 @@ function Login() {
 			password: '',
 		},
 		onSubmit: async ({ value }) => {
-			try {
-				const response = await signInServer({
-					data: { email: value.email, password: value.password },
-				});
-
-				if (response.success) {
-					router.navigate({ to: '/products' });
-					router.invalidate();
+			await signIn.email(
+				{
+					email: value.email,
+					password: value.password,
+				},
+				{
+					onSuccess: () => {
+						router.navigate({ to: '/products' });
+						router.invalidate();
+					},
+					onError: (ctx) => {
+						console.log(`Error on signin.tsx ==> `, ctx.error);
+					},
 				}
-			} catch (error: unknown) {
-				if (error instanceof Error) {
-					console.log(error);
-				}
-			}
-
-			// await signIn.email(
-			// 	{
-			// 		email: value.email,
-			// 		password: value.password,
-			// 	},
-			// 	{
-			// 		onSuccess: () => {
-			// 			router.navigate({ to: '/products' });
-			// 			router.invalidate();
-			// 		},
-			// 		onError: (ctx) => {
-			// 			console.log(`Error on signin.tsx ==> `, ctx.error);
-			// 		},
-			// 	}
-			// );
+			);
 		},
 	});
 
@@ -211,15 +196,6 @@ function Login() {
 									)}
 								/>
 							</form>
-
-							{/* <div>
-								<button
-									aria-label='signIn'
-									className='w-full cursor-pointer rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-black/85 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
-								>
-									Sign In
-								</button>
-							</div> */}
 						</div>
 
 						<div className='relative mt-5'>
@@ -234,6 +210,7 @@ function Login() {
 						<div className='flex flex-col gap-3'>
 							<button
 								aria-label='google'
+								onClick={() => signIn.social({ provider: 'google' })}
 								className='mt-5 flex w-full cursor-pointer items-center justify-center gap-x-2 rounded-lg border py-2 font-medium hover:bg-gray-300/20 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
 							>
 								<FaGoogle />
