@@ -9,6 +9,7 @@ import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
+import { signInServer } from '@/utils/servers/user';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -25,22 +26,36 @@ function Login() {
 			password: '',
 		},
 		onSubmit: async ({ value }) => {
-			console.log('======= Signing In =======');
-			await signIn.email(
-				{
-					email: value.email,
-					password: value.password,
-				},
-				{
-					onSuccess: () => {
-						router.navigate({ to: '/products' });
-						router.invalidate();
-					},
-					onError: (ctx) => {
-						console.log(`Error on signin.tsx ==> `, ctx.error);
-					},
+			try {
+				const response = await signInServer({
+					data: { email: value.email, password: value.password },
+				});
+
+				if (response.success) {
+					router.navigate({ to: '/products' });
+					router.invalidate();
 				}
-			);
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					console.log(error);
+				}
+			}
+
+			// await signIn.email(
+			// 	{
+			// 		email: value.email,
+			// 		password: value.password,
+			// 	},
+			// 	{
+			// 		onSuccess: () => {
+			// 			router.navigate({ to: '/products' });
+			// 			router.invalidate();
+			// 		},
+			// 		onError: (ctx) => {
+			// 			console.log(`Error on signin.tsx ==> `, ctx.error);
+			// 		},
+			// 	}
+			// );
 		},
 	});
 
