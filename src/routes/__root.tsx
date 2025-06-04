@@ -7,13 +7,20 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import Header from '../components/Header';
-
 import appCss from '../styles.css?url';
 import { seo } from '@/utils/seo';
 import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
+import { getUserID } from '@/utils/servers/auth-server';
 
 export const Route = createRootRoute({
+	beforeLoad: async () => {
+		const userID = await getUserID();
+
+		return {
+			userID,
+		};
+	},
 	head: () => ({
 		meta: [
 			{
