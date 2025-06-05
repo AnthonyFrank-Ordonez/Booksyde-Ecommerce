@@ -30,6 +30,7 @@ function About() {
 								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/About-Banner_tojtj2.jpg'
 								alt='About Banner'
 								crossOrigin='anonymous'
+								loading='lazy'
 								className='object-fit h-full w-full'
 							/>
 						</div>
@@ -60,6 +61,7 @@ function About() {
 								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/About-Img_ezbqwx.jpg'
 								alt='how we started img'
 								crossOrigin='anonymous'
+								loading='lazy'
 								className='object-fit h-full w-full'
 							/>
 						</div>
@@ -143,6 +145,7 @@ function About() {
 								src='https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/About-people_h2f8hn.jpg'
 								alt='developers'
 								crossOrigin='anonymous'
+								loading='lazy'
 								className='object-fit h-full w-full'
 							/>
 
@@ -159,6 +162,7 @@ function About() {
 								src='https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/About-people_h2f8hn.jpg'
 								alt='developers'
 								crossOrigin='anonymous'
+								loading='lazy'
 								className='object-fit h-full w-full'
 							/>
 
@@ -174,6 +178,7 @@ function About() {
 								src='https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/About-people_h2f8hn.jpg'
 								alt='developers'
 								crossOrigin='anonymous'
+								loading='lazy'
 								className='object-fit h-full w-full'
 							/>
 
