@@ -1,7 +1,6 @@
 import HoverContainer from '@/components/HoverContainer';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { createFileRoute } from '@tanstack/react-router';
-import { motion } from 'motion/react';
 
 export const Route = createFileRoute('/about')({
 	component: About,
@@ -26,10 +25,11 @@ function About() {
 					</div>
 
 					<div className='h-full w-full max-w-5xl px-7 md:mt-10 2xl:max-w-7xl'>
-						<div className='h-64 max-h-64 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-400 md:h-[5000px] md:max-h-[500px] 2xl:h-[600px] 2xl:max-h-[600px]'>
+						<div className='h-64 max-h-64 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-400 md:h-[5000px] md:max-h-[500px] 2xl:h-[600px] 2xl:min-h-[400px]'>
 							<img
-								src='https://picsum.photos/id/437/200/300'
-								alt='dog'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/About-Banner_tojtj2.jpg'
+								alt='About Banner'
+								crossOrigin='anonymous'
 								className='object-fit h-full w-full'
 							/>
 						</div>
@@ -57,8 +57,9 @@ function About() {
 					<div className='mt-10 h-full w-full px-12 md:mt-0 md:w-1/2 2xl:w-1/2 2xl:max-w-4xl'>
 						<div className='h-96 max-h-96 items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500 2xl:h-[600px] 2xl:max-h-[600px]'>
 							<img
-								src='https://picsum.photos/id/437/200/300'
-								alt='dog'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/About-Img_ezbqwx.jpg'
+								alt='how we started img'
+								crossOrigin='anonymous'
 								className='object-fit h-full w-full'
 							/>
 						</div>
@@ -139,8 +140,9 @@ function About() {
 					<div className='mt-10 flex flex-col flex-wrap items-center justify-center gap-5 md:mt-15 md:flex-row'>
 						<HoverContainer className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/About-people_h2f8hn.jpg'
+								alt='developers'
+								crossOrigin='anonymous'
 								className='object-fit h-full w-full'
 							/>
 
@@ -154,8 +156,9 @@ function About() {
 
 						<HoverContainer className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/About-people_h2f8hn.jpg'
+								alt='developers'
+								crossOrigin='anonymous'
 								className='object-fit h-full w-full'
 							/>
 
@@ -168,8 +171,9 @@ function About() {
 						</HoverContainer>
 						<HoverContainer className='relative h-full w-70 max-w-80 overflow-hidden rounded-lg md:h-[500px] md:max-h-[500px] md:w-70 md:max-w-96 2xl:h-[600px] 2xl:max-h-[650px] 2xl:w-[300px] 2xl:max-w-[350px]'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/About-people_h2f8hn.jpg'
+								alt='developers'
+								crossOrigin='anonymous'
 								className='object-fit h-full w-full'
 							/>
 

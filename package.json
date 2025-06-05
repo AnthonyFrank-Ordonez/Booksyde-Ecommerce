@@ -7,7 +7,8 @@
 		"start": "vinxi start",
 		"build": "prisma generate && vinxi build",
 		"serve": "vite preview",
-		"test": "vitest run"
+		"test": "vitest run",
+		"preview": "node .output/server/index.mjs"
 	},
 	"dependencies": {
 		"@cloudinary/react": "^1.14.3",
