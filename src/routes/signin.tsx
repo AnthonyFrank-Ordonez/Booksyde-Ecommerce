@@ -219,6 +219,7 @@ function Login() {
 
 							<button
 								aria-label='google'
+								onClick={() => signIn.social({ provider: 'facebook' })}
 								className='flex w-full cursor-pointer items-center justify-center gap-x-2 rounded-lg border py-2 font-medium hover:bg-gray-300/20 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
 							>
 								<FaFacebook />

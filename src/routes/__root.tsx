@@ -2,9 +2,10 @@ import {
 	Outlet,
 	HeadContent,
 	Scripts,
-	createRootRoute,
+	createRootRouteWithContext,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { QueryClient } from '@tanstack/react-query';
 
 import Header from '../components/Header';
 import appCss from '../styles.css?url';
@@ -13,7 +14,9 @@ import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
 import { getUserID } from '@/utils/servers/auth-server';
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+	queryClient: QueryClient;
+}>()({
 	beforeLoad: async () => {
 		const userID = await getUserID();
 
