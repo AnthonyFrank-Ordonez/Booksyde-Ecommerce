@@ -9,3 +9,12 @@ export interface BookType {
 	price: number;
 	rating: number;
 }
+
+export interface NewArrrivalBookType {
+	title: string;
+	price: number;
+	description: string;
+	coverImg: string;
+	imageAlt: string;
+	stock?: number;
+}

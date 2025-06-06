@@ -7,7 +7,7 @@ import { FaX } from 'react-icons/fa6';
 
 import { bookQueryOptions } from '@/utils/servers/books';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import type { BookType } from '@/types';
+import type { BookType, NewArrrivalBookType } from '@/types';
 
 export const Route = createFileRoute('/products/books/')({
 	component: BooksIndex,
@@ -21,6 +21,13 @@ export const Route = createFileRoute('/products/books/')({
 
 function BooksIndex() {
 	const booksQueryData = useSuspenseQuery(bookQueryOptions());
+	const newArrivalBook: NewArrrivalBookType = {
+		title: booksQueryData.data[0].title,
+		coverImg: booksQueryData.data[0].coverImg,
+		price: booksQueryData.data[0].price,
+		imageAlt: booksQueryData.data[0].title,
+		description: booksQueryData.data[0].description,
+	};
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const toggleSidebar = () => {
@@ -30,7 +37,7 @@ function BooksIndex() {
 	return (
 		<div className='col-span-1 md:col-span-12 lg:col-span-12 xl:col-span-12'>
 			{/* New Arrivals */}
-			<NewArrival />
+			<NewArrival {...newArrivalBook} />
 
 			{/* Sortby and Products List*/}
 			<section>
