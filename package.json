@@ -27,6 +27,7 @@
 		"@tanstack/react-start": "^1.114.3",
 		"@tanstack/router-plugin": "^1.114.3",
 		"better-auth": "^1.2.7",
+		"handlebars": "^4.7.8",
 		"motion": "^12.11.3",
 		"nodemailer": "^7.0.3",
 		"react": "^19.0.0",
@@ -39,6 +40,7 @@
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/react": "^16.2.0",
+		"@types/nodemailer": "^6.4.17",
 		"@types/react": "^19.0.8",
 		"@types/react-dom": "^19.0.3",
 		"@vitejs/plugin-react": "^4.3.4",
