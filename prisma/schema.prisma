@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -76,17 +77,25 @@ model Verification {
   @@map("verifications")
 }
 
-
 model Book {
-  id Int @id
-  title String
-  author String
-  genres String[]
-  price Decimal
+  id          Int      @id
+  title       String
+  author      String
+  genres      String[]
+  price       Decimal
   description String
-  rating Decimal
-  coverImg String
-  language String
+  rating      Decimal
+  coverImg    String
+  language    String
 
   @@map("books")
+}
+
+model RateLimit {
+  id          String  @id
+  key         String?
+  count       Int?
+  lastRequest BigInt?
+
+  @@map("rateLimit")
 }

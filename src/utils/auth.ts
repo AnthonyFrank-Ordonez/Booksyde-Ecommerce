@@ -8,14 +8,11 @@ export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
 	}),
+	plugins: [reactStartCookies()],
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,
 		autoSignIn: false,
-	},
-	rateLimit: {
-		enabled: true,
-		maxAttempts: 5,
 	},
 	socialProviders: {
 		github: {
@@ -32,5 +29,15 @@ export const auth = betterAuth({
 			clientSecret: process.env.FACEBOOK_CLIENT_SECRET! as string,
 		},
 	},
-	plugins: [reactStartCookies()],
+	rateLimit: {
+		enabled: true,
+		storage: 'database',
+		modelName: 'rateLimit',
+		customRules: {
+			'/sign-in/email': {
+				window: 60,
+				max: 3,
+			},
+		},
+	},
 });

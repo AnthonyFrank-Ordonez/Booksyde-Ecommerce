@@ -36,9 +36,6 @@ function Login() {
 						router.navigate({ to: '/products' });
 						router.invalidate();
 					},
-					onError: (ctx) => {
-						console.log(`Error on signin.tsx ==> `, ctx.error);
-					},
 				}
 			);
 		},
