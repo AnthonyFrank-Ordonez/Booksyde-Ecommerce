@@ -32,10 +32,14 @@ export const signInServer = createServerFn({ method: 'POST' })
 
 		if (response.ok) {
 			throw redirect({ to: '/products' });
-		} else if (!response.ok || response.status === 401) {
-			throw new Error(
-				`${response.status} ${response.statusText}: Invalid email or password`
-			);
+		} else {
+			if (response.status === 401) {
+				throw new Error(
+					`${response.status} ${response.statusText}: Invalid email or password`
+				);
+			} else if (response.status === 403) {
+				throw new Error(`${response.status} ${response.statusText}`);
+			}
 		}
 	});
 
@@ -62,8 +66,6 @@ export const signUpServer = createServerFn({ method: 'POST' })
 		return input as SignUpType;
 	})
 	.handler(async ({ data }) => {
-		console.log('🚀 ~ .handler ~ data:', data.password);
-
 		const response = await auth.api.signUpEmail({
 			body: {
 				email: data.email,
