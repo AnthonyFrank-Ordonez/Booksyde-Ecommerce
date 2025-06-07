@@ -13,6 +13,10 @@ export const auth = betterAuth({
 		requireEmailVerification: false,
 		autoSignIn: false,
 	},
+	rateLimit: {
+		enabled: true,
+		maxAttempts: 5,
+	},
 	socialProviders: {
 		github: {
 			clientId: process.env.GITHUB_CLIENT_ID! as string,
