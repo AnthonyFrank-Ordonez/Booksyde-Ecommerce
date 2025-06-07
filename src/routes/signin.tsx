@@ -5,11 +5,12 @@ import {
 	useRouter,
 } from '@tanstack/react-router';
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
-
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
-// import { signInServer } from '@/utils/servers/user';
+
+import { signInServer } from '@/utils/servers/user';
+import { useServerFn } from '@tanstack/react-start';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -20,24 +21,38 @@ export const Route = createFileRoute('/signin')({
 
 function Login() {
 	const router = useRouter();
+	const userSignIn = useServerFn(signInServer);
+
 	const form = useForm({
 		defaultValues: {
 			email: '',
 			password: '',
 		},
 		onSubmit: async ({ value }) => {
-			await signIn.email(
-				{
-					email: value.email,
-					password: value.password,
-				},
-				{
-					onSuccess: () => {
-						router.navigate({ to: '/products' });
-						router.invalidate();
-					},
+			try {
+				await userSignIn({
+					data: { email: value.email, password: value.password },
+				});
+				router.invalidate();
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					console.error('Error:', error.message);
 				}
-			);
+			}
+
+			// CLIENT-SIDE
+			// await signIn.email(
+			// 	{
+			// 		email: value.email,
+			// 		password: value.password,
+			// 	},
+			// 	{
+			// 		onSuccess: () => {
+			// 			router.navigate({ to: '/products' });
+			// 			router.invalidate();
+			// 		},
+			// 	}
+			// );
 		},
 	});
 

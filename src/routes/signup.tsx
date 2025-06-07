@@ -9,7 +9,9 @@ import { useForm } from '@tanstack/react-form';
 
 import { signUpSchema } from '@/utils/zod';
 import FieldInfo from '@/components/FieldInfo';
-import { signUp } from '@/utils/auth-client';
+// import { signUp } from '@/utils/auth-client'; for client side
+import { useServerFn } from '@tanstack/react-start';
+import { signUpServer } from '@/utils/servers/user';
 
 export const Route = createFileRoute('/signup')({
 	component: SignUp,
@@ -20,6 +22,7 @@ export const Route = createFileRoute('/signup')({
 
 function SignUp() {
 	const router = useRouter();
+	const userSignUp = useServerFn(signUpServer);
 
 	const form = useForm({
 		defaultValues: {
@@ -32,22 +35,39 @@ function SignUp() {
 			onChange: signUpSchema,
 		},
 		onSubmit: async ({ value }) => {
-			await signUp.email(
-				{
-					email: value.email,
-					name: value.username,
-					password: value.password,
-				},
-				{
-					onSuccess: () => {
-						router.navigate({ to: '/signin' });
-						router.invalidate();
+			try {
+				await userSignUp({
+					data: {
+						email: value.email,
+						name: value.email,
+						password: value.password,
 					},
-					onError: (ctx) => {
-						console.log('Error on signup.tsx ==> ', ctx.error);
-					},
+				});
+				router.invalidate();
+			} catch (error) {
+				console.log('🚀 ~ onSubmit: ~ error:', error);
+				if (error instanceof Error) {
+					console.error(error);
 				}
-			);
+			}
+
+			// CLIENT-SIDE
+			// await signUp.email(
+			// 	{
+			// 		email: value.email,
+			// 		name: value.username,
+			// 		password: value.password,
+			// 	},
+			// 	{
+			// 		onSuccess: () => {
+			// 			router.navigate({ to: '/signin' });
+			// 			router.invalidate();
+			// 		},
+			// 		onError: (ctx) => {
+			// 			console.log('Error on signup.tsx ==> ', ctx.error);
+			// 		},
+			// 	}
+			// );
 		},
 	});
 

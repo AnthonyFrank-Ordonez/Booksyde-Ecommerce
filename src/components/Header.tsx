@@ -3,12 +3,30 @@ import { FaBars, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
+// import { useSession, signOut } from '@/utils/auth-client for client-side';
+import type { SessionType } from '@/types';
 
-import { useSession, signOut } from '@/utils/auth-client';
+import { useServerFn } from '@tanstack/react-start';
+import { signOutUserFn } from '@/utils/servers/user';
 
-export default function Header() {
+interface HeaderProps {
+	session: {
+		id: string | undefined;
+		name: string | undefined;
+		image: string | null | undefined;
+		email: string | undefined;
+	};
+}
+
+export default function Header({ session }: HeaderProps) {
+	// const { data: session } = useSession() for client-side;
+	const signOutUser = useServerFn(signOutUserFn);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const { data: session } = useSession();
+
+	const isEmpty = (session: SessionType) => {
+		if (Object.keys(session).length === 0) return true;
+		if (Object.values(session).some((val) => val === undefined)) return true;
+	};
 
 	return (
 		<motion.header
@@ -58,7 +76,7 @@ export default function Header() {
 				</div>
 
 				<div className='flex items-center space-x-4'>
-					{!session ? (
+					{!session || isEmpty(session) ? (
 						<Link
 							to='/signin'
 							aria-label='login'
@@ -83,10 +101,10 @@ export default function Header() {
 									<div className='border-b border-gray-100 px-4 py-3'>
 										<div className='flex items-center space-x-3'>
 											<div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-200'>
-												{session?.user?.image ? (
+												{session?.image ? (
 													<img
-														src={session.user.image}
-														alt={`${session.user.name || 'User'}'s profile`}
+														src={session.image}
+														alt={`${session.name || 'User'}'s profile`}
 														className='h-full w-full rounded-full object-cover'
 													/>
 												) : (
@@ -95,10 +113,10 @@ export default function Header() {
 											</div>
 											<div className='min-w-0 flex-grow'>
 												<p className='truncate font-medium text-gray-800'>
-													{session.user.name}
+													{session?.name}
 												</p>
 												<p className='truncate text-sm text-gray-500'>
-													{session.user.email}
+													{session?.email}
 												</p>
 											</div>
 										</div>
@@ -118,7 +136,7 @@ export default function Header() {
 										Settings
 									</a>
 									<button
-										onClick={() => signOut()}
+										onClick={() => signOutUser()}
 										aria-label='signOut'
 										className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
 									>

@@ -18,3 +18,21 @@ export interface NewArrrivalBookType {
 	imageAlt: string;
 	stock?: number;
 }
+
+export interface SignInType {
+	email: string;
+	password: string;
+}
+
+export interface SignUpType {
+	email: string;
+	name: string;
+	password: string;
+}
+
+export interface SessionType {
+	id: string | undefined;
+	name: string | undefined;
+	image: string | null | undefined;
+	email: string | undefined;
+}
