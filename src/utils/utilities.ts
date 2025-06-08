@@ -1,14 +1,22 @@
-import fs from 'fs';
-import path, { dirname } from 'path';
-import Handlebars from 'handlebars';
-import { fileURLToPath } from 'url';
+// import { getWebRequest } from '@tanstack/react-start/server';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// // Rate Limit
+// export const getClientIp = () => {
+// 	const request = getHeaders();
+// 	console.log('🚀 ~ getClientIp ~ request:', request);
 
-// For Nodemailer
-export const emailTemplate = fs.readFileSync(
-	path.join(__dirname, '..', '..', 'template', 'verificationEmail.html'),
-	'utf-8'
-);
+// 	// const forwardedFor = request?.headers.get('x-forwarded-for');
+// 	// const realIp = request?.headers.get('x-real-ip');
 
-export const compileTemplate = Handlebars.compile(emailTemplate);
+// 	// console.log('🚀 ~ getClientIp ~ realIp:', realIp);
+// 	// console.log('🚀 ~ getClientIp ~ forwardedFor:', forwardedFor);
+
+// 	// if (forwardedFor) return forwardedFor.split(',')[0].trim();
+// 	// if (realIp) return realIp.trim();
+// 	return null;
+// };
+
+// export const rateLimit = async () => {
+// 	const ip = getClientIp();
+// 	console.log('🚀 ~ rateLimit ~ ip:', ip);
+// };

@@ -1,6 +1,10 @@
 import { createServerFn } from '@tanstack/react-start';
 import { EmailSchema } from '../zod';
-import { compileTemplate } from '../utilities';
+import fs from 'fs';
+import path, { dirname } from 'path';
+import Handlebars from 'handlebars';
+import { fileURLToPath } from 'url';
+
 import { transporter } from '../nodemailer';
 
 export const sendEmailFn = createServerFn({ method: 'GET' })
@@ -8,6 +12,15 @@ export const sendEmailFn = createServerFn({ method: 'GET' })
 		return EmailSchema.parse(data);
 	})
 	.handler(async ({ data }) => {
+		const __dirname = dirname(fileURLToPath(import.meta.url));
+
+		const emailTemplate = fs.readFileSync(
+			path.join(__dirname, '..', '..', 'template', 'verificationEmail.html'),
+			'utf-8'
+		);
+
+		const compileTemplate = Handlebars.compile(emailTemplate);
+
 		const html = compileTemplate({
 			username: data.username,
 			verificationUrl: data.verificationUrl,
