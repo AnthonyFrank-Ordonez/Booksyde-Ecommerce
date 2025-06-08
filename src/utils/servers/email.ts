@@ -15,7 +15,14 @@ export const sendEmailFn = createServerFn({ method: 'GET' })
 		const __dirname = dirname(fileURLToPath(import.meta.url));
 
 		const emailTemplate = fs.readFileSync(
-			path.join(__dirname, '..', '..', 'template', 'verificationEmail.html'),
+			path.join(
+				__dirname,
+				'..',
+				'..',
+				'..',
+				'template',
+				'verificationEmail.html'
+			),
 			'utf-8'
 		);
 

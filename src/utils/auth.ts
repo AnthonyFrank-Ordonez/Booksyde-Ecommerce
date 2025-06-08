@@ -53,4 +53,7 @@ export const auth = betterAuth({
 			});
 		},
 	},
+	advanced: {
+		cookiePrefix: 'booksyde-cookies-session',
+	},
 });
