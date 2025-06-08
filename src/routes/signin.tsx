@@ -8,11 +8,7 @@ import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
-import {
-	rateLimit,
-	asyncRateLimit,
-	useRateLimiter,
-} from '@tanstack/react-pacer';
+import { useRateLimiter } from '@tanstack/react-pacer';
 
 import { signInServer } from '@/utils/servers/user';
 import { useServerFn } from '@tanstack/react-start';
