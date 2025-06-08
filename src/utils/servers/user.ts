@@ -3,7 +3,7 @@ import { redirect } from '@tanstack/react-router';
 import { auth } from '../auth';
 import { getWebRequest } from '@tanstack/react-start/server';
 
-import type { SignInType, SignUpType } from '@/types';
+import type { ErrorSignInType, SignInType, SignUpType } from '@/types';
 
 export const signInServer = createServerFn({ method: 'POST' })
 	.validator((cred: unknown): SignInType => {
@@ -33,12 +33,12 @@ export const signInServer = createServerFn({ method: 'POST' })
 		if (response.ok) {
 			throw redirect({ to: '/products' });
 		} else {
+			const errorData: ErrorSignInType = await response.json();
+
 			if (response.status === 401) {
-				throw new Error(
-					`${response.status} ${response.statusText}: Invalid email or password`
-				);
+				throw new Error(errorData.message);
 			} else if (response.status === 403) {
-				throw new Error(`${response.status} ${response.statusText}`);
+				throw new Error(errorData.message);
 			}
 		}
 	});

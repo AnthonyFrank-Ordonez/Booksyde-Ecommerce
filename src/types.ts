@@ -24,6 +24,11 @@ export interface SignInType {
 	password: string;
 }
 
+export interface ErrorSignInType {
+	code: string;
+	message: string;
+}
+
 export interface SignUpType {
 	email: string;
 	name: string;
@@ -35,4 +40,9 @@ export interface SessionType {
 	name: string | undefined;
 	image: string | null | undefined;
 	email: string | undefined;
+}
+
+export interface CredentialsType {
+	email: string;
+	password: string;
 }

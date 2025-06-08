@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { QueryClient } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
 
 import Header from '../components/Header';
 import appCss from '../styles.css?url';
@@ -54,6 +55,7 @@ export const Route = createRootRouteWithContext<{
 		<RootDocument>
 			<Outlet />
 			<TanStackRouterDevtools />
+			<ToastContainer newestOnTop />
 		</RootDocument>
 	),
 	notFoundComponent: () => <NotFound />,

@@ -12,6 +12,8 @@ import { useRateLimiter } from '@tanstack/react-pacer';
 
 import { signInServer } from '@/utils/servers/user';
 import { useServerFn } from '@tanstack/react-start';
+import { errorMsg, successMsg } from '@/utils/utilities';
+import type { CredentialsType } from '@/types';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -26,28 +28,26 @@ function Login() {
 
 	// Sign In user with Rate Limit
 	const signInUser = useRateLimiter(
-		async (value) => {
+		async (cred: CredentialsType) => {
 			try {
 				await userSignIn({
-					data: { email: value.email, password: value.password },
+					data: { email: cred.email, password: cred.password },
 				});
 				router.invalidate();
+				successMsg(`Welcome Back, User!`);
 			} catch (error: unknown) {
 				if (error instanceof Error) {
-					console.error('Error:', error.message);
+					errorMsg(error.message);
 				}
 			}
 		},
 		{
 			limit: 3,
 			window: 1000 * 60, // 1 Minute
-			onExecute: () => {
-				console.log('Loggin In');
-			},
 			onReject: (limiter) => {
-				const timer = Math.round(limiter.getMsUntilNextWindow() * 0.001);
+				const ms = limiter.getMsUntilNextWindow();
 
-				console.log(`Rate limit exceeded. Try again in ${timer}seconds`);
+				errorMsg('Rate limit exceeded. Try again in 1 minute', ms, true);
 			},
 		}
 	);
@@ -58,7 +58,12 @@ function Login() {
 			password: '',
 		},
 		onSubmit: async ({ value }) => {
-			signInUser.maybeExecute(value);
+			const userCred: CredentialsType = {
+				email: value.email,
+				password: value.password,
+			};
+
+			signInUser.maybeExecute(userCred);
 
 			// Server without Rate Limit
 			// await userSignIn({

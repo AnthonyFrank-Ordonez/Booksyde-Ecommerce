@@ -1,22 +1,44 @@
-// import { getWebRequest } from '@tanstack/react-start/server';
+import { Bounce, toast } from 'react-toastify';
 
-// // Rate Limit
-// export const getClientIp = () => {
-// 	const request = getHeaders();
-// 	console.log('🚀 ~ getClientIp ~ request:', request);
+export const successMsg = (msg: string, ms: number = 5000) => {
+	toast.success(msg, {
+		position: 'top-right',
+		autoClose: ms,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: true,
+		theme: 'light',
+		transition: Bounce,
+	});
+};
 
-// 	// const forwardedFor = request?.headers.get('x-forwarded-for');
-// 	// const realIp = request?.headers.get('x-real-ip');
+export const errorMsg = (
+	msg: string,
+	ms: number = 5000,
+	hideProgress: boolean = false
+) => {
+	toast.error(msg, {
+		position: 'top-right',
+		autoClose: ms,
+		hideProgressBar: hideProgress,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: true,
+		theme: 'light',
+		transition: Bounce,
+	});
+};
 
-// 	// console.log('🚀 ~ getClientIp ~ realIp:', realIp);
-// 	// console.log('🚀 ~ getClientIp ~ forwardedFor:', forwardedFor);
-
-// 	// if (forwardedFor) return forwardedFor.split(',')[0].trim();
-// 	// if (realIp) return realIp.trim();
-// 	return null;
-// };
-
-// export const rateLimit = async () => {
-// 	const ip = getClientIp();
-// 	console.log('🚀 ~ rateLimit ~ ip:', ip);
-// };
+export const infoMsg = (msg: string, ms: number = 5000) => {
+	toast.info(msg, {
+		position: 'top-right',
+		autoClose: ms,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: true,
+		theme: 'light',
+		transition: Bounce,
+	});
+};
