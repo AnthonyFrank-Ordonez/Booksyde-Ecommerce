@@ -8,6 +8,11 @@ import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
+import {
+	rateLimit,
+	asyncRateLimit,
+	useRateLimiter,
+} from '@tanstack/react-pacer';
 
 import { signInServer } from '@/utils/servers/user';
 import { useServerFn } from '@tanstack/react-start';
@@ -23,12 +28,9 @@ function Login() {
 	const router = useRouter();
 	const userSignIn = useServerFn(signInServer);
 
-	const form = useForm({
-		defaultValues: {
-			email: '',
-			password: '',
-		},
-		onSubmit: async ({ value }) => {
+	// Sign In user with Rate Limit
+	const signInUser = useRateLimiter(
+		async (value) => {
 			try {
 				await userSignIn({
 					data: { email: value.email, password: value.password },
@@ -39,6 +41,34 @@ function Login() {
 					console.error('Error:', error.message);
 				}
 			}
+		},
+		{
+			limit: 3,
+			window: 1000 * 60, // 1 Minute
+			onExecute: () => {
+				console.log('Loggin In');
+			},
+			onReject: (limiter) => {
+				const timer = Math.round(limiter.getMsUntilNextWindow() * 0.001);
+
+				console.log(`Rate limit exceeded. Try again in ${timer}seconds`);
+			},
+		}
+	);
+
+	const form = useForm({
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+		onSubmit: async ({ value }) => {
+			signInUser.maybeExecute(value);
+
+			// Server without Rate Limit
+			// await userSignIn({
+			// 	data: { email: value.email, password: value.password },
+			// });
+			// router.invalidate();
 
 			// CLIENT-SIDE
 			// await signIn.email(
