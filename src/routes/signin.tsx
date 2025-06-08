@@ -5,11 +5,15 @@ import {
 	useRouter,
 } from '@tanstack/react-router';
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
-
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
-// import { signInServer } from '@/utils/servers/user';
+import { useRateLimiter } from '@tanstack/react-pacer';
+
+import { signInServer } from '@/utils/servers/user';
+import { useServerFn } from '@tanstack/react-start';
+import { errorMsg, successMsg } from '@/utils/utilities';
+import type { CredentialsType } from '@/types';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -20,27 +24,66 @@ export const Route = createFileRoute('/signin')({
 
 function Login() {
 	const router = useRouter();
+	const userSignIn = useServerFn(signInServer);
+
+	// Sign In user with Rate Limit
+	const signInUser = useRateLimiter(
+		async (cred: CredentialsType) => {
+			try {
+				await userSignIn({
+					data: { email: cred.email, password: cred.password },
+				});
+				router.invalidate();
+				successMsg(`Welcome Back, User!`);
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					errorMsg(error.message);
+				}
+			}
+		},
+		{
+			limit: 3,
+			window: 1000 * 60, // 1 Minute
+			onReject: (limiter) => {
+				const ms = limiter.getMsUntilNextWindow();
+
+				errorMsg('Rate limit exceeded. Try again in 1 minute', ms, true);
+			},
+		}
+	);
+
 	const form = useForm({
 		defaultValues: {
 			email: '',
 			password: '',
 		},
 		onSubmit: async ({ value }) => {
-			await signIn.email(
-				{
-					email: value.email,
-					password: value.password,
-				},
-				{
-					onSuccess: () => {
-						router.navigate({ to: '/products' });
-						router.invalidate();
-					},
-					onError: (ctx) => {
-						console.log(`Error on signin.tsx ==> `, ctx.error);
-					},
-				}
-			);
+			const userCred: CredentialsType = {
+				email: value.email,
+				password: value.password,
+			};
+
+			signInUser.maybeExecute(userCred);
+
+			// Server without Rate Limit
+			// await userSignIn({
+			// 	data: { email: value.email, password: value.password },
+			// });
+			// router.invalidate();
+
+			// CLIENT-SIDE
+			// await signIn.email(
+			// 	{
+			// 		email: value.email,
+			// 		password: value.password,
+			// 	},
+			// 	{
+			// 		onSuccess: () => {
+			// 			router.navigate({ to: '/products' });
+			// 			router.invalidate();
+			// 		},
+			// 	}
+			// );
 		},
 	});
 

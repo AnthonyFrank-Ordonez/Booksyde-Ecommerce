@@ -23,3 +23,11 @@ export const signUpSchema = z
 			});
 		}
 	});
+
+export const EmailSchema = z.object({
+	to: z.string(),
+	username: z.string(),
+	verificationUrl: z.string(),
+	privacyUrl: z.string().optional(),
+	termsUrl: z.string().optional(),
+});

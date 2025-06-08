@@ -13,3 +13,9 @@ export const getAvatar = createServerFn({ method: 'GET' })
 	.handler(async ({ context }) => {
 		return context?.user?.image;
 	});
+
+export const getUserSession = createServerFn({ method: 'GET' })
+	.middleware([authMiddleware])
+	.handler(async ({ context }) => {
+		return context.user;
+	});
