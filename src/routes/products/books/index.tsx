@@ -1,13 +1,18 @@
-import NewArrival from '@/components/NewArrival';
-import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { FaArrowLeft, FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
+import {
+	FaArrowLeft,
+	FaRegHeart,
+	FaRegStar,
+	FaStar,
+	FaX,
+} from 'react-icons/fa6';
 import { useState } from 'react';
-import { FaX } from 'react-icons/fa6';
 
 import { bookQueryOptions } from '@/utils/servers/books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { BookType, NewArrrivalBookType } from '@/types';
+import { ScrollFadeSection } from '@/components/ScrollFadeSection';
+import NewArrival from '@/components/NewArrival';
 
 export const Route = createFileRoute('/products/books/')({
 	component: BooksIndex,
@@ -41,7 +46,7 @@ function BooksIndex() {
 
 			{/* Sortby and Products List*/}
 			<section>
-				<div className='relative mt-12 grid grid-cols-1 py-12 md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-12'>
+				<div className='relative mt-12 grid grid-cols-1 px-10 py-12 md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-12'>
 					{/* Products List */}
 					<ScrollFadeSection className='col-span-1 border-gray-200 md:col-span-10 lg:col-span-10 xl:col-span-10'>
 						<div className='grid grid-cols-2 gap-3 border-r-2 border-gray-200 px-7 md:grid-cols-3 md:gap-4 md:px-3 lg:grid-cols-4 xl:grid-cols-4 2xl:gap-5 2xl:px-7'>

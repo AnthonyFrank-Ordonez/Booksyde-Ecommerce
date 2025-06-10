@@ -51,7 +51,7 @@ function ProductsIndex() {
 							</HoverContainer>
 						</Link>
 
-						<Link to='/'>
+						<Link to='/products/manga'>
 							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
 								<img
 									src='https://picsum.photos/id/10/800/400'
