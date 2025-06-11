@@ -11,56 +11,32 @@ function Home() {
 		<div className='col-span-1 md:col-span-12'>
 			{/* Intro */}
 			<section className='bg-gray-100'>
-				<ScrollFadeSection className='flex w-full flex-col gap-x-10 md:min-h-screen md:flex-row'>
-					<div className='mx-auto flex w-full max-w-3xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:text-left 2xl:w-1/2 2xl:max-w-3xl'>
-						<h2 className='text-5xl font-bold md:-ml-1 md:text-7xl 2xl:text-9xl'>
-							Booksyde:
+				<ScrollFadeSection className='grid h-full grid-cols-1 px-5 py-12 lg:grid-cols-2 lg:px-10 xl:px-12'>
+					<div className='flex flex-col items-center justify-center gap-2 md:mt-10 lg:items-start xl:mx-10 2xl:mx-25'>
+						<h2 className='ld:text-7xl text-5xl font-bold sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[5.3rem] 2xl:text-[5.8rem]'>
+							Booksyde
 						</h2>
-						<h2 className='mb-5 text-5xl font-bold md:mb-2 md:text-3xl 2xl:mt-5 2xl:mb-5 2xl:text-6xl'>
+						<h2 className='text-xl font-bold sm:text-2xl md:text-3xl 2xl:text-[2.2rem]'>
 							Ecommerce for Books and Manga
 						</h2>
-						<p className='text-lg font-normal text-gray-500 2xl:text-xl'>
+						<p className='max-w-md text-center font-light text-gray-500 sm:max-w-lg sm:text-lg md:max-w-xl md:text-xl lg:max-w-lg lg:text-left xl:text-lg 2xl:max-w-xl 2xl:text-xl'>
 							Booksyde is your go-to ecommerce platform for all things books and
 							manga. Whether you're a casual reader or a hardcore collector, we
-							have something for everyone.
+							have something for everyone
 						</p>
 						<Link
-							to='/'
-							aria-label='get-started-btn'
-							className='mt-3 w-full cursor-pointer rounded-full border border-black bg-transparent py-3 text-center font-medium hover:bg-gray-200 md:w-1/2 2xl:w-1/2 2xl:py-4'
+							to='/products'
+							className='mt-2 w-full max-w-56 rounded-lg border bg-black p-2 text-center text-white sm:mt-3 sm:max-w-96 sm:p-3 md:mt-5 md:max-w-[25rem] md:text-lg lg:max-w-[25rem]'
+							aria-label='Get Started'
 						>
 							Get Started
 						</Link>
 					</div>
-
-					<div className='mx-auto flex w-full flex-row justify-center gap-5 px-10 py-12 md:mt-14 md:w-[40rem] 2xl:w-1/2'>
-						<div className='flex max-h-[85%] flex-col items-end justify-end space-y-5'>
-							<div className='md:w- h-full w-full items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
-								<img
-									src='https://picsum.photos/id/237/200/300'
-									alt='dog'
-									className='object-fit h-full w-full'
-								/>
-							</div>
-
-							<div className='h-full w-full items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
-								<img
-									src='https://picsum.photos/id/237/200/300'
-									alt='dog'
-									className='object-fit h-full w-full'
-								/>
-							</div>
-						</div>
-
-						<div className='max-h-[85%]'>
-							<div className='h-full w-full items-center justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
-								<img
-									src='https://picsum.photos/id/237/200/300'
-									alt='dog'
-									className='object-fit h-full w-full'
-								/>
-							</div>
-						</div>
+					<div className='mx-auto mt-24 h-auto w-full max-w-96 sm:max-w-[35rem] md:max-w-[40rem] lg:mt-0 lg:max-w-[35rem] xl:mx-2 xl:max-w-[40rem] 2xl:mx-1 2xl:max-w-[45rem]'>
+						<img
+							src='/public/img/homepage-banner-1.png'
+							alt='homepage banner 1'
+						/>
 					</div>
 				</ScrollFadeSection>
 			</section>
