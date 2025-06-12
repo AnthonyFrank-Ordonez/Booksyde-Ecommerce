@@ -14,6 +14,7 @@ function Home() {
 				<img
 					src='/public/img/geometry-bg.png'
 					alt='geometry-lines'
+					crossOrigin='anonymous'
 					className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
 				/>
 
@@ -131,6 +132,7 @@ function Home() {
 				<img
 					src='/public/img/geometry-bg.png'
 					alt='geometry-lines'
+					crossOrigin='anonymous'
 					className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
 				/>
 				<div className='grid grid-cols-1 px-12 py-12 md:py-24 lg:grid-cols-2 lg:py-35 xl:py-40 2xl:py-35'>
@@ -219,13 +221,13 @@ function Home() {
 
 			{/* Why shop with us */}
 			<section>
-				<ScrollFadeSection className='flex h-full w-full flex-col items-center p-12 md:min-h-screen'>
-					<div className='max-w-m w-full md:max-w-5xl 2xl:max-w-7xl'>
-						<h2 className='text-center text-5xl font-bold md:text-6xl 2xl:text-8xl'>
+				<ScrollFadeSection className='flex h-full w-full flex-col items-center px-12 py-12 sm:py-20 md:min-h-screen md:py-25 lg:py-30 xl:py-35'>
+					<div className='max-w-m flex w-full flex-col items-center md:max-w-5xl 2xl:max-w-7xl'>
+						<h2 className='text-center text-4xl font-bold md:text-5xl lg:text-6xl 2xl:text-7xl'>
 							Why Shop with Booksyde
 						</h2>
 
-						<p className='mt-5 w-full text-center text-lg font-normal text-gray-500 md:max-w-5xl 2xl:mt-10 2xl:max-w-7xl 2xl:text-xl'>
+						<p className='text-md mt-5 w-full max-w-md text-center font-light text-gray-500 md:max-w-xl lg:max-w-2xl 2xl:mt-10 2xl:max-w-5xl 2xl:text-xl'>
 							Why shop with us? Booksyde is committed to providing the best
 							shopping experience for our customers. With a user-friendly
 							interface, secure payment options, and fast shipping, we make it
@@ -233,7 +235,7 @@ function Home() {
 						</p>
 					</div>
 
-					<div className='mt-15 flex flex-wrap justify-center gap-4 px-4 md:flex-row md:px-8 2xl:mt-30'>
+					<div className='mt-15 flex flex-wrap justify-center gap-4 px-4 sm:max-w-lg md:max-w-2xl md:flex-row md:px-8 lg:max-w-3xl xl:max-w-7xl 2xl:mt-30 2xl:max-w-[100rem]'>
 						<HoverContainer className='flex flex-col items-center justify-center rounded-2xl border border-gray-300 bg-white p-6 shadow-sm md:h-64 md:w-64 2xl:h-88 2xl:max-h-[80%] 2xl:w-74'>
 							<h2 className='mb-4 text-center text-xl font-bold 2xl:text-2xl'>
 								Authenticity
