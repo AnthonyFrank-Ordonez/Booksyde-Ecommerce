@@ -10,7 +10,13 @@ function Home() {
 	return (
 		<div className='col-span-1 md:col-span-12'>
 			{/* Intro */}
-			<section className='bg-gray-100'>
+			<section className='relative'>
+				<img
+					src='/public/img/geometry-bg.png'
+					alt='geometry-lines'
+					className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
+				/>
+
 				<ScrollFadeSection className='grid h-full grid-cols-1 px-5 py-12 lg:grid-cols-2 lg:px-10 xl:px-12'>
 					<div className='flex flex-col items-center justify-center gap-2 md:mt-10 lg:items-start xl:mx-10 2xl:mx-25'>
 						<h2 className='text-5xl font-bold sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[5.3rem] 2xl:text-[5.8rem]'>
@@ -121,78 +127,94 @@ function Home() {
 			</section>
 
 			{/* Best Sellers */}
-			<section className='bg-gray-100'>
-				<ScrollFadeSection className='flex w-full flex-col md:min-h-screen md:flex-row'>
-					<div className='mx-auto flex w-full max-w-xl flex-col justify-center px-12 py-12 text-center md:w-1/2 md:px-5 md:text-left 2xl:w-1/2 2xl:max-w-5xl 2xl:px-12'>
-						<h2 className='text-5xl font-bold md:text-7xl 2xl:text-9xl'>
-							Booksyde:
-						</h2>
-						<h2 className='mb-5 text-5xl font-bold md:text-7xl 2xl:mt-5 2xl:mb-8 2xl:text-8xl'>
+			<section className='relative'>
+				<img
+					src='/public/img/geometry-bg.png'
+					alt='geometry-lines'
+					className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
+				/>
+				<div className='grid grid-cols-1 px-12 py-12 md:py-24 lg:grid-cols-2 lg:py-35 xl:py-40 2xl:py-35'>
+					<ScrollFadeSection className='flex flex-col items-center justify-center lg:items-start xl:mx-10 2xl:mx-20 2xl:max-w-2xl'>
+						<p className='font-bold sm:text-lg lg:ml-1'>Booksyde</p>
+						<h2 className='text-4xl font-bold sm:text-5xl md:text-6xl lg:text-[3.5rem] xl:text-[4rem] 2xl:text-[5rem]'>
 							Best Sellers
 						</h2>
-						<p className='text-lg font-normal text-gray-500 md:max-w-lg 2xl:max-w-3xl 2xl:text-xl'>
+						<p className='lg:text-md mt-3 max-w-sm text-center font-light text-gray-500 sm:max-w-md md:mt-5 md:max-w-lg md:text-lg lg:mt-2 lg:max-w-md lg:text-left xl:max-w-md 2xl:max-w-[33.5rem] 2xl:text-xl'>
 							Discover our best-selling books and mangas that have captured the
 							hearts of readers worldwide. From timeless classics to the latest
 							hits, our collection has something for everyone.
 						</p>
-					</div>
+						<Link
+							to='/products'
+							className='mt-3 w-full max-w-56 rounded-lg border bg-black p-2 text-center text-white hover:bg-black/85 sm:mt-3 sm:max-w-96 sm:p-3 md:mt-5 md:max-w-[25rem] md:text-lg lg:max-w-[25rem]'
+							aria-label='Get Started'
+						>
+							Show More
+						</Link>
+					</ScrollFadeSection>
 
-					<div className='mx-auto flex w-full max-w-lg flex-col gap-5 px-12 py-12 md:w-3/4 md:max-w-2xl md:flex-row md:px-2 md:py-12 2xl:mt-10 2xl:mr-20 2xl:max-h-[70rem] 2xl:w-1/2 2xl:max-w-4xl 2xl:py-10'>
-						<HoverContainer className='relative h-full w-full max-w-xl items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'>
+					<ScrollFadeSection className='mt-10 grid h-full max-h-[75rem] grid-cols-1 gap-5 sm:mt-10 sm:max-h-[95rem] md:grid-cols-3 lg:mt-2 lg:max-h-[100rem] lg:min-h-[25rem] lg:max-w-xl xl:mx-[-2.5rem] xl:min-h-[28rem] xl:max-w-2xl xl:gap-20 xl:pr-20 2xl:mr-20 2xl:min-h-[38rem] 2xl:max-w-3xl 2xl:gap-40'>
+						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:max-w-90 lg:max-w-[15rem] lg:min-w-[10rem] xl:max-w-[18rem] xl:min-w-[13.5rem] 2xl:max-w-[20rem] 2xl:min-w-[16rem]'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='/public/img/moby-dick.jpg'
+								alt='Moby-Dick'
 								className='object-fit h-full w-full'
 							/>
 
+							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 							<div className='absolute right-0 bottom-0 left-0'>
-								<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-									<h2 className='text-xl font-bold 2xl:text-3xl'>Novels</h2>
-									<p className='text-sm font-light 2xl:text-lg'>
-										Find captivating novels that will take you on a journey
-										through different worlds and stories.
+								<div className='p-4 text-white'>
+									<h2 className='text-lg font-bold lg:text-xl'>For Book</h2>
+									<p className='font-ligh text-sm lg:text-sm'>
+										Moby Dick by Herman Melville, with a total sales of 3000+
+										copies sold!
 									</p>
 								</div>
 							</div>
 						</HoverContainer>
 
-						<HoverContainer className='relative h-full w-full items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'>
+						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:max-w-90 lg:max-w-[15rem] lg:min-w-[10rem] xl:max-w-[18rem] xl:min-w-[13.5rem] 2xl:max-w-[20rem] 2xl:min-w-[16rem]'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='/public/img/one-piece-img.jpg'
+								alt='One Piece'
 								className='object-fit h-full w-full'
 							/>
 
+							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 							<div className='absolute right-0 bottom-0 left-0'>
-								<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-									<h2 className='text-xl font-bold 2xl:text-3xl'>Novels</h2>
-									<p className='text-sm font-light 2xl:text-lg'>
-										Find captivating novels that will take you on a journey
-										through different worlds and stories.
+								<div className='p-4 text-white'>
+									<h2 className='text-lg font-bold lg:text-xl'>For Manga</h2>
+									<p className='text-sm font-light lg:text-sm'>
+										One Piece by Eiichiro Oda, with a total sales of 5000+
+										copies sold!
 									</p>
 								</div>
 							</div>
 						</HoverContainer>
 
-						<HoverContainer className='relative h-full w-full items-center justify-center overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500 md:mt-10 md:max-h-[85%] 2xl:max-h-[80%]'>
+						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:max-w-90 lg:max-w-[15rem] lg:min-w-[10rem] xl:max-w-[18rem] xl:min-w-[13.5rem] 2xl:max-w-[20rem] 2xl:min-w-[16rem]'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='/public/img/gatsby-img.jpg'
+								alt='The Great Gastby'
 								className='object-fit h-full w-full'
 							/>
 
+							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 							<div className='absolute right-0 bottom-0 left-0'>
-								<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-									<h2 className='text-xl font-bold 2xl:text-3xl'>Novels</h2>
-									<p className='text-sm font-light 2xl:text-lg'>
-										Find captivating novels that will take you on a journey
-										through different worlds and stories.
+								<div className='p-4 text-white'>
+									<h2 className='text-lg font-bold lg:text-xl'>For Novel</h2>
+									<p className='text-sm font-light lg:text-sm'>
+										The Great Gastby by F. Scott Fitzgerald, total sales of
+										3000+ copies sold!
 									</p>
 								</div>
 							</div>
 						</HoverContainer>
-					</div>
-				</ScrollFadeSection>
+					</ScrollFadeSection>
+				</div>
 			</section>
 
 			{/* Why shop with us */}
