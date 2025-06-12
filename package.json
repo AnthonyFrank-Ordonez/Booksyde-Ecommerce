@@ -8,7 +8,7 @@
 		"build": "prisma generate && vinxi build",
 		"serve": "vite preview",
 		"test": "vitest run",
-		"preview": "node .output/server/index.mjs"
+		"start:prod": "node .output/server/index.mjs"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
