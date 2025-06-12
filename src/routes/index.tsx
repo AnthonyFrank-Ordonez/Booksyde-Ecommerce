@@ -13,7 +13,7 @@ function Home() {
 			<section className='bg-gray-100'>
 				<ScrollFadeSection className='grid h-full grid-cols-1 px-5 py-12 lg:grid-cols-2 lg:px-10 xl:px-12'>
 					<div className='flex flex-col items-center justify-center gap-2 md:mt-10 lg:items-start xl:mx-10 2xl:mx-25'>
-						<h2 className='ld:text-7xl text-5xl font-bold sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[5.3rem] 2xl:text-[5.8rem]'>
+						<h2 className='text-5xl font-bold sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[5.3rem] 2xl:text-[5.8rem]'>
 							Booksyde
 						</h2>
 						<h2 className='text-xl font-bold sm:text-2xl md:text-3xl 2xl:text-[2.2rem]'>
@@ -26,7 +26,7 @@ function Home() {
 						</p>
 						<Link
 							to='/products'
-							className='mt-2 w-full max-w-56 rounded-lg border bg-black p-2 text-center text-white sm:mt-3 sm:max-w-96 sm:p-3 md:mt-5 md:max-w-[25rem] md:text-lg lg:max-w-[25rem]'
+							className='mt-2 w-full max-w-56 rounded-lg border bg-black p-2 text-center text-white hover:bg-black/85 sm:mt-3 sm:max-w-96 sm:p-3 md:mt-5 md:max-w-[25rem] md:text-lg lg:max-w-[25rem]'
 							aria-label='Get Started'
 						>
 							Get Started
@@ -43,29 +43,33 @@ function Home() {
 
 			{/* Offers */}
 			<section>
-				<ScrollFadeSection className='mx-auto flex flex-col items-center p-12 md:min-h-screen'>
-					<h2 className='text-center text-5xl font-bold md:text-6xl 2xl:text-8xl'>
-						What we offer
-					</h2>
+				<ScrollFadeSection className='mt-5 h-full w-full px-5 py-12 md:mt-10'>
+					<div className='flex flex-col items-center justify-center'>
+						<p className='font-medium sm:text-lg'>Booksyde</p>
+						<h2 className='text-4xl font-bold sm:text-5xl md:text-6xl 2xl:text-7xl'>
+							What We Offer
+						</h2>
+						<p className='mt-3 max-w-sm text-center font-light text-gray-500 sm:mt-5 sm:max-w-lg md:max-w-xl md:text-lg lg:max-w-2xl 2xl:max-w-3xl 2xl:text-xl'>
+							Booksyde offers a wide range of features to enhance your shopping
+							experience. From personalized recommendations to exclusive deals,
+							we've got you covered.
+						</p>
+					</div>
 
-					<p className='mt-5 w-full text-center text-lg font-normal text-gray-500 md:max-w-4xl 2xl:max-w-6xl 2xl:text-xl'>
-						Booksyde offers a wide range of features to enhance your shopping
-						experience. From personalized recommendations to exclusive deals,
-						we've got you covered.
-					</p>
-
-					<div className='mt-15 flex w-full max-w-5xl flex-col items-center justify-center gap-5 md:flex-row 2xl:max-w-7xl'>
-						<HoverContainer className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'>
+					<ScrollFadeSection className='mt-8 grid min-h-[26rem] grid-cols-1 items-center justify-center gap-6 sm:my-15 sm:grid-cols-3 sm:gap-3 sm:px-3 md:my-25 md:mt-10 md:min-h-[33rem] md:px-7 lg:min-h-[35rem] lg:gap-3 lg:px-10 xl:mx-auto xl:my-30 xl:mt-15 xl:min-h-[30rem] xl:max-w-6xl xl:gap-15 xl:px-[5rem] 2xl:mx-auto 2xl:mt-18 2xl:min-h-[40rem] 2xl:max-w-[78rem] 2xl:gap-20'>
+						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:mt-15 lg:max-w-90 lg:min-w-75 xl:max-w-[20rem] xl:min-w-80 2xl:min-w-85'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='/public/img/Books.jpg'
+								alt='Books'
 								className='object-fit h-full w-full'
 							/>
 
+							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 							<div className='absolute right-0 bottom-0 left-0'>
-								<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-									<h2 className='text-xl font-bold 2xl:text-3xl'>Books</h2>
-									<p className='text-sm font-light 2xl:text-lg'>
+								<div className='p-4 text-white'>
+									<h2 className='text-lg font-bold lg:text-xl'>Manga</h2>
+									<p className='text-sm font-light lg:text-[1rem]'>
 										Discover a wide range of books from various genres,
 										including fiction, non-fiction, and more.
 									</p>
@@ -73,42 +77,46 @@ function Home() {
 							</div>
 						</HoverContainer>
 
-						<HoverContainer className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'>
+						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:mt-35 lg:max-w-90 lg:min-w-75 xl:max-w-[20rem] xl:min-w-80 2xl:min-w-85'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='/public/img/Manga.jpg'
+								alt='Manga'
 								className='object-fit h-full w-full'
 							/>
 
+							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 							<div className='absolute right-0 bottom-0 left-0'>
-								<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-									<h2 className='text-xl font-bold 2xl:text-3xl'>Manga</h2>
-									<p className='text-sm font-light 2xl:text-lg'>
-										Explore our extensive collection of manga, from classics to
-										the latest releases.
+								<div className='p-4 text-white'>
+									<h2 className='text-lg font-bold lg:text-xl'>Manga</h2>
+									<p className='text-sm font-light lg:text-[1rem]'>
+										Discover a wide range of books from various genres,
+										including fiction, non-fiction, and more.
 									</p>
 								</div>
 							</div>
 						</HoverContainer>
 
-						<HoverContainer className='relative max-h-[600px] w-full max-w-md overflow-hidden rounded-lg bg-black shadow-lg shadow-gray-500'>
+						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:mb-10 lg:max-w-90 lg:min-w-75 xl:max-w-[20rem] xl:min-w-80 2xl:min-w-85'>
 							<img
-								src='https://picsum.photos/id/237/200/300'
-								alt='dog'
+								src='/public/img/Novels.jpg'
+								alt='Novels'
 								className='object-fit h-full w-full'
 							/>
 
+							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 							<div className='absolute right-0 bottom-0 left-0'>
-								<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-									<h2 className='text-xl font-bold 2xl:text-3xl'>Novels</h2>
-									<p className='text-sm font-light 2xl:text-lg'>
-										Find captivating novels that will take you on a journey
-										through different worlds and stories.
+								<div className='p-4 text-white'>
+									<h2 className='text-lg font-bold lg:text-xl'>Manga</h2>
+									<p className='text-sm font-light lg:text-[1rem]'>
+										Discover a wide range of books from various genres,
+										including fiction, non-fiction, and more.
 									</p>
 								</div>
 							</div>
 						</HoverContainer>
-					</div>
+					</ScrollFadeSection>
 				</ScrollFadeSection>
 			</section>
 
