@@ -4,7 +4,7 @@ export const successMsg = (msg: string, ms: number = 5000) => {
 	toast.success(msg, {
 		position: 'top-right',
 		autoClose: ms,
-		hideProgressBar: false,
+		hideProgressBar: true,
 		closeOnClick: true,
 		pauseOnHover: false,
 		draggable: true,
@@ -16,7 +16,7 @@ export const successMsg = (msg: string, ms: number = 5000) => {
 export const errorMsg = (
 	msg: string,
 	ms: number = 5000,
-	hideProgress: boolean = false
+	hideProgress: boolean = true
 ) => {
 	toast.error(msg, {
 		position: 'top-right',
@@ -34,7 +34,7 @@ export const infoMsg = (msg: string, ms: number = 5000) => {
 	toast.info(msg, {
 		position: 'top-right',
 		autoClose: ms,
-		hideProgressBar: false,
+		hideProgressBar: true,
 		closeOnClick: true,
 		pauseOnHover: false,
 		draggable: true,
