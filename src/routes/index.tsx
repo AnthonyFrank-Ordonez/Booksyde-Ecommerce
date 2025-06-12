@@ -12,9 +12,10 @@ function Home() {
 			{/* Intro */}
 			<section className='relative'>
 				<img
-					src='/public/img/geometry-bg.png'
+					src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/geometry-bg_t4yejh.png'
 					alt='geometry-lines'
 					crossOrigin='anonymous'
+					loading='lazy'
 					className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
 				/>
 
@@ -41,8 +42,10 @@ function Home() {
 					</div>
 					<div className='mx-auto mt-24 h-auto w-full max-w-96 sm:max-w-[35rem] md:max-w-[40rem] lg:mt-0 lg:max-w-[35rem] xl:mx-2 xl:max-w-[40rem] 2xl:mx-1 2xl:max-w-[45rem]'>
 						<img
-							src='/public/img/homepage-banner-1.png'
+							src='https://res.cloudinary.com/dcurf3qko/image/upload/c_fill,q_auto,f_auto/homepage-banner-1_dgz9ma.png'
 							alt='homepage banner 1'
+							crossOrigin='anonymous'
+							loading='lazy'
 						/>
 					</div>
 				</ScrollFadeSection>
@@ -66,16 +69,18 @@ function Home() {
 					<ScrollFadeSection className='mt-8 grid min-h-[26rem] grid-cols-1 items-center justify-center gap-6 sm:my-15 sm:grid-cols-3 sm:gap-3 sm:px-3 md:my-25 md:mt-10 md:min-h-[33rem] md:px-7 lg:min-h-[35rem] lg:gap-3 lg:px-10 xl:mx-auto xl:my-30 xl:mt-15 xl:min-h-[30rem] xl:max-w-6xl xl:gap-15 xl:px-[5rem] 2xl:mx-auto 2xl:mt-18 2xl:min-h-[40rem] 2xl:max-w-[78rem] 2xl:gap-20'>
 						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:mt-15 lg:max-w-90 lg:min-w-75 xl:max-w-[20rem] xl:min-w-80 2xl:min-w-85'>
 							<img
-								src='/public/img/Books.jpg'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_600,h_900,c_fill,q_auto,f_auto/Books_npknfq.jpg'
 								alt='Books'
 								className='object-fit h-full w-full'
+								crossOrigin='anonymous'
+								loading='lazy'
 							/>
 
 							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
 
 							<div className='absolute right-0 bottom-0 left-0'>
 								<div className='p-4 text-white'>
-									<h2 className='text-lg font-bold lg:text-xl'>Manga</h2>
+									<h2 className='text-lg font-bold lg:text-xl'>Books</h2>
 									<p className='text-sm font-light lg:text-[1rem]'>
 										Discover a wide range of books from various genres,
 										including fiction, non-fiction, and more.
@@ -86,9 +91,11 @@ function Home() {
 
 						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:mt-35 lg:max-w-90 lg:min-w-75 xl:max-w-[20rem] xl:min-w-80 2xl:min-w-85'>
 							<img
-								src='/public/img/Manga.jpg'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_600,h_900,c_fill,q_auto,f_auto/Manga_jqae6l.jpg'
 								alt='Manga'
 								className='object-fit h-full w-full'
+								crossOrigin='anonymous'
+								loading='lazy'
 							/>
 
 							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
@@ -97,7 +104,7 @@ function Home() {
 								<div className='p-4 text-white'>
 									<h2 className='text-lg font-bold lg:text-xl'>Manga</h2>
 									<p className='text-sm font-light lg:text-[1rem]'>
-										Discover a wide range of books from various genres,
+										Discover a wide range of Manga from various genres,
 										including fiction, non-fiction, and more.
 									</p>
 								</div>
@@ -106,9 +113,11 @@ function Home() {
 
 						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:mb-10 lg:max-w-90 lg:min-w-75 xl:max-w-[20rem] xl:min-w-80 2xl:min-w-85'>
 							<img
-								src='/public/img/Novels.jpg'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_600,h_900,c_fill,q_auto,f_auto/Novels_mchdet.jpg'
 								alt='Novels'
 								className='object-fit h-full w-full'
+								crossOrigin='anonymous'
+								loading='lazy'
 							/>
 
 							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
@@ -117,7 +126,7 @@ function Home() {
 								<div className='p-4 text-white'>
 									<h2 className='text-lg font-bold lg:text-xl'>Manga</h2>
 									<p className='text-sm font-light lg:text-[1rem]'>
-										Discover a wide range of books from various genres,
+										Discover a wide range of Novel from various genres,
 										including fiction, non-fiction, and more.
 									</p>
 								</div>
@@ -130,9 +139,10 @@ function Home() {
 			{/* Best Sellers */}
 			<section className='relative'>
 				<img
-					src='/public/img/geometry-bg.png'
+					src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/geometry-bg_t4yejh.png'
 					alt='geometry-lines'
 					crossOrigin='anonymous'
+					loading='lazy'
 					className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
 				/>
 				<div className='grid grid-cols-1 px-12 py-12 md:py-24 lg:grid-cols-2 lg:py-35 xl:py-40 2xl:py-35'>
@@ -149,7 +159,7 @@ function Home() {
 						<Link
 							to='/products'
 							className='mt-3 w-full max-w-56 rounded-lg border bg-black p-2 text-center text-white hover:bg-black/85 sm:mt-3 sm:max-w-96 sm:p-3 md:mt-5 md:max-w-[25rem] md:text-lg lg:max-w-[25rem]'
-							aria-label='Get Started'
+							aria-label='Show More'
 						>
 							Show More
 						</Link>
@@ -158,9 +168,11 @@ function Home() {
 					<ScrollFadeSection className='mt-10 grid h-full max-h-[75rem] grid-cols-1 gap-5 sm:mt-10 sm:max-h-[95rem] md:grid-cols-3 lg:mt-2 lg:max-h-[100rem] lg:min-h-[25rem] lg:max-w-xl xl:mx-[-2.5rem] xl:min-h-[28rem] xl:max-w-2xl xl:gap-20 xl:pr-20 2xl:mr-20 2xl:min-h-[38rem] 2xl:max-w-3xl 2xl:gap-40'>
 						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:max-w-90 lg:max-w-[15rem] lg:min-w-[10rem] xl:max-w-[18rem] xl:min-w-[13.5rem] 2xl:max-w-[20rem] 2xl:min-w-[16rem]'>
 							<img
-								src='/public/img/moby-dick.jpg'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_600,h_900,c_fill,q_auto,f_auto/moby-dick_fk12ow.jpg'
 								alt='Moby-Dick'
 								className='object-fit h-full w-full'
+								crossOrigin='anonymous'
+								loading='lazy'
 							/>
 
 							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
@@ -178,9 +190,11 @@ function Home() {
 
 						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:max-w-90 lg:max-w-[15rem] lg:min-w-[10rem] xl:max-w-[18rem] xl:min-w-[13.5rem] 2xl:max-w-[20rem] 2xl:min-w-[16rem]'>
 							<img
-								src='/public/img/one-piece-img.jpg'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_600,h_900,c_fill,q_auto,f_auto/one-piece-img_ojyjzz.jpg'
 								alt='One Piece'
 								className='object-fit h-full w-full'
+								crossOrigin='anonymous'
+								loading='lazy'
 							/>
 
 							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
@@ -198,9 +212,11 @@ function Home() {
 
 						<HoverContainer className='relative mx-auto h-full w-full max-w-72 overflow-hidden rounded-sm sm:max-w-90 lg:max-w-[15rem] lg:min-w-[10rem] xl:max-w-[18rem] xl:min-w-[13.5rem] 2xl:max-w-[20rem] 2xl:min-w-[16rem]'>
 							<img
-								src='/public/img/gatsby-img.jpg'
+								src='https://res.cloudinary.com/dcurf3qko/image/upload/w_600,h_900,c_fill,q_auto,f_auto/gatsby-img_b8thmm.jpg'
 								alt='The Great Gastby'
 								className='object-fit h-full w-full'
+								crossOrigin='anonymous'
+								loading='lazy'
 							/>
 
 							<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
