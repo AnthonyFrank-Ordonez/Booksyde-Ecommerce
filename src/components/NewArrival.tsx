@@ -22,10 +22,17 @@ export default function NewArrival({
 	const [isExpanded, setIsExpanded] = useState(false);
 
 	return (
-		<section className='bg-gray-100'>
+		<section className='relative'>
+			<img
+				src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/geometry-bg_t4yejh.png'
+				alt='geometry-lines'
+				crossOrigin='anonymous'
+				loading='lazy'
+				className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
+			/>
 			<ScrollFadeSection className='flex flex-col gap-10 px-12 py-12 md:flex-row md:gap-5 md:px-[5rem] lg:flex-row lg:gap-5 lg:px-[6rem] xl:flex-row xl:gap-5 2xl:gap-10 2xl:px-[8rem]'>
 				<div className='flex flex-1 flex-col'>
-					<h2 className='text-7xl font-extrabold md:max-w-sm md:text-7xl lg:max-w-md lg:text-8xl xl:max-w-sm xl:text-9xl 2xl:text-[13rem]'>
+					<h2 className='text-7xl font-extrabold md:max-w-sm md:text-7xl lg:max-w-md lg:text-8xl xl:max-w-sm xl:text-9xl 2xl:text-[11rem]'>
 						New Arrival
 					</h2>
 					<p className='mt-3 text-2xl font-bold md:mt-3 md:text-3xl lg:mt-4 lg:text-3xl xl:mt-5 xl:text-4xl 2xl:text-5xl'>
@@ -53,7 +60,7 @@ export default function NewArrival({
 						to='/'
 						className='mt-7 items-center rounded-2xl border bg-black py-4 text-center font-bold text-white transition-colors duration-300 hover:bg-black/80 md:mt-5 md:w-52 md:px-2 md:py-3 lg:w-55 lg:px-3 lg:py-4 xl:w-68 xl:px-3 xl:py-4 2xl:w-80'
 					>
-						Add to Cart
+						View Product
 					</Link>
 					<div className='mt-2 w-full md:w-52 lg:w-54 xl:w-66 2xl:w-80'>
 						<p className='text-center text-sm font-light xl:text-lg'>

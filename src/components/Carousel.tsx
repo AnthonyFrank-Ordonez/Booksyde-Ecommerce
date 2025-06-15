@@ -23,14 +23,14 @@ export default function Carousel({ images, className }: CarouselProps) {
 
 		timeoutRef.current = setTimeout(() => {
 			moveToNextSlide();
-		}, 5000);
+		}, 25000);
 	};
 
 	useEffect(() => {
 		if (!timeoutRef.current) {
 			timeoutRef.current = setTimeout(() => {
 				moveToNextSlide();
-			}, 5000);
+			}, 25000);
 		}
 	}, []);
 
@@ -44,7 +44,7 @@ export default function Carousel({ images, className }: CarouselProps) {
 
 		timeoutRef.current = setTimeout(() => {
 			moveToNextSlide();
-		}, 5000);
+		}, 25000);
 	};
 
 	const handleNext = () => {
@@ -55,7 +55,7 @@ export default function Carousel({ images, className }: CarouselProps) {
 
 		timeoutRef.current = setTimeout(() => {
 			moveToNextSlide();
-		}, 5000);
+		}, 25000);
 	};
 
 	const handlePrev = () => {
@@ -66,7 +66,7 @@ export default function Carousel({ images, className }: CarouselProps) {
 
 		timeoutRef.current = setTimeout(() => {
 			moveToNextSlide();
-		}, 5000);
+		}, 25000);
 	};
 
 	const handleTouchStart = (e: React.TouchEvent) => {
@@ -100,11 +100,13 @@ export default function Carousel({ images, className }: CarouselProps) {
 						key={currentIndex}
 						src={images[currentIndex]}
 						alt={`Slide ${images[currentIndex] + 1}`}
-						className='absolute h-full w-full object-cover'
+						className='object-fit absolute h-full w-full'
 						initial={{ opacity: 0, x: direction === 'right' ? 100 : -100 }}
 						animate={{ opacity: 1, x: 0 }}
 						exit={{ opacity: 0, x: direction === 'right' ? -100 : 100 }}
 						transition={{ duration: 0.5 }}
+						crossOrigin='anonymous'
+						loading='lazy'
 					/>
 				</AnimatePresence>
 
