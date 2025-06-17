@@ -2,7 +2,7 @@ import { createAuthClient } from 'better-auth/react';
 
 export const { useSession, signIn, signOut, signUp, getSession } =
 	createAuthClient({
-		baseURL: 'http://localhost:3000',
+		// baseURL: 'http://localhost:3000',
 		redirectTo: '/',
 		fetchOptions: {
 			onError: async (context) => {
