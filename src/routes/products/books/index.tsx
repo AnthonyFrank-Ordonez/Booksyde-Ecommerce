@@ -16,9 +16,9 @@ import NewArrival from '@/components/NewArrival';
 
 export const Route = createFileRoute('/products/books/')({
 	component: BooksIndex,
-	beforeLoad: async ({ context }) => {
-		if (!context.userID) throw redirect({ to: '/signin' });
-	},
+	// beforeLoad: async ({ context }) => {
+	// 	if (!context.userID) throw redirect({ to: '/signin' });
+	// },
 	loader: async ({ context }) => {
 		await context.queryClient.ensureQueryData(bookQueryOptions());
 	},
@@ -111,7 +111,7 @@ function BooksIndex() {
 
 											<div className='mt-3 flex flex-row items-center gap-2'>
 												<button className='md:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 lg:w-55 xl:w-68 2xl:h-12 2xl:w-80'>
-													Add to Cart
+													View Product
 												</button>
 
 												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>

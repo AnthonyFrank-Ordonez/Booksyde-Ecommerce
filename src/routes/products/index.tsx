@@ -1,21 +1,28 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import Carousel from '@/components/Carousel';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import HoverContainer from '@/components/HoverContainer';
+import { bookQueryOptions } from '@/utils/servers/books';
+import type { BookType } from '@/types';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
+	loader: async ({ context }) => {
+		await context.queryClient.ensureQueryData(bookQueryOptions());
+	},
 });
 
 function ProductsIndex() {
 	const images = [
-		'https://picsum.photos/id/10/800/400',
-		'https://picsum.photos/id/11/800/400',
-		'https://picsum.photos/id/12/800/400',
-		'https://picsum.photos/id/13/800/400',
+		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-2_cy7xoq.jpg',
+		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-4_vpmzid.jpg',
+		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-3_bgxjvn.jpg',
+		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-1_y7wl8e.jpg',
 	];
+	const booksQueryData = useSuspenseQuery(bookQueryOptions());
 
 	return (
 		<div className='col-span-1 md:col-span-12 md:px-12 md:py-2'>
@@ -34,10 +41,14 @@ function ProductsIndex() {
 					<div className='mt-5 flex flex-col gap-3 px-5 md:flex-row md:px-0'>
 						<Link to='/products/books'>
 							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
+								<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 								<img
-									src='https://picsum.photos/id/10/800/400'
-									alt='dog'
+									src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_700,c_fill,q_auto,f_auto/books-banner_sztqxg.jpg'
+									alt='Books'
 									className='object-fit h-full w-full'
+									crossOrigin='anonymous'
+									loading='lazy'
 								/>
 
 								<div className='absolute right-0 bottom-0 left-0'>
@@ -53,15 +64,19 @@ function ProductsIndex() {
 
 						<Link to='/products/manga'>
 							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
+								<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
+
 								<img
-									src='https://picsum.photos/id/10/800/400'
-									alt='dog'
+									src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_700,c_fill,q_auto,f_auto/manga-banner_je4xtd.jpg'
+									alt='Manga'
 									className='object-fit h-full w-full'
+									crossOrigin='anonymous'
+									loading='lazy'
 								/>
 
 								<div className='absolute right-0 bottom-0 left-0'>
 									<div className='bg-gradient-to-t from-black/80 to-transparent p-4 pt-8 text-white'>
-										<h2 className='text-xl font-bold 2xl:text-3xl'>Mangas'</h2>
+										<h2 className='text-xl font-bold 2xl:text-3xl'>Manga</h2>
 										<p className='text-sm font-light 2xl:text-lg'>
 											Start at $30
 										</p>
@@ -72,10 +87,13 @@ function ProductsIndex() {
 
 						<Link to='/'>
 							<HoverContainer className='relative flex w-full flex-1 overflow-hidden rounded-lg shadow-lg shadow-gray-500'>
+								<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90'></div>
 								<img
-									src='https://picsum.photos/id/10/800/400'
-									alt='dog'
+									src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_700,c_fill,q_auto,f_auto/novel-banner_qahvbj.jpg'
+									alt='Novel'
 									className='object-fit h-full w-full'
+									crossOrigin='anonymous'
+									loading='lazy'
 								/>
 
 								<div className='absolute right-0 bottom-0 left-0'>
@@ -99,280 +117,77 @@ function ProductsIndex() {
 						</h2>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+							{booksQueryData.data.map((book: BookType, idx) => {
+								return (
+									<div
+										key={book.id}
+										className={`${idx === 4 && 'hidden 2xl:block'} h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90`}
+									>
+										<div className='relative overflow-hidden'>
+											<img
+												src={book.coverImg}
+												alt='book cover'
+												className='object-fit h-auto max-h-85 min-h-84 w-full md:h-auto md:max-h-94 md:min-h-94 lg:h-auto lg:max-h-96 lg:min-h-96 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-[30rem]'
+											/>
+											<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
+												<FaRegHeart size={14} />
+											</div>
 										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
 
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
+										<div className='p-3'>
+											<h3 className='truncate text-lg font-bold lg:text-xl 2xl:text-2xl'>
+												{book.title}
+											</h3>
 
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
+											<div className='flex flex-row items-center gap-1'>
+												<div className='flex items-center gap-1 text-yellow-400'>
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+												</div>
+												<p className='2xl:text-md text-xs'>(1,000+)</p>
+											</div>
 
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
+											<div className='mt-2 flex flex-row items-center justify-between py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Price
+												</p>
+												<p className='text-sm font-normal 2xl:text-lg'>
+													${book.price}
+												</p>
+											</div>
 
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
+											<div className='flex flex-row items-center justify-between py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Stocks
+												</p>
+												<p className='text-sm font-normal 2xl:text-lg'>35+</p>
+											</div>
 
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
+											<div className='flex flex-row items-center justify-between gap-20 py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Author
+												</p>
+												<p className='truncate text-sm font-normal 2xl:text-lg'>
+													{book.author}
+												</p>
+											</div>
 
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
+											<div className='mt-3 flex flex-row items-center gap-2'>
+												<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
+													View Product
+												</button>
 
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
+												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
+													<FaRegHeart size={24} />
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='hidden h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:block 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
+								);
+							})}
 						</div>
 					</div>
 				</ScrollFadeSection>
@@ -381,9 +196,11 @@ function ProductsIndex() {
 				<ScrollFadeSection className='px-5 py-10 md:px-0'>
 					<div className='relative h-[56rem] w-full overflow-hidden rounded-lg shadow-lg shadow-gray-500 md:h-96 md:w-full lg:h-[24rem] xl:h-[25rem] 2xl:h-[30rem]'>
 						<img
-							src='https://picsum.photos/id/11/800/400'
+							src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_800,c_fill,q_auto,f_auto/geometry-bg_t4yejh.png'
 							alt='dog'
-							className='object-fit h-full w-full'
+							className='object-fit h-full w-full bg-gray-300/80'
+							crossOrigin='anonymous'
+							loading='lazy'
 						/>
 
 						<div className='absolute inset-0 bg-gradient-to-b from-black/90 via-black to-black/90'></div>
@@ -397,9 +214,11 @@ function ProductsIndex() {
 								<div className='mt-10 grid grid-cols-2 gap-5 px-3 md:mt-7 md:grid-cols-5 md:pr-12 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-7'>
 									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner_p8zjlz.png'
+											alt='Action Genre'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -407,7 +226,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Action
 												</h2>
 											</div>
 										</div>
@@ -415,9 +234,11 @@ function ProductsIndex() {
 
 									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner-2_rrsbff.png'
 											alt='dog'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -425,7 +246,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Fantasy
 												</h2>
 											</div>
 										</div>
@@ -433,9 +254,11 @@ function ProductsIndex() {
 
 									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner_p8zjlz.png'
+											alt='Romance Genre'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -443,7 +266,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Romance
 												</h2>
 											</div>
 										</div>
@@ -451,9 +274,11 @@ function ProductsIndex() {
 
 									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner-2_rrsbff.png'
+											alt='Drama Genre'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -461,7 +286,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Drama
 												</h2>
 											</div>
 										</div>
@@ -469,9 +294,11 @@ function ProductsIndex() {
 
 									<HoverContainer className='relative hidden h-full max-h-54 w-auto overflow-hidden rounded-xl md:flex md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner_p8zjlz.png'
+											alt='Action Genre'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -479,7 +306,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Action
 												</h2>
 											</div>
 										</div>
@@ -487,9 +314,11 @@ function ProductsIndex() {
 
 									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:flex lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner-2_rrsbff.png'
+											alt='Historical Genre'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -497,7 +326,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Historical
 												</h2>
 											</div>
 										</div>
@@ -505,9 +334,11 @@ function ProductsIndex() {
 
 									<HoverContainer className='relative h-full max-h-54 w-auto overflow-hidden rounded-xl md:hidden md:max-h-60 md:min-h-54 md:max-w-42 md:min-w-28 lg:hidden lg:max-h-54 lg:min-h-54 lg:max-w-42 lg:min-w-28 xl:flex xl:max-h-60 xl:min-h-58 xl:max-w-42 xl:min-w-28 2xl:flex 2xl:max-h-72 2xl:min-h-60 2xl:max-w-52 2xl:min-w-42'>
 										<img
-											src='https://picsum.photos/id/237/200/300'
-											alt='dog'
+											src='https://res.cloudinary.com/dcurf3qko/image/upload/w_800,h_1200,c_fill,q_auto,f_auto/Genres-Banner_p8zjlz.png'
+											alt='Sci-fi genre'
 											className='object-fit h-full w-full'
+											crossOrigin='anonymous'
+											loading='lazy'
 										/>
 
 										<div className='absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/70'></div>
@@ -515,7 +346,7 @@ function ProductsIndex() {
 										<div className='absolute top-0 right-0 left-0'>
 											<div className='p-4 pt-8 text-white'>
 												<h2 className='text-center text-xl font-bold 2xl:text-3xl'>
-													Name
+													Sci-fi
 												</h2>
 											</div>
 										</div>
@@ -538,285 +369,82 @@ function ProductsIndex() {
 								to='/products'
 								className='mt-5 mr-5 hidden font-semibold text-gray-700 hover:underline md:inline-block 2xl:mt-7 2xl:text-xl'
 							>
-								View more
+								View More Product
 							</Link>
 						</div>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+							{booksQueryData.data.map((book: BookType, idx) => {
+								return (
+									<div
+										key={book.id}
+										className={`${idx === 4 && 'hidden 2xl:block'} h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90`}
+									>
+										<div className='relative overflow-hidden'>
+											<img
+												src={book.coverImg}
+												alt='book cover'
+												className='object-fit h-auto max-h-85 min-h-84 w-full md:h-auto md:max-h-94 md:min-h-94 lg:h-auto lg:max-h-96 lg:min-h-96 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-[30rem]'
+											/>
+											<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
+												<FaRegHeart size={14} />
+											</div>
 										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
 
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
+										<div className='p-3'>
+											<h3 className='truncate text-lg font-bold lg:text-xl 2xl:text-2xl'>
+												{book.title}
+											</h3>
 
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
+											<div className='flex flex-row items-center gap-1'>
+												<div className='flex items-center gap-1 text-yellow-400'>
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+												</div>
+												<p className='2xl:text-md text-xs'>(1,000+)</p>
+											</div>
 
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
+											<div className='mt-2 flex flex-row items-center justify-between py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Price
+												</p>
+												<p className='text-sm font-normal 2xl:text-lg'>
+													${book.price}
+												</p>
+											</div>
 
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
+											<div className='flex flex-row items-center justify-between py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Stocks
+												</p>
+												<p className='text-sm font-normal 2xl:text-lg'>35+</p>
+											</div>
 
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
+											<div className='flex flex-row items-center justify-between gap-20 py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Author
+												</p>
+												<p className='truncate text-sm font-normal 2xl:text-lg'>
+													{book.author}
+												</p>
+											</div>
 
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
+											<div className='mt-3 flex flex-row items-center gap-2'>
+												<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
+													View Product
+												</button>
 
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
+												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
+													<FaRegHeart size={24} />
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='hidden h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:block 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
+								);
+							})}
 						</div>
 
 						<div className='mt-5 items-center justify-center text-center'>
@@ -824,7 +452,7 @@ function ProductsIndex() {
 								to='/products'
 								className='w-54 rounded-xl border border-gray-400 px-10 py-1 font-normal md:hidden'
 							>
-								View More
+								View More Product
 							</Link>
 						</div>
 					</div>
@@ -878,450 +506,82 @@ function ProductsIndex() {
 								to='/products'
 								className='mt-5 mr-5 hidden font-semibold text-gray-700 hover:underline md:inline-block 2xl:mt-7 2xl:text-xl'
 							>
-								View more
+								View More Product
 							</Link>
 						</div>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+							{booksQueryData.data.map((book: BookType) => {
+								return (
+									<div
+										key={book.id}
+										className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'
+									>
+										<div className='relative overflow-hidden'>
+											<img
+												src={book.coverImg}
+												alt='book cover'
+												className='object-fit h-auto max-h-85 min-h-84 w-full md:h-auto md:max-h-94 md:min-h-94 lg:h-auto lg:max-h-96 lg:min-h-96 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-[30rem]'
+											/>
+											<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
+												<FaRegHeart size={14} />
+											</div>
 										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
 
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
+										<div className='p-3'>
+											<h3 className='truncate text-lg font-bold lg:text-xl 2xl:text-2xl'>
+												{book.title}
+											</h3>
 
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
+											<div className='flex flex-row items-center gap-1'>
+												<div className='flex items-center gap-1 text-yellow-400'>
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+													<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
+												</div>
+												<p className='2xl:text-md text-xs'>(1,000+)</p>
+											</div>
 
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
+											<div className='mt-2 flex flex-row items-center justify-between py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Price
+												</p>
+												<p className='text-sm font-normal 2xl:text-lg'>
+													${book.price}
+												</p>
+											</div>
 
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
+											<div className='flex flex-row items-center justify-between py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Stocks
+												</p>
+												<p className='text-sm font-normal 2xl:text-lg'>35+</p>
+											</div>
 
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
+											<div className='flex flex-row items-center justify-between gap-20 py-1'>
+												<p className='text-sm text-gray-500 2xl:text-lg'>
+													Author
+												</p>
+												<p className='truncate text-sm font-normal 2xl:text-lg'>
+													{book.author}
+												</p>
+											</div>
 
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
+											<div className='mt-3 flex flex-row items-center gap-2'>
+												<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
+													View Product
+												</button>
 
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
+												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
+													<FaRegHeart size={24} />
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className='h-full w-auto rounded-lg bg-white shadow-md md:w-auto md:max-w-68 xl:w-auto xl:max-w-74 2xl:max-w-90'>
-								<div className='relative overflow-hidden'>
-									<img
-										src='https://picsum.photos/id/1015/400/600'
-										alt='book cover'
-										className='h-auto w-full object-cover md:h-auto md:max-h-84 md:min-h-68 lg:h-auto lg:max-h-88 lg:min-h-84 xl:h-auto xl:max-h-94 xl:min-h-88 2xl:h-auto 2xl:max-h-[30rem] 2xl:min-h-78'
-									/>
-									<div className='absolute top-2 right-2 rounded-full bg-white/80 p-1 shadow-md transition-colors duration-300 hover:bg-white/60 md:hidden'>
-										<FaRegHeart size={14} />
-									</div>
-								</div>
-
-								<div className='p-3'>
-									<h3 className='text-lg font-bold lg:text-xl 2xl:text-2xl'>
-										Book Title 1
-									</h3>
-
-									<div className='flex flex-row items-center gap-1'>
-										<div className='flex items-center gap-1 text-yellow-400'>
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-											<FaRegStar className='h-3 w-3 2xl:h-3.5 2xl:w-3.5' />
-										</div>
-										<p className='2xl:text-md text-xs'>(1,000+)</p>
-									</div>
-
-									<div className='mt-2 flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Price</p>
-										<p className='text-sm font-normal 2xl:text-lg'>$19.99</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Stocks</p>
-										<p className='text-sm font-normal 2xl:text-lg'>35+</p>
-									</div>
-
-									<div className='flex flex-row items-center justify-between py-1'>
-										<p className='text-sm text-gray-500 2xl:text-lg'>Author</p>
-										<p className='text-sm font-normal 2xl:text-lg'>Author</p>
-									</div>
-
-									<div className='mt-3 flex flex-row items-center gap-2'>
-										<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
-											Add to Cart
-										</button>
-
-										<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-											<FaRegHeart size={24} />
-										</div>
-									</div>
-								</div>
-							</div>
+								);
+							})}
 						</div>
 
 						<div className='mt-5 items-center justify-center text-center'>
@@ -1329,7 +589,7 @@ function ProductsIndex() {
 								to='/products'
 								className='w-54 rounded-xl border border-gray-400 px-10 py-1 font-normal md:hidden'
 							>
-								View More
+								View More Product
 							</Link>
 						</div>
 					</div>
@@ -1346,9 +606,11 @@ function ProductsIndex() {
 							<HoverContainer className='w-full overflow-hidden rounded-b-lg shadow-md'>
 								<div className='relative'>
 									<img
-										src='https://picsum.photos/id/12/800/400'
-										alt='dog'
+										src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_600,c_fill,q_auto,f_auto/faqs-banner_hgds6w.png'
+										alt='FaQs'
 										className='object-fit h-full w-full'
+										crossOrigin='anonymous'
+										loading='lazy'
 									/>
 								</div>
 								<div className='px-5 py-3'>
@@ -1364,9 +626,11 @@ function ProductsIndex() {
 							<HoverContainer className='w-full overflow-hidden rounded-b-lg shadow-md'>
 								<div className='relative'>
 									<img
-										src='https://picsum.photos/id/12/800/400'
-										alt='dog'
+										src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_600,c_fill,q_auto,f_auto/customer-supp-banner_fxj52a.jpg'
+										alt='Customer Support'
 										className='object-fit h-full w-full'
+										crossOrigin='anonymous'
+										loading='lazy'
 									/>
 								</div>
 								<div className='px-5 py-3'>
@@ -1383,9 +647,11 @@ function ProductsIndex() {
 							<HoverContainer className='w-full overflow-hidden rounded-b-lg shadow-md'>
 								<div className='relative'>
 									<img
-										src='https://picsum.photos/id/12/800/400'
-										alt='dog'
+										src='https://res.cloudinary.com/dcurf3qko/image/upload/w_1200,h_600,c_fill,q_auto,f_auto/report-banner_tdtdjg.jpg'
+										alt='Payment and Shipping Report'
 										className='object-fit h-full w-full'
+										crossOrigin='anonymous'
+										loading='lazy'
 									/>
 								</div>
 								<div className='px-5 py-3'>
