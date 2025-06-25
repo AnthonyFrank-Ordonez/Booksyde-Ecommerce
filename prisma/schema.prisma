@@ -87,6 +87,7 @@ model Book {
   rating      Decimal
   coverImg    String
   language    String
+  slug        String?
 
   @@map("books")
 }
