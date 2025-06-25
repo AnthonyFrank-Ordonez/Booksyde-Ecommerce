@@ -87,7 +87,7 @@ model Book {
   rating      Decimal
   coverImg    String
   language    String
-  slug        String?
+  slug        String @unique 
 
   @@map("books")
 }

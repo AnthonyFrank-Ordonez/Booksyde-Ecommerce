@@ -139,7 +139,7 @@ const booksData: Prisma.BookCreateInput[] = [
 export async function main() {
 	for (const book of booksData) {
 		await prisma.book.upsert({
-			where: { id: book.id },
+			where: { slug: book.slug },
 			update: book, // or specify only the fields you want to update
 			create: book,
 		});
