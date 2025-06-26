@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 
 import { bookQueryOptions } from '@/utils/servers/books';
 import { useState } from 'react';
@@ -110,9 +110,13 @@ function MangaIndex() {
 											</div>
 
 											<div className='mt-3 flex flex-row items-center gap-2'>
-												<button className='md:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 lg:w-55 xl:w-68 2xl:h-12 2xl:w-80'>
-													Add to Cart
-												</button>
+												<Link
+													to='/products/books/$slug'
+													params={{ slug: book.slug }}
+													className='h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-center text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 lg:w-55 xl:w-68 2xl:h-12 2xl:w-80'
+												>
+													View Product
+												</Link>
 
 												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
 													<FaRegHeart size={24} />
