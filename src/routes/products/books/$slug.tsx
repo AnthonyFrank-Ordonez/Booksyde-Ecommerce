@@ -23,13 +23,13 @@ function RouteComponent() {
 
 	return (
 		<div className='grid grid-cols-1'>
-			<div className='grid grid-cols-1 px-6 py-5'>
+			<div className='grid grid-cols-1 px-6 py-5 sm:mx-auto sm:max-w-2xl'>
 				<Link to='/products/books' className='mb-5 flex items-center'>
 					<MdArrowBackIos />
-					<h1>Go Back</h1>
+					<h2 className='text-lg'>Go Back</h2>
 				</Link>
 
-				<div className='mb-3 flex items-center text-[11px]'>
+				<div className='mb-3 flex items-center text-[11px] sm:text-[15px]'>
 					<p>Products</p>
 					<MdArrowRight />
 					<p>Books</p>
@@ -37,7 +37,7 @@ function RouteComponent() {
 					<p>{book.title}</p>
 				</div>
 
-				<div className='relative mb-3 flex h-auto w-auto overflow-hidden rounded-sm bg-gray-200/90 px-5 py-5'>
+				<div className='relative mb-3 flex h-auto w-auto overflow-hidden rounded-sm bg-gray-200/90 px-5 py-5 sm:px-8 sm:py-8'>
 					<img
 						src={book.coverImg}
 						alt={`${book.title} image`}
@@ -47,39 +47,43 @@ function RouteComponent() {
 
 				{/* Book Info */}
 				<div className='px-2'>
-					<h2 className='mb-1 text-2xl font-bold'>{book.title}</h2>
-					<p className='mb-1 text-sm text-gray-500'>{book.author}</p>
+					<h2 className='mb-1 text-2xl font-bold sm:mb-1.5 sm:text-3xl'>
+						{book.title}
+					</h2>
+					<p className='mb-1 text-sm text-gray-500 sm:mb-1.5'>{book.author}</p>
 
-					<div className='mb-2 flex items-center gap-1'>
-						<FaStar className='h-4 w-4 text-yellow-400' />
-						<FaStar className='h-4 w-4 text-yellow-400' />
-						<FaStar className='h-4 w-4 text-yellow-400' />
-						<FaStar className='h-4 w-4 text-yellow-400' />
-						<FaRegStar className='h-4 w-4 text-yellow-400' />
-						<p className='text-sm'>({book.rating})</p>
+					<div className='mb-2 flex items-center gap-1 sm:mb-3'>
+						<FaStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5' />
+						<FaStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5' />
+						<FaStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5' />
+						<FaStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5' />
+						<FaRegStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5' />
+						<p className='text-sm sm:text-lg'>({book.rating})</p>
 					</div>
 
 					<div className='mb-5 flex items-center gap-2'>
-						<p className='text-2xl font-bold'>${book.price}</p>
-						<p className='text-2xl font-light text-gray-400 line-through'>
+						<p className='text-2xl font-bold sm:text-3xl'>${book.price}</p>
+						<p className='text-2xl font-light text-gray-400 line-through sm:text-3xl'>
 							$10.38
 						</p>
 						<RiCoupon3Line className='mt-1 h-6 w-6' />
 					</div>
 
 					{/* Description */}
-					<p className='mb-0.5 font-light text-gray-500'>Description</p>
+					<p className='mb-0.5 font-light text-gray-500 sm:text-lg'>
+						Description
+					</p>
 					<div className='mb-1 border-b border-b-gray-300'></div>
 					<div className='mb-8'>
 						<p
-							className={`text-sm font-light text-gray-500 ${!descExpanded ? 'line-clamp-4' : ''}`}
+							className={`text-sm font-light text-gray-500 sm:text-[17px] ${!descExpanded ? 'line-clamp-4' : ''}`}
 						>
 							{book.description}
 						</p>
 						{book.description && book.description.length > 150 && (
 							<button
 								onClick={() => setDescExpanded(!descExpanded)}
-								className='mt-1 cursor-pointer text-xs font-medium text-black hover:text-black/70 focus:outline-none'
+								className='mt-1 cursor-pointer text-xs font-medium text-black hover:text-black/70 focus:outline-none sm:text-sm'
 							>
 								{descExpanded ? 'See Less' : 'See More'}
 							</button>
