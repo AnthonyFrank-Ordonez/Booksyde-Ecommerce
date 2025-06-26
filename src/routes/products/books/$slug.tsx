@@ -75,7 +75,7 @@ function RouteComponent() {
 						<p className='text-2xl font-bold sm:text-3xl xl:text-4xl 2xl:text-5xl'>
 							${book.price}
 						</p>
-						<p className='text-2xl font-light text-gray-400 line-through sm:text-3xl xl:text-4xl 2xl:text-5xl'>
+						<p className='text-2xl font-light text-gray-300 line-through sm:text-3xl xl:text-4xl 2xl:text-5xl'>
 							$10.38
 						</p>
 						<RiCoupon3Line className='mt-1 h-6 w-6 xl:h-7 xl:w-7' />
