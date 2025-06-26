@@ -30,7 +30,7 @@ export default function NewArrival({
 				loading='lazy'
 				className='absolute inset-0 -z-10 h-full w-full bg-gray-100 object-cover opacity-50'
 			/>
-			<ScrollFadeSection className='flex flex-col gap-10 px-12 py-12 md:flex-row md:gap-5 md:px-[5rem] lg:flex-row lg:gap-5 lg:px-[6rem] xl:flex-row xl:gap-5 2xl:gap-10 2xl:px-[8rem]'>
+			<ScrollFadeSection className='flex flex-col gap-10 px-12 py-12 md:flex-row md:gap-5 md:px-[5rem] lg:flex-row lg:gap-5 lg:px-[4rem] xl:flex-row xl:gap-5 2xl:gap-10 2xl:px-[8rem]'>
 				<div className='flex flex-1 flex-col'>
 					<h2 className='text-7xl font-extrabold md:max-w-sm md:text-7xl lg:max-w-md lg:text-8xl xl:max-w-sm xl:text-9xl 2xl:text-[11rem]'>
 						New Arrival

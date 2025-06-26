@@ -78,7 +78,7 @@ model Verification {
 }
 
 model Book {
-  id          Int      @id
+  id          Int      @id @default(autoincrement())
   title       String
   author      String
   genres      String[]
@@ -87,6 +87,7 @@ model Book {
   rating      Decimal
   coverImg    String
   language    String
+  slug        String @unique 
 
   @@map("books")
 }

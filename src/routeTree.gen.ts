@@ -20,6 +20,7 @@ import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ProductsNovelsIndexImport } from './routes/products/novels/index'
 import { Route as ProductsMangaIndexImport } from './routes/products/manga/index'
 import { Route as ProductsBooksIndexImport } from './routes/products/books/index'
+import { Route as ProductsBooksSlugImport } from './routes/products/books/$slug'
 
 // Create/Update Routes
 
@@ -77,6 +78,12 @@ const ProductsBooksIndexRoute = ProductsBooksIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ProductsBooksSlugRoute = ProductsBooksSlugImport.update({
+  id: '/products/books/$slug',
+  path: '/products/books/$slug',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -123,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/products/books/$slug': {
+      id: '/products/books/$slug'
+      path: '/products/books/$slug'
+      fullPath: '/products/books/$slug'
+      preLoaderRoute: typeof ProductsBooksSlugImport
+      parentRoute: typeof rootRoute
+    }
     '/products/books/': {
       id: '/products/books/'
       path: '/products/books'
@@ -156,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/products': typeof ProductsIndexRoute
+  '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books': typeof ProductsBooksIndexRoute
   '/products/manga': typeof ProductsMangaIndexRoute
   '/products/novels': typeof ProductsNovelsIndexRoute
@@ -168,6 +183,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/products': typeof ProductsIndexRoute
+  '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books': typeof ProductsBooksIndexRoute
   '/products/manga': typeof ProductsMangaIndexRoute
   '/products/novels': typeof ProductsNovelsIndexRoute
@@ -181,6 +197,7 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/products/': typeof ProductsIndexRoute
+  '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books/': typeof ProductsBooksIndexRoute
   '/products/manga/': typeof ProductsMangaIndexRoute
   '/products/novels/': typeof ProductsNovelsIndexRoute
@@ -195,6 +212,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/products'
+    | '/products/books/$slug'
     | '/products/books'
     | '/products/manga'
     | '/products/novels'
@@ -206,6 +224,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/products'
+    | '/products/books/$slug'
     | '/products/books'
     | '/products/manga'
     | '/products/novels'
@@ -217,6 +236,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/products/'
+    | '/products/books/$slug'
     | '/products/books/'
     | '/products/manga/'
     | '/products/novels/'
@@ -230,6 +250,7 @@ export interface RootRouteChildren {
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  ProductsBooksSlugRoute: typeof ProductsBooksSlugRoute
   ProductsBooksIndexRoute: typeof ProductsBooksIndexRoute
   ProductsMangaIndexRoute: typeof ProductsMangaIndexRoute
   ProductsNovelsIndexRoute: typeof ProductsNovelsIndexRoute
@@ -242,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  ProductsBooksSlugRoute: ProductsBooksSlugRoute,
   ProductsBooksIndexRoute: ProductsBooksIndexRoute,
   ProductsMangaIndexRoute: ProductsMangaIndexRoute,
   ProductsNovelsIndexRoute: ProductsNovelsIndexRoute,
@@ -263,6 +285,7 @@ export const routeTree = rootRoute
         "/signin",
         "/signup",
         "/products/",
+        "/products/books/$slug",
         "/products/books/",
         "/products/manga/",
         "/products/novels/"
@@ -285,6 +308,9 @@ export const routeTree = rootRoute
     },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/products/books/$slug": {
+      "filePath": "products/books/$slug.tsx"
     },
     "/products/books/": {
       "filePath": "products/books/index.tsx"

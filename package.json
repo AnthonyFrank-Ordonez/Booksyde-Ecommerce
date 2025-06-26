@@ -7,8 +7,7 @@
 		"start": "vinxi start",
 		"build": "prisma generate && vinxi build",
 		"serve": "vite preview",
-		"test": "vitest run",
-		"start:prod": "node .output/server/index.mjs"
+		"test": "vitest run"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
@@ -16,7 +15,7 @@
 	"dependencies": {
 		"@cloudinary/react": "^1.14.3",
 		"@cloudinary/url-gen": "^1.21.0",
-		"@prisma/client": "^6.9.0",
+		"@prisma/client": "^6.10.1",
 		"@prisma/extension-accelerate": "^2.0.1",
 		"@tailwindcss/vite": "^4.0.6",
 		"@tanstack/react-form": "^1.12.0",
@@ -49,7 +48,7 @@
 		"jsdom": "^26.0.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
-		"prisma": "^6.8.2",
+		"prisma": "^6.10.1",
 		"tsx": "^4.19.4",
 		"typescript": "^5.7.2",
 		"vite": "^6.1.0",

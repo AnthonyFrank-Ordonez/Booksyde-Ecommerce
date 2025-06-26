@@ -8,6 +8,7 @@ export interface BookType {
 	language: string;
 	price: number;
 	rating: number;
+	slug: string;
 }
 
 export interface NewArrrivalBookType {
@@ -45,4 +46,8 @@ export interface SessionType {
 export interface CredentialsType {
 	email: string;
 	password: string;
+}
+
+export interface BookSlugType {
+	slug: string;
 }

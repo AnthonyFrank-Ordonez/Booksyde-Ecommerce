@@ -220,7 +220,7 @@ export default function Header({ session }: HeaderProps) {
 								Home
 							</Link>
 							<Link
-								to='/'
+								to='/about'
 								className='font-medium'
 								activeProps={{
 									className: 'font-bold underline',
@@ -229,7 +229,7 @@ export default function Header({ session }: HeaderProps) {
 								About
 							</Link>
 							<Link
-								to='/'
+								to='/products'
 								className='font-medium'
 								activeProps={{
 									className: 'font-bold underline',
@@ -238,7 +238,7 @@ export default function Header({ session }: HeaderProps) {
 								Products
 							</Link>
 							<Link
-								to='/'
+								to='/contact'
 								className='font-medium'
 								activeProps={{
 									className: 'font-bold underline',

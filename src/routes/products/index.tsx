@@ -176,9 +176,13 @@ function ProductsIndex() {
 											</div>
 
 											<div className='mt-3 flex flex-row items-center gap-2'>
-												<button className='lg:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:text-xs lg:w-55 xl:w-68 2xl:h-12 2xl:w-80 2xl:text-[1rem]'>
+												<Link
+													to='/products/books/$slug'
+													params={{ slug: book.slug }}
+													className='h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-center text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:py-3 md:text-[11px] lg:w-55 lg:py-3 lg:text-[11.5px] xl:w-68 xl:py-2.5 xl:text-[15px] 2xl:h-12 2xl:w-80 2xl:py-3 2xl:text-[1rem]'
+												>
 													View Product
-												</button>
+												</Link>
 
 												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
 													<FaRegHeart size={24} />

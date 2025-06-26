@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import {
 	FaArrowLeft,
 	FaRegHeart,
@@ -49,7 +49,7 @@ function BooksIndex() {
 				<div className='relative mt-12 grid grid-cols-1 px-10 py-12 md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-12'>
 					{/* Products List */}
 					<ScrollFadeSection className='col-span-1 border-gray-200 md:col-span-10 lg:col-span-10 xl:col-span-10'>
-						<div className='grid grid-cols-2 gap-3 border-r-2 border-gray-200 px-7 md:grid-cols-3 md:gap-4 md:px-3 lg:grid-cols-4 xl:grid-cols-4 2xl:gap-5 2xl:px-7'>
+						<div className='grid grid-cols-2 gap-3 border-gray-200 px-1 md:grid-cols-3 md:gap-4 md:border-r-2 md:px-3 lg:grid-cols-4 xl:grid-cols-4 2xl:gap-5 2xl:px-7'>
 							{booksQueryData.data.map((book: BookType) => {
 								return (
 									<div
@@ -110,9 +110,13 @@ function BooksIndex() {
 											</div>
 
 											<div className='mt-3 flex flex-row items-center gap-2'>
-												<button className='md:text-md h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80 md:w-52 lg:w-55 xl:w-68 2xl:h-12 2xl:w-80'>
+												<Link
+													to='/products/books/$slug'
+													params={{ slug: book.slug }}
+													className='h-11 w-full flex-1 cursor-pointer rounded-md border bg-black px-4 py-3 text-center text-xs text-white transition-colors duration-300 hover:bg-black/80 md:w-52 md:py-3 md:text-[11px] lg:w-55 lg:py-3 lg:text-[11.5px] xl:w-68 xl:py-2.5 xl:text-[15px] 2xl:h-12 2xl:w-80 2xl:py-3 2xl:text-[1rem]'
+												>
 													View Product
-												</button>
+												</Link>
 
 												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
 													<FaRegHeart size={24} />

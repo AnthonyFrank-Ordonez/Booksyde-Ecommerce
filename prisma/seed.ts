@@ -4,7 +4,7 @@ import prisma from '@/utils/prisma';
 
 const booksData: Prisma.BookCreateInput[] = [
 	{
-		id: 1,
+		// id: 1,
 		title: 'The Hunger Games',
 		author: 'Suzanne Collins',
 		genres: [
@@ -26,9 +26,10 @@ const booksData: Prisma.BookCreateInput[] = [
 		coverImg:
 			'https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/hunger-games_l37xmh.jpg',
 		language: 'English',
+		slug: 'the-hunger-games',
 	},
 	{
-		id: 2,
+		// id: 2,
 		title: 'Harry Potter and the Order of the Phoenix',
 		author: 'J.K. Rowling, Mary GrandPre (Illustrator)',
 		genres: [
@@ -50,9 +51,10 @@ const booksData: Prisma.BookCreateInput[] = [
 		coverImg:
 			'https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/harry-potter-phoenix_k4bxto.jpg',
 		language: 'English',
+		slug: 'harry-potter-and-the-order-of-the-phoenix',
 	},
 	{
-		id: 3,
+		// id: 3,
 		title: 'To Kill a Mockingbird',
 		author: 'Harper Lee',
 		genres: [
@@ -74,9 +76,10 @@ const booksData: Prisma.BookCreateInput[] = [
 		coverImg:
 			'https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/mockingbird_lh5uvn.jpg',
 		language: 'English',
+		slug: 'to-kill-a-mockingbird',
 	},
 	{
-		id: 4,
+		// id: 4,
 		title: 'Pride and Prejudice',
 		author: 'Jane Austen, Anna Quindlen (Introduction)',
 		genres: [
@@ -98,9 +101,10 @@ const booksData: Prisma.BookCreateInput[] = [
 		coverImg:
 			'https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/pride-and-prejudice_ubvnbw.jpg',
 		language: 'English',
+		slug: 'pride-and-prejudice',
 	},
 	{
-		id: 5,
+		// id: 5,
 		title: 'Twilight',
 		author: 'Stephenie Meyer',
 		genres: [
@@ -122,12 +126,23 @@ const booksData: Prisma.BookCreateInput[] = [
 		coverImg:
 			'https://res.cloudinary.com/dcurf3qko/image/upload/h_800,c_fill,q_auto,f_auto/twilight_cxyhbm.jpg',
 		language: 'English',
+		slug: 'twilight',
 	},
 ];
 
+// export async function main() {
+// 	for (const book of booksData) {
+// 		await prisma.book.create({ data: book });
+// 	}
+// }
+
 export async function main() {
 	for (const book of booksData) {
-		await prisma.book.create({ data: book });
+		await prisma.book.upsert({
+			where: { slug: book.slug },
+			update: book, // or specify only the fields you want to update
+			create: book,
+		});
 	}
 }
 
