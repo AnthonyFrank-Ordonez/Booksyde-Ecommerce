@@ -1,4 +1,9 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+import {
+	createFileRoute,
+	Link,
+	Outlet,
+	redirect,
+} from '@tanstack/react-router';
 import {
 	MdOutlineAccountCircle,
 	MdOutlinePayment,
@@ -8,6 +13,9 @@ import {
 
 export const Route = createFileRoute('/_settings')({
 	component: SettingsLayout,
+	beforeLoad: async ({ context }) => {
+		if (!context.userID) return redirect({ to: '/signin' });
+	},
 });
 
 function SettingsLayout() {
