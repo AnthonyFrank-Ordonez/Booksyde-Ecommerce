@@ -19,6 +19,7 @@ import { Route as SettingsImport } from './routes/_settings'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as SettingsProfileImport } from './routes/_settings/profile'
+import { Route as SettingsOrdersImport } from './routes/_settings/orders'
 import { Route as SettingsBillingImport } from './routes/_settings/billing'
 import { Route as SettingsAddressImport } from './routes/_settings/address'
 import { Route as ProductsNovelsIndexImport } from './routes/products/novels/index'
@@ -72,6 +73,12 @@ const ProductsIndexRoute = ProductsIndexImport.update({
 const SettingsProfileRoute = SettingsProfileImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => SettingsRoute,
+} as any)
+
+const SettingsOrdersRoute = SettingsOrdersImport.update({
+  id: '/orders',
+  path: '/orders',
   getParentRoute: () => SettingsRoute,
 } as any)
 
@@ -171,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsBillingImport
       parentRoute: typeof SettingsImport
     }
+    '/_settings/orders': {
+      id: '/_settings/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof SettingsOrdersImport
+      parentRoute: typeof SettingsImport
+    }
     '/_settings/profile': {
       id: '/_settings/profile'
       path: '/profile'
@@ -221,12 +235,14 @@ declare module '@tanstack/react-router' {
 interface SettingsRouteChildren {
   SettingsAddressRoute: typeof SettingsAddressRoute
   SettingsBillingRoute: typeof SettingsBillingRoute
+  SettingsOrdersRoute: typeof SettingsOrdersRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsAddressRoute: SettingsAddressRoute,
   SettingsBillingRoute: SettingsBillingRoute,
+  SettingsOrdersRoute: SettingsOrdersRoute,
   SettingsProfileRoute: SettingsProfileRoute,
 }
 
@@ -243,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
+  '/orders': typeof SettingsOrdersRoute
   '/profile': typeof SettingsProfileRoute
   '/products': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
@@ -260,6 +277,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
+  '/orders': typeof SettingsOrdersRoute
   '/profile': typeof SettingsProfileRoute
   '/products': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
@@ -278,6 +296,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_settings/address': typeof SettingsAddressRoute
   '/_settings/billing': typeof SettingsBillingRoute
+  '/_settings/orders': typeof SettingsOrdersRoute
   '/_settings/profile': typeof SettingsProfileRoute
   '/products/': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
@@ -297,6 +316,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/address'
     | '/billing'
+    | '/orders'
     | '/profile'
     | '/products'
     | '/products/books/$slug'
@@ -313,6 +333,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/address'
     | '/billing'
+    | '/orders'
     | '/profile'
     | '/products'
     | '/products/books/$slug'
@@ -329,6 +350,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_settings/address'
     | '/_settings/billing'
+    | '/_settings/orders'
     | '/_settings/profile'
     | '/products/'
     | '/products/books/$slug'
@@ -397,6 +419,7 @@ export const routeTree = rootRoute
       "children": [
         "/_settings/address",
         "/_settings/billing",
+        "/_settings/orders",
         "/_settings/profile"
       ]
     },
@@ -418,6 +441,10 @@ export const routeTree = rootRoute
     },
     "/_settings/billing": {
       "filePath": "_settings/billing.tsx",
+      "parent": "/_settings"
+    },
+    "/_settings/orders": {
+      "filePath": "_settings/orders.tsx",
       "parent": "/_settings"
     },
     "/_settings/profile": {
