@@ -15,8 +15,12 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as SigninImport } from './routes/signin'
 import { Route as ContactImport } from './routes/contact'
 import { Route as AboutImport } from './routes/about'
+import { Route as SettingsImport } from './routes/_settings'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as SettingsProfileImport } from './routes/_settings/profile'
+import { Route as SettingsBillingImport } from './routes/_settings/billing'
+import { Route as SettingsAddressImport } from './routes/_settings/address'
 import { Route as ProductsNovelsIndexImport } from './routes/products/novels/index'
 import { Route as ProductsMangaIndexImport } from './routes/products/manga/index'
 import { Route as ProductsBooksIndexImport } from './routes/products/books/index'
@@ -48,6 +52,11 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SettingsRoute = SettingsImport.update({
+  id: '/_settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -58,6 +67,24 @@ const ProductsIndexRoute = ProductsIndexImport.update({
   id: '/products/',
   path: '/products/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsProfileRoute = SettingsProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsRoute,
+} as any)
+
+const SettingsBillingRoute = SettingsBillingImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => SettingsRoute,
+} as any)
+
+const SettingsAddressRoute = SettingsAddressImport.update({
+  id: '/address',
+  path: '/address',
+  getParentRoute: () => SettingsRoute,
 } as any)
 
 const ProductsNovelsIndexRoute = ProductsNovelsIndexImport.update({
@@ -95,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_settings': {
+      id: '/_settings'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -122,6 +156,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/signup'
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
+    }
+    '/_settings/address': {
+      id: '/_settings/address'
+      path: '/address'
+      fullPath: '/address'
+      preLoaderRoute: typeof SettingsAddressImport
+      parentRoute: typeof SettingsImport
+    }
+    '/_settings/billing': {
+      id: '/_settings/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof SettingsBillingImport
+      parentRoute: typeof SettingsImport
+    }
+    '/_settings/profile': {
+      id: '/_settings/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof SettingsProfileImport
+      parentRoute: typeof SettingsImport
     }
     '/products/': {
       id: '/products/'
@@ -163,12 +218,32 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface SettingsRouteChildren {
+  SettingsAddressRoute: typeof SettingsAddressRoute
+  SettingsBillingRoute: typeof SettingsBillingRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsAddressRoute: SettingsAddressRoute,
+  SettingsBillingRoute: SettingsBillingRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
+}
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof SettingsRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/address': typeof SettingsAddressRoute
+  '/billing': typeof SettingsBillingRoute
+  '/profile': typeof SettingsProfileRoute
   '/products': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books': typeof ProductsBooksIndexRoute
@@ -178,10 +253,14 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof SettingsRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/address': typeof SettingsAddressRoute
+  '/billing': typeof SettingsBillingRoute
+  '/profile': typeof SettingsProfileRoute
   '/products': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books': typeof ProductsBooksIndexRoute
@@ -192,10 +271,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_settings': typeof SettingsRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/_settings/address': typeof SettingsAddressRoute
+  '/_settings/billing': typeof SettingsBillingRoute
+  '/_settings/profile': typeof SettingsProfileRoute
   '/products/': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books/': typeof ProductsBooksIndexRoute
@@ -207,10 +290,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
     | '/about'
     | '/contact'
     | '/signin'
     | '/signup'
+    | '/address'
+    | '/billing'
+    | '/profile'
     | '/products'
     | '/products/books/$slug'
     | '/products/books'
@@ -219,10 +306,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
     | '/about'
     | '/contact'
     | '/signin'
     | '/signup'
+    | '/address'
+    | '/billing'
+    | '/profile'
     | '/products'
     | '/products/books/$slug'
     | '/products/books'
@@ -231,10 +322,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_settings'
     | '/about'
     | '/contact'
     | '/signin'
     | '/signup'
+    | '/_settings/address'
+    | '/_settings/billing'
+    | '/_settings/profile'
     | '/products/'
     | '/products/books/$slug'
     | '/products/books/'
@@ -245,6 +340,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SettingsRoute: typeof SettingsRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   SigninRoute: typeof SigninRoute
@@ -258,6 +354,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SettingsRoute: SettingsRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   SigninRoute: SigninRoute,
@@ -280,6 +377,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_settings",
         "/about",
         "/contact",
         "/signin",
@@ -294,6 +392,14 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
+    "/_settings": {
+      "filePath": "_settings.tsx",
+      "children": [
+        "/_settings/address",
+        "/_settings/billing",
+        "/_settings/profile"
+      ]
+    },
     "/about": {
       "filePath": "about.tsx"
     },
@@ -305,6 +411,18 @@ export const routeTree = rootRoute
     },
     "/signup": {
       "filePath": "signup.tsx"
+    },
+    "/_settings/address": {
+      "filePath": "_settings/address.tsx",
+      "parent": "/_settings"
+    },
+    "/_settings/billing": {
+      "filePath": "_settings/billing.tsx",
+      "parent": "/_settings"
+    },
+    "/_settings/profile": {
+      "filePath": "_settings/profile.tsx",
+      "parent": "/_settings"
     },
     "/products/": {
       "filePath": "products/index.tsx"

@@ -121,20 +121,20 @@ export default function Header({ session }: HeaderProps) {
 											</div>
 										</div>
 									</div>
-									<a
-										href='/profile'
+									<Link
+										to='/'
 										aria-label='Your Profile'
 										className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
 									>
 										Your Profile
-									</a>
-									<a
-										href='/settings'
+									</Link>
+									<Link
+										to='/profile'
 										aria-label='Settings'
 										className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
 									>
 										Settings
-									</a>
+									</Link>
 									<button
 										onClick={() => signOutUser()}
 										aria-label='signOut'
