@@ -17,13 +17,13 @@ function Profile() {
 	const { session } = Route.useLoaderData();
 
 	return (
-		<div className='xl:px-8 xl:py-5'>
-			<h2 className='text-xl font-bold xl:mb-7'>Profile</h2>
+		<div className='px-4 py-3 xl:px-8 xl:py-5'>
+			<h2 className='mb-3 text-xl font-bold xl:mb-7'>Profile</h2>
 
 			{/* Profile Section */}
-			<div className='relative flex w-full gap-5 rounded-xl border border-gray-300 px-5 py-6 xl:mb-7'>
+			<div className='relative mb-5 flex w-full flex-col gap-5 rounded-xl border border-gray-300 px-5 py-6 md:flex-row xl:mb-7'>
 				{/* Profile Image */}
-				<div className='rounded-ful flex h-20 w-20 flex-shrink-0 items-center justify-center'>
+				<div className='flex h-35 w-35 flex-shrink-0 items-center justify-center rounded-full xl:h-20 xl:w-20'>
 					{session.image && (
 						<img
 							src={session.image}
@@ -34,32 +34,34 @@ function Profile() {
 				</div>
 
 				{/* Profile Info */}
-				<div className='flex flex-col'>
-					<p className='font-medium'>{session.name}</p>
-					<p className='font-light text-gray-500'>{session.email}</p>
-					<p className='font-light text-gray-500'>Member</p>
+				<div className='flex flex-col gap-0.5'>
+					<p className='text-[1.2rem] font-medium'>{session.name}</p>
+					<p className='text-[1rem] font-light text-gray-500'>
+						{session.email}
+					</p>
+					<p className='text-[1rem] font-light text-gray-500'>Member</p>
 				</div>
 
 				{/* Edit Button */}
-				<button className='absolute flex cursor-pointer items-center gap-1 rounded-lg border border-gray-500 px-2 py-1 transition-colors duration-300 hover:bg-black/5 xl:top-1/3 xl:right-5'>
-					Edit
+				<button className='absolute top-3 right-3 flex cursor-pointer items-center gap-1 rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:top-1/3 xl:right-5 xl:px-2 xl:py-1'>
+					<span>Edit</span>
 					<CiEdit />
 				</button>
 			</div>
 
 			{/* Personal Information */}
-			<div className='rounded-xl border border-gray-300 px-5 py-6 xl:mb-7'>
+			<div className='mb-5 rounded-xl border border-gray-300 px-5 py-6 xl:mb-7'>
 				{/* Title */}
-				<div className='flex justify-between xl:mb-3'>
+				<div className='mb-5 flex justify-between xl:mb-3'>
 					<p className='font-medium'>Personal Information</p>
-					<button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-1 transition-colors duration-300 hover:bg-black/5'>
-						Edit <CiEdit />
+					<button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:px-2 xl:py-1'>
+						<span>Edit</span> <CiEdit />
 					</button>
 				</div>
 
 				{/* Information */}
-				<div className='grid grid-cols-[350px_500px] items-center'>
-					<div className='flex flex-col gap-5'>
+				<div className='grid grid-cols-1 items-center md:grid-cols-[350px_500px]'>
+					<div className='mb-7 flex flex-col gap-5 md:mb-0'>
 						<div className='flex flex-col gap-1'>
 							<p className='text-sm font-medium text-gray-500'>First Name</p>
 							<p>Anthony Frank</p>
@@ -88,16 +90,16 @@ function Profile() {
 			{/* Address Information */}
 			<div className='rounded-xl border border-gray-300 px-5 py-6 xl:mb-7'>
 				{/* Title */}
-				<div className='flex justify-between xl:mb-3'>
+				<div className='mb-7 flex justify-between xl:mb-3'>
 					<p className='font-medium'>Address</p>
-					<button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-1 transition-colors duration-300 hover:bg-black/5'>
-						Edit <CiEdit />
+					<button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:px-2 xl:py-1'>
+						<span>Edit</span> <CiEdit />
 					</button>
 				</div>
 
 				{/* Information */}
-				<div className='grid grid-cols-[350px_500px] items-center'>
-					<div className='flex flex-col gap-5'>
+				<div className='grid grid-cols-1 items-center md:grid-cols-[350px_500px]'>
+					<div className='mb-7 flex flex-col gap-5 md:mb-0'>
 						<div className='flex flex-col gap-1'>
 							<p className='text-sm font-medium text-gray-500'>House No.</p>
 							<p>House Number</p>
