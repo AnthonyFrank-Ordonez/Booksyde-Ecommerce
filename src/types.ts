@@ -1,3 +1,11 @@
+type AddressNameValues =
+	| 'houseNo'
+	| 'city'
+	| 'province'
+	| 'country'
+	| 'postal'
+	| 'defaultAddress';
+
 export interface BookType {
 	id: number;
 	title: string;
@@ -50,4 +58,10 @@ export interface CredentialsType {
 
 export interface BookSlugType {
 	slug: string;
+}
+
+export interface AddresFormObjType {
+	label: string;
+	name: AddressNameValues;
+	type: string;
 }

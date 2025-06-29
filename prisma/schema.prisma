@@ -18,6 +18,20 @@ model Comment {
   @@map("comments")
 }
 
+model Address {
+  id             Int @id @default(autoincrement())
+  houseNo        Int
+  city           String
+  province       String
+  country        String
+  postal         Int
+  defaultAddress Boolean
+  userId         String
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("address")
+}
+
 model User {
   id            String    @id
   createdAt     DateTime
@@ -29,6 +43,7 @@ model User {
   accounts      Account[]
   comment       Comment[]
   sessions      Session[]
+  address       Address[]
 
   @@map("users")
 }
