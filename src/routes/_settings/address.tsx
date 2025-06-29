@@ -14,11 +14,16 @@ export const Route = createFileRoute('/_settings/address')({
 function Address() {
 	const [isFormOpen, setFormOpen] = useState(false);
 	const addressFormObj: AddresFormObjType[] = [
-		{ label: 'House Number', name: 'houseNo' },
-		{ label: 'City', name: 'city' },
-		{ label: 'Province', name: 'province' },
-		{ label: 'Country', name: 'country' },
-		{ label: 'Postal', name: 'postal' },
+		{ label: 'House Number', name: 'houseNo', type: 'text' },
+		{ label: 'City', name: 'city', type: 'text' },
+		{ label: 'Province', name: 'province', type: 'text' },
+		{ label: 'Country', name: 'country', type: 'text' },
+		{ label: 'Postal', name: 'postal', type: 'text' },
+		{
+			label: 'Use as your default address',
+			name: 'defaultAddress',
+			type: 'radio',
+		},
 	];
 
 	const handleFormClick = () => {
@@ -68,74 +73,84 @@ function Address() {
 							form.handleSubmit();
 						}}
 					>
-						{addressFormObj.map((obj) => (
-							<form.Field
-								key={obj.name}
-								name={obj.name}
-								children={(field) => (
-									<>
-										<label
-											aria-label={field.name}
-											htmlFor={field.name}
-											className='mb-1 block font-medium'
-										>
-											{obj.label} <FieldInfo field={field} />
-										</label>
-										<input
-											type='text'
-											aria-label={`${field.name} input`}
-											name={field.name}
-											id={field.name}
-											value={field.state.value}
-											onChange={(e) => field.handleChange(e.target.value)}
-											required
-											className='mb-3 w-full rounded-md border border-gray-400 px-2 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
-										/>
-									</>
-								)}
-							/>
-						))}
+						{addressFormObj.map((obj) => {
+							if (obj.type === 'text') {
+								return (
+									<form.Field
+										key={obj.name}
+										name={obj.name}
+										children={(field) => (
+											<>
+												<label
+													aria-label={field.name}
+													htmlFor={field.name}
+													className='mb-1 block font-medium'
+												>
+													{obj.label} <FieldInfo field={field} />
+												</label>
+												<input
+													type='text'
+													aria-label={`${field.name} input`}
+													name={field.name}
+													id={field.name}
+													value={String(field.state.value)}
+													onChange={(e) => field.handleChange(e.target.value)}
+													required
+													className='mb-3 w-full rounded-md border border-gray-400 px-2 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
+												/>
+											</>
+										)}
+									/>
+								);
+							} else if (
+								obj.type === 'radio' &&
+								obj.name === 'defaultAddress'
+							) {
+								return (
+									<form.Field
+										key={obj.name}
+										name='defaultAddress'
+										children={(field) => (
+											<div>
+												<label
+													aria-label={field.name}
+													htmlFor={field.name}
+													className='mt-1 mb-1 block font-medium'
+												>
+													Use as your default address?
+												</label>
 
-						<form.Field
-							name='defaultAddress'
-							children={(field) => (
-								<div>
-									<label
-										aria-label={field.name}
-										htmlFor={field.name}
-										className='mt-1 mb-1 block font-medium'
-									>
-										Use as your default address?
-									</label>
+												<div className='mb-2 flex items-center gap-5'>
+													<label className='flex items-center gap-1 text-lg'>
+														<input
+															type='radio'
+															aria-label={`${field.name} input`}
+															name={field.name}
+															id={field.name}
+															checked={field.state.value === true}
+															onChange={() => field.handleChange(true)}
+														/>
+														Yes
+													</label>
 
-									<div className='mb-2 flex items-center gap-5'>
-										<label className='flex items-center gap-1 text-lg'>
-											<input
-												type='radio'
-												aria-label={`${field.name} input`}
-												name={field.name}
-												id={field.name}
-												checked={field.state.value === true}
-												onChange={() => field.handleChange(true)}
-											/>
-											Yes
-										</label>
-
-										<label className='flex items-center gap-1 text-lg'>
-											<input
-												type='radio'
-												aria-label={`${field.name} input`}
-												name={field.name}
-												id={field.name}
-												checked={field.state.value === false}
-												onChange={() => field.handleChange(false)}
-											/>
-											No
-										</label>
-									</div>
-								</div>
-							)}
-						/>
+													<label className='flex items-center gap-1 text-lg'>
+														<input
+															type='radio'
+															aria-label={`${field.name} input`}
+															name={field.name}
+															id={field.name}
+															checked={field.state.value === false}
+															onChange={() => field.handleChange(false)}
+														/>
+														No
+													</label>
+												</div>
+											</div>
+										)}
+									/>
+								);
+							}
+						})}
 
 						<form.Subscribe
 							selector={(state) => [state.canSubmit, state.isSubmitting]}
