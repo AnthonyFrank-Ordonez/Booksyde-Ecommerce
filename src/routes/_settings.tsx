@@ -63,10 +63,9 @@ function SettingsLayout() {
 				</Link>
 			</div>
 
-			<div className='grid-cols-1 rounded-lg bg-white md:grid md:grid-cols-12'>
-				<aside className='hidden min-h-screen rounded-l-lg p-4 md:col-span-2 md:block xl:border-r xl:border-r-gray-300'>
-					<nav className='flex flex-col px-1 py-1 xl:space-y-2'>
-						{/* Profile */}
+			<div className='grid grid-cols-1 rounded-lg bg-white md:grid-cols-12'>
+				<aside className='hidden min-h-screen rounded-l-lg p-4 md:col-span-2 md:grid md:border-r md:border-r-gray-300'>
+					<nav className='flex flex-col px-1 py-1 md:space-y-2'>
 						<Link
 							to='/profile'
 							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
@@ -78,7 +77,6 @@ function SettingsLayout() {
 							<span className=''>Profile</span>
 						</Link>
 
-						{/* Orders */}
 						<Link
 							to='/orders'
 							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
@@ -90,7 +88,6 @@ function SettingsLayout() {
 							<span className=''>Orders</span>
 						</Link>
 
-						{/* Address */}
 						<Link
 							to='/address'
 							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
@@ -102,7 +99,6 @@ function SettingsLayout() {
 							<span className=''>Address</span>
 						</Link>
 
-						{/* Billing */}
 						<Link
 							to='/billing'
 							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
