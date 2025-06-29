@@ -52,11 +52,11 @@ function Profile() {
 
 			{/* Personal Information */}
 			<div className='mb-5 rounded-xl border border-gray-300 px-5 py-6 xl:mb-7'>
-				<div className='mb-5 flex justify-between xl:mb-3'>
+				<div className='mb-5 flex justify-between xl:mb-5'>
 					<p className='font-medium sm:text-[1.1rem]'>Personal Information</p>
-					<button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:px-2 xl:py-1'>
+					{/* <button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:px-2 xl:py-1'>
 						<span>Edit</span> <CiEdit />
-					</button>
+					</button> */}
 				</div>
 
 				<div className='grid grid-cols-1 items-center md:grid-cols-2 xl:grid-cols-[350px_500px]'>
@@ -88,11 +88,11 @@ function Profile() {
 
 			{/* Address Information */}
 			<div className='rounded-xl border border-gray-300 px-5 py-6 xl:mb-7'>
-				<div className='mb-7 flex justify-between xl:mb-3'>
+				<div className='mb-7 flex justify-between xl:mb-5'>
 					<p className='font-medium sm:text-[1.1rem]'>Address</p>
-					<button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:px-2 xl:py-1'>
+					{/* <button className='flex cursor-pointer items-center rounded-lg border border-gray-500 px-2 py-0 transition-colors duration-300 hover:bg-black/5 xl:px-2 xl:py-1'>
 						<span>Edit</span> <CiEdit />
-					</button>
+					</button> */}
 				</div>
 
 				<div className='grid grid-cols-1 items-center md:grid-cols-2 xl:grid-cols-[350px_500px]'>
