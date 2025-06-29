@@ -65,3 +65,12 @@ export interface AddresFormObjType {
 	name: AddressNameValues;
 	type: string;
 }
+
+export interface AddressType {
+	houseNo: string;
+	city: string;
+	province: string;
+	country: string;
+	postal: string;
+	defaultAddress: boolean;
+}

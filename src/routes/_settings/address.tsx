@@ -5,13 +5,15 @@ import { useState } from 'react';
 
 import FieldInfo from '@/components/FieldInfo';
 import { AddressSchema } from '@/utils/zod';
-import type { AddresFormObjType } from '@/types';
+import type { AddresFormObjType, AddressType } from '@/types';
+import { useAddAddress } from '@/utils/servers/address';
 
 export const Route = createFileRoute('/_settings/address')({
 	component: Address,
 });
 
 function Address() {
+	const { mutateAsync: addAddress } = useAddAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
 	const addressFormObj: AddresFormObjType[] = [
 		{ label: 'House Number', name: 'houseNo', type: 'text' },
@@ -47,7 +49,8 @@ function Address() {
 			onChange: AddressSchema,
 		},
 		onSubmit: async ({ value }) => {
-			console.log('🚀 ~ onSubmit: ~ value:', value);
+			const AddressObj: AddressType = value;
+			await addAddress({ data: AddressObj });
 		},
 	});
 
