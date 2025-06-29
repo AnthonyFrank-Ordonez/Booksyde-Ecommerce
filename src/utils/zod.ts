@@ -40,3 +40,7 @@ export const AddressSchema = z.object({
 	defaultAddress: z.boolean(),
 	postal: z.string(),
 });
+
+export const GetUserAddressSchema = z.object({
+	userId: z.string(),
+});

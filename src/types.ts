@@ -60,6 +60,10 @@ export interface BookSlugType {
 	slug: string;
 }
 
+export interface UserAddressType {
+	userId: string;
+}
+
 export interface AddresFormObjType {
 	label: string;
 	name: AddressNameValues;
@@ -72,5 +76,15 @@ export interface AddressType {
 	province: string;
 	country: string;
 	postal: string;
+	defaultAddress: boolean;
+}
+
+export interface UserAddressType {
+	id: number;
+	houseNo: number;
+	city: string;
+	province: string;
+	country: string;
+	postal: number;
 	defaultAddress: boolean;
 }

@@ -6,13 +6,24 @@ import { useState } from 'react';
 import FieldInfo from '@/components/FieldInfo';
 import { AddressSchema } from '@/utils/zod';
 import type { AddresFormObjType, AddressType } from '@/types';
-import { useAddAddress } from '@/utils/servers/address';
+import { getUserAddQueryOptions, useAddAddress } from '@/utils/servers/address';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const Route = createFileRoute('/_settings/address')({
 	component: Address,
+	loader: async ({ context }) => {
+		const userId = context.userID!;
+		await context.queryClient.ensureQueryData(getUserAddQueryOptions(userId));
+
+		return {
+			userId,
+		};
+	},
 });
 
 function Address() {
+	const { userId } = Route.useLoaderData();
+	const userAddress = useSuspenseQuery(getUserAddQueryOptions(userId)).data;
 	const { mutateAsync: addAddress } = useAddAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
 	const addressFormObj: AddresFormObjType[] = [
@@ -27,6 +38,9 @@ function Address() {
 			type: 'radio',
 		},
 	];
+
+	// Windows
+	window.userAddress = userAddress;
 
 	const handleFormClick = () => {
 		setFormOpen(true);
