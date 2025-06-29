@@ -31,3 +31,12 @@ export const EmailSchema = z.object({
 	privacyUrl: z.string().optional(),
 	termsUrl: z.string().optional(),
 });
+
+export const AddressSchema = z.object({
+	houseNo: z.string(),
+	city: z.string(),
+	province: z.string(),
+	country: z.string(),
+	defaultAddress: z.boolean(),
+	postal: z.string(),
+});

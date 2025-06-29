@@ -21,10 +21,10 @@ model Comment {
 model Address {
   id             Int @id @default(autoincrement())
   houseNo        Int
-  City           String
-  Province       String
+  city           String
+  province       String
   country        String
-  Postal         Int
+  postal         Int
   defaultAddress Boolean
   userId         String
   user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
