@@ -36,21 +36,21 @@ function SettingsLayout() {
 				</Link>
 
 				<Link
-					to='/orders'
-					className='flex flex-col items-center rounded-md border py-2'
-					activeProps={{ className: 'bg-black text-white' }}
-				>
-					<MdOutlineShoppingBag className='h-5 w-5' />
-					<span className='text-sm'>Orders</span>
-				</Link>
-
-				<Link
 					to='/address'
 					className='flex flex-col items-center rounded-md border py-2'
 					activeProps={{ className: 'bg-black text-white' }}
 				>
 					<MdOutlineHome className='h-5 w-5' />
 					<span className='text-sm'>Address</span>
+				</Link>
+
+				<Link
+					to='/orders'
+					className='flex flex-col items-center rounded-md border py-2'
+					activeProps={{ className: 'bg-black text-white' }}
+				>
+					<MdOutlineShoppingBag className='h-5 w-5' />
+					<span className='text-sm'>Orders</span>
 				</Link>
 
 				<Link
@@ -78,17 +78,6 @@ function SettingsLayout() {
 						</Link>
 
 						<Link
-							to='/orders'
-							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
-							activeProps={{
-								className: 'bg-gray-300/30 rounded-full w-full',
-							}}
-						>
-							<MdOutlineShoppingBag className='xl:h-5 xl:w-5' />
-							<span className=''>Orders</span>
-						</Link>
-
-						<Link
 							to='/address'
 							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
 							activeProps={{
@@ -97,6 +86,17 @@ function SettingsLayout() {
 						>
 							<MdOutlineHome className='xl:h-5 xl:w-5' />
 							<span className=''>Address</span>
+						</Link>
+
+						<Link
+							to='/orders'
+							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
+							activeProps={{
+								className: 'bg-gray-300/30 rounded-full w-full',
+							}}
+						>
+							<MdOutlineShoppingBag className='xl:h-5 xl:w-5' />
+							<span className=''>Orders</span>
 						</Link>
 
 						<Link
