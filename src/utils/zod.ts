@@ -33,12 +33,22 @@ export const EmailSchema = z.object({
 });
 
 export const AddressSchema = z.object({
-	houseNo: z.string(),
+	houseNo: z.number(),
 	city: z.string(),
 	province: z.string(),
 	country: z.string(),
 	defaultAddress: z.boolean(),
-	postal: z.string(),
+	postal: z.number(),
+});
+
+export const UserAddressSchema = z.object({
+	houseNo: z.number(),
+	city: z.string(),
+	province: z.string(),
+	country: z.string(),
+	defaultAddress: z.boolean(),
+	postal: z.number(),
+	userId: z.string(),
 });
 
 export const GetUserAddressSchema = z.object({

@@ -1,13 +1,38 @@
 import { createServerFn } from '@tanstack/react-start';
-import { AddressSchema, GetUserAddressSchema } from '../zod';
+import { GetUserAddressSchema, UserAddressSchema } from '../zod';
 import { queryOptions, useMutation } from '@tanstack/react-query';
 import prisma from '../prisma';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
+import type { AddressType } from '@/types';
 
 export const addAddressFn = createServerFn({ method: 'POST' })
-	.validator((data: unknown) => AddressSchema.parse(data))
+	.validator((data: unknown) => UserAddressSchema.parse(data))
 	.handler(async ({ data }) => {
-		console.log(data);
+		const userAddress: AddressType = {
+			houseNo: data.houseNo,
+			city: data.city,
+			province: data.province,
+			country: data.country,
+			postal: data.postal,
+			defaultAddress: data.defaultAddress,
+			userId: data.userId,
+		};
+
+		try {
+			await prisma.address.create({
+				data: userAddress,
+			});
+
+			console.log('🟢 User Addresss Created!');
+		} catch (error: unknown) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				console.error('Error creating data', error);
+			} else if (error instanceof Error) {
+				console.error('Error creating user address', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
 	});
 
 export const useAddAddress = () =>

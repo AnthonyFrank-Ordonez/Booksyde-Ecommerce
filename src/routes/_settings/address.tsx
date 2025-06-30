@@ -27,20 +27,17 @@ function Address() {
 	const { mutateAsync: addAddress } = useAddAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
 	const addressFormObj: AddresFormObjType[] = [
-		{ label: 'House Number', name: 'houseNo', type: 'text' },
+		{ label: 'House Number', name: 'houseNo', type: 'number' },
 		{ label: 'City', name: 'city', type: 'text' },
 		{ label: 'Province', name: 'province', type: 'text' },
 		{ label: 'Country', name: 'country', type: 'text' },
-		{ label: 'Postal', name: 'postal', type: 'text' },
+		{ label: 'Postal', name: 'postal', type: 'number' },
 		{
 			label: 'Use as your default address',
 			name: 'defaultAddress',
 			type: 'radio',
 		},
 	];
-
-	// Windows
-	window.userAddress = userAddress;
 
 	const handleFormClick = () => {
 		setFormOpen(true);
@@ -52,18 +49,18 @@ function Address() {
 
 	const form = useForm({
 		defaultValues: {
-			houseNo: '',
+			houseNo: 0,
 			city: '',
 			province: '',
 			country: '',
 			defaultAddress: false,
-			postal: '',
+			postal: 0,
 		},
 		validators: {
 			onChange: AddressSchema,
 		},
 		onSubmit: async ({ value }) => {
-			const AddressObj: AddressType = value;
+			const AddressObj: AddressType = { ...value, userId: userId };
 			await addAddress({ data: AddressObj });
 		},
 	});
@@ -112,6 +109,36 @@ function Address() {
 													id={field.name}
 													value={String(field.state.value)}
 													onChange={(e) => field.handleChange(e.target.value)}
+													required
+													className='mb-3 w-full rounded-md border border-gray-400 px-2 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
+												/>
+											</>
+										)}
+									/>
+								);
+							} else if (obj.type === 'number') {
+								return (
+									<form.Field
+										key={obj.name}
+										name={obj.name}
+										children={(field) => (
+											<>
+												<label
+													aria-label={field.name}
+													htmlFor={field.name}
+													className='mb-1 block font-medium'
+												>
+													{obj.label} <FieldInfo field={field} />
+												</label>
+												<input
+													type='number'
+													aria-label={`${field.name} input`}
+													name={field.name}
+													id={field.name}
+													value={String(field.state.value)}
+													onChange={(e) =>
+														field.handleChange(Number(e.target.value))
+													}
 													required
 													className='mb-3 w-full rounded-md border border-gray-400 px-2 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
 												/>
