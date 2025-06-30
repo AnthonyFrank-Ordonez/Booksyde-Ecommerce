@@ -86,3 +86,8 @@ export interface UpdateAddressObjType {
 	userId: string;
 	addressId: number | null;
 }
+
+export interface DeleteAddressObjType {
+	userId: string;
+	addressId: number | null;
+}

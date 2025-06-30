@@ -65,3 +65,8 @@ export const UpdateAddressSchema = z.object({
 	userId: z.string(),
 	addressId: z.number(),
 });
+
+export const DeleteAddressSchema = z.object({
+	userId: z.string(),
+	addressId: z.number(),
+});

@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import {
+	DeleteAddressSchema,
 	GetUserAddressSchema,
 	GetUserDefaultAddressSchema,
 	UpdateAddressSchema,
@@ -189,6 +190,46 @@ export const useUpdateDefaultAddress = () => {
 
 	return useMutation({
 		mutationFn: updateDefaultAddressFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ['user-address', data?.userId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['user-default-address', data?.userId],
+			});
+		},
+	});
+};
+
+export const deleteUserAddress = createServerFn({ method: 'POST' })
+	.validator((data: unknown) => DeleteAddressSchema.parse(data))
+	.handler(async ({ data }) => {
+		try {
+			await prisma.address.delete({
+				where: {
+					id: data.addressId,
+					userId: data.userId,
+				},
+			});
+
+			console.log('🔴 Successfully deleted addresss');
+			return data;
+		} catch (error: unknown) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				console.error('Error creating data', error);
+			} else if (error instanceof Error) {
+				console.error('Error creating user address', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
+	});
+
+export const useDeleteAddress = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: deleteUserAddress,
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
 				queryKey: ['user-address', data?.userId],

@@ -9,11 +9,13 @@ import { AddressSchema } from '@/utils/zod';
 import type {
 	AddresFormObjType,
 	AddressType,
+	DeleteAddressObjType,
 	UpdateAddressObjType,
 } from '@/types';
 import {
 	getUserAddQueryOptions,
 	useAddAddress,
+	useDeleteAddress,
 	useUpdateDefaultAddress,
 } from '@/utils/servers/address';
 import ConfirmationModal from '@/components/ConfirmationModal';
@@ -35,6 +37,7 @@ function Address() {
 	const userAddress = useSuspenseQuery(getUserAddQueryOptions(userId)).data;
 	const { mutateAsync: addAddress } = useAddAddress();
 	const { mutateAsync: updateAddress } = useUpdateDefaultAddress();
+	const { mutateAsync: deleteAddress } = useDeleteAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [typeModal, setTypeModal] = useState('');
@@ -55,7 +58,7 @@ function Address() {
 		},
 	];
 
-	const handleFormClick = () => {
+	const handleShowForm = () => {
 		setFormOpen(true);
 	};
 
@@ -85,6 +88,20 @@ function Address() {
 
 		setShowModal(false);
 		setSelectedAddressId(null);
+		setTypeModal('');
+	};
+
+	const handleDeleteAddress = async () => {
+		const addressToBeDeleted: DeleteAddressObjType = {
+			userId: userId,
+			addressId: selectedAddressId,
+		};
+
+		await deleteAddress({ data: addressToBeDeleted });
+
+		setShowModal(false);
+		setSelectedAddressId(null);
+		setTypeModal('');
 	};
 
 	const form = useForm({
@@ -161,14 +178,14 @@ function Address() {
 			{showModal && typeModal === 'delete' && (
 				<ConfirmationModal
 					message='Do you want to delete this address'
-					confirmFn={handleChangeDefaultAddress}
+					confirmFn={handleDeleteAddress}
 					cancelFn={handleNo}
 				/>
 			)}
 
 			<button
 				disabled={isFormOpen}
-				onClick={handleFormClick}
+				onClick={handleShowForm}
 				className={`flex w-full cursor-pointer items-center justify-center gap-1 rounded-lg border border-gray-400 py-2 transition-colors duration-300 hover:bg-black/3 ${isFormOpen && 'diabled hover:cursor-not-allowed'}`}
 			>
 				<FaPlus className='h-3 w-3' />
