@@ -4,6 +4,9 @@ import { auth } from '../auth';
 import { getWebRequest } from '@tanstack/react-start/server';
 
 import type { ErrorSignInType, SignInType, SignUpType } from '@/types';
+import { GetUserBySessionSchema } from '../zod';
+import prisma from '../prisma';
+import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 
 export const signInServer = createServerFn({ method: 'POST' })
 	.validator((cred: unknown): SignInType => {
@@ -95,3 +98,25 @@ export const signOutUserFn = createServerFn({ method: 'POST' }).handler(
 		throw redirect({ to: '/' });
 	}
 );
+
+export const findUserBySession = createServerFn({ method: 'GET' })
+	.validator((data: unknown) => GetUserBySessionSchema.parse(data))
+	.handler(async ({ data }) => {
+		try {
+			const userData = await prisma.user.findUnique({
+				where: {
+					id: data.userId,
+				},
+			});
+
+			return userData;
+		} catch (error: unknown) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				console.error('Error creating data', error);
+			} else if (error instanceof Error) {
+				console.error('Error creating user address', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
+	});
