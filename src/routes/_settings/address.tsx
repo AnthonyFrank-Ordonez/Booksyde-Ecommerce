@@ -3,7 +3,6 @@ import { createFileRoute } from '@tanstack/react-router';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { AnimatePresence, motion } from 'motion/react';
 
 import FieldInfo from '@/components/FieldInfo';
 import { AddressSchema } from '@/utils/zod';
@@ -38,6 +37,7 @@ function Address() {
 	const { mutateAsync: updateAddress } = useUpdateDefaultAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+	const [typeModal, setTypeModal] = useState('');
 	const [selectedAddressId, setSelectedAddressId] = useState<null | number>(
 		null
 	);
@@ -63,14 +63,16 @@ function Address() {
 		setFormOpen(false);
 	};
 
-	const handleShowModal = (id: number) => {
+	const handleShowModal = (id: number, type: string) => {
 		setSelectedAddressId(id);
+		setTypeModal(type);
 		setShowModal(true);
 	};
 
 	const handleNo = () => {
 		setShowModal(false);
 		setSelectedAddressId(null);
+		setTypeModal('');
 	};
 
 	const handleChangeDefaultAddress = async () => {
@@ -132,21 +134,33 @@ function Address() {
 							) : (
 								<div className='flex items-center gap-2'>
 									<button
-										onClick={() => handleShowModal(addresses.id)}
+										onClick={() => handleShowModal(addresses.id, 'update')}
 										className='w-full cursor-pointer rounded-full border bg-black px-3 py-2 text-xs text-white transition-colors duration-300 hover:bg-black/80 md:py-1 md:text-sm'
 									>
 										Set as default address
 									</button>
-									<FaTrash className='h-4.5 w-4.5 cursor-pointer md:h-4 md:w-4' />
+									<button
+										onClick={() => handleShowModal(addresses.id, 'delete')}
+									>
+										<FaTrash className='h-4.5 w-4.5 cursor-pointer md:h-4 md:w-4' />
+									</button>
 								</div>
 							)}
 						</div>
 					</div>
 				))}
 
-			{showModal && (
+			{showModal && typeModal === 'update' && (
 				<ConfirmationModal
 					message='Do you want to set it as your default address'
+					confirmFn={handleChangeDefaultAddress}
+					cancelFn={handleNo}
+				/>
+			)}
+
+			{showModal && typeModal === 'delete' && (
+				<ConfirmationModal
+					message='Do you want to delete this address'
 					confirmFn={handleChangeDefaultAddress}
 					cancelFn={handleNo}
 				/>
