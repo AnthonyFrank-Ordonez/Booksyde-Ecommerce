@@ -110,8 +110,7 @@ function Profile() {
 						<div className='flex flex-col gap-1'>
 							<p className='text-sm font-medium text-gray-500'>City, Country</p>
 							<p>
-								{`${userDefaultAddress?.province}, ${userDefaultAddress?.country}` ||
-									'Province, Country'}
+								{`${userDefaultAddress?.province || 'City'}, ${userDefaultAddress?.country || 'Country'}`}
 							</p>
 						</div>
 					</div>
@@ -122,8 +121,7 @@ function Profile() {
 								Street/Province
 							</p>
 							<p>
-								{`${userDefaultAddress?.street}, ${userDefaultAddress?.city}` ||
-									'Street, City'}
+								{`${userDefaultAddress?.street || 'Street'}, ${userDefaultAddress?.city || 'Province'}`}
 							</p>
 						</div>
 
