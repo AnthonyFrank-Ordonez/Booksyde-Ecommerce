@@ -84,5 +84,5 @@ export interface AddressType {
 
 export interface UpdateAddressObjType {
 	userId: string;
-	addressId: number;
+	addressId: number | null;
 }

@@ -2,6 +2,8 @@ import { useForm } from '@tanstack/react-form';
 import { createFileRoute } from '@tanstack/react-router';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'motion/react';
 
 import FieldInfo from '@/components/FieldInfo';
 import { AddressSchema } from '@/utils/zod';
@@ -15,7 +17,7 @@ import {
 	useAddAddress,
 	useUpdateDefaultAddress,
 } from '@/utils/servers/address';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 export const Route = createFileRoute('/_settings/address')({
 	component: Address,
@@ -35,6 +37,10 @@ function Address() {
 	const { mutateAsync: addAddress } = useAddAddress();
 	const { mutateAsync: updateAddress } = useUpdateDefaultAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
+	const [showModal, setShowModal] = useState(false);
+	const [selectedAddressId, setSelectedAddressId] = useState<null | number>(
+		null
+	);
 	const addressFormObj: AddresFormObjType[] = [
 		{ label: 'House Number', name: 'houseNo', type: 'number' },
 		{ label: 'Street', name: 'street', type: 'text' },
@@ -57,13 +63,26 @@ function Address() {
 		setFormOpen(false);
 	};
 
-	const handleChangeDefaultAddress = async (id: number) => {
+	const handleShowModal = (id: number) => {
+		setSelectedAddressId(id);
+		setShowModal(true);
+	};
+
+	const handleNo = () => {
+		setShowModal(false);
+		setSelectedAddressId(null);
+	};
+
+	const handleChangeDefaultAddress = async () => {
 		const updateAddressObj: UpdateAddressObjType = {
 			userId: userId,
-			addressId: id,
+			addressId: selectedAddressId,
 		};
 
 		await updateAddress({ data: updateAddressObj });
+
+		setShowModal(false);
+		setSelectedAddressId(null);
 	};
 
 	const form = useForm({
@@ -113,7 +132,7 @@ function Address() {
 							) : (
 								<div className='flex items-center gap-2'>
 									<button
-										onClick={() => handleChangeDefaultAddress(addresses.id)}
+										onClick={() => handleShowModal(addresses.id)}
 										className='w-full cursor-pointer rounded-full border bg-black px-3 py-2 text-xs text-white transition-colors duration-300 hover:bg-black/80 md:py-1 md:text-sm'
 									>
 										Set as default address
@@ -124,6 +143,14 @@ function Address() {
 						</div>
 					</div>
 				))}
+
+			{showModal && (
+				<ConfirmationModal
+					message='Do you want to set it as your default address'
+					confirmFn={handleChangeDefaultAddress}
+					cancelFn={handleNo}
+				/>
+			)}
 
 			<button
 				disabled={isFormOpen}
