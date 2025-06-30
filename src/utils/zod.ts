@@ -34,6 +34,7 @@ export const EmailSchema = z.object({
 
 export const AddressSchema = z.object({
 	houseNo: z.number(),
+	street: z.string(),
 	city: z.string(),
 	province: z.string(),
 	country: z.string(),
@@ -43,6 +44,7 @@ export const AddressSchema = z.object({
 
 export const UserAddressSchema = z.object({
 	houseNo: z.number(),
+	street: z.string(),
 	city: z.string(),
 	province: z.string(),
 	country: z.string(),

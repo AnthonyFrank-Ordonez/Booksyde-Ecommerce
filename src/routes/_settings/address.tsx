@@ -1,6 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import { createFileRoute } from '@tanstack/react-router';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 
 import FieldInfo from '@/components/FieldInfo';
@@ -28,6 +28,7 @@ function Address() {
 	const [isFormOpen, setFormOpen] = useState(false);
 	const addressFormObj: AddresFormObjType[] = [
 		{ label: 'House Number', name: 'houseNo', type: 'number' },
+		{ label: 'Street', name: 'street', type: 'text' },
 		{ label: 'City', name: 'city', type: 'text' },
 		{ label: 'Province', name: 'province', type: 'text' },
 		{ label: 'Country', name: 'country', type: 'text' },
@@ -50,6 +51,7 @@ function Address() {
 	const form = useForm({
 		defaultValues: {
 			houseNo: 0,
+			street: '',
 			city: '',
 			province: '',
 			country: '',
@@ -62,11 +64,44 @@ function Address() {
 		onSubmit: async ({ value }) => {
 			const AddressObj: AddressType = { ...value, userId: userId };
 			await addAddress({ data: AddressObj });
+
+			form.reset();
+			setFormOpen(false);
 		},
 	});
 
 	return (
 		<div className='px-4 py-3 md:px-7 md:py-5'>
+			{userAddress?.map((addresses) => (
+				<div
+					key={addresses.id}
+					className='mb-3 w-full rounded-lg border border-gray-400 px-4 py-5'
+				>
+					<div className='flex flex-col gap-2 md:flex-row md:items-center md:justify-between'>
+						<h2 className='text-[0.95rem] font-light'>
+							• {addresses.houseNo} {addresses.street}, {addresses.city},{' '}
+							{addresses.province}, {addresses.country}, {addresses.postal}
+						</h2>
+
+						{addresses.defaultAddress ? (
+							<button
+								disabled
+								className='rounded-full bg-green-300 px-1 py-2 text-xs font-medium text-black md:px-3 md:py-1 md:text-sm'
+							>
+								Default address
+							</button>
+						) : (
+							<div className='flex items-center gap-2'>
+								<button className='w-full cursor-pointer rounded-full border bg-black px-3 py-2 text-xs text-white transition-colors duration-300 hover:bg-black/80 md:py-1 md:text-sm'>
+									Set as default address
+								</button>
+								<FaTrash className='h-4.5 w-4.5 cursor-pointer md:h-4 md:w-4' />
+							</div>
+						)}
+					</div>
+				</div>
+			))}
+
 			<button
 				disabled={isFormOpen}
 				onClick={handleFormClick}

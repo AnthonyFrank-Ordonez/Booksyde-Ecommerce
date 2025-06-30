@@ -1,6 +1,10 @@
 import { createServerFn } from '@tanstack/react-start';
 import { GetUserAddressSchema, UserAddressSchema } from '../zod';
-import { queryOptions, useMutation } from '@tanstack/react-query';
+import {
+	queryOptions,
+	useMutation,
+	useQueryClient,
+} from '@tanstack/react-query';
 import prisma from '../prisma';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 import type { AddressType } from '@/types';
@@ -8,8 +12,9 @@ import type { AddressType } from '@/types';
 export const addAddressFn = createServerFn({ method: 'POST' })
 	.validator((data: unknown) => UserAddressSchema.parse(data))
 	.handler(async ({ data }) => {
-		const userAddress: AddressType = {
+		const newUserAddress: AddressType = {
 			houseNo: data.houseNo,
+			street: data.street,
 			city: data.city,
 			province: data.province,
 			country: data.country,
@@ -19,11 +24,12 @@ export const addAddressFn = createServerFn({ method: 'POST' })
 		};
 
 		try {
-			await prisma.address.create({
-				data: userAddress,
+			const userAddress = await prisma.address.create({
+				data: newUserAddress,
 			});
 
 			console.log('🟢 User Addresss Created!');
+			return userAddress;
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
 				console.error('Error creating data', error);
@@ -35,10 +41,18 @@ export const addAddressFn = createServerFn({ method: 'POST' })
 		}
 	});
 
-export const useAddAddress = () =>
-	useMutation({
+export const useAddAddress = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
 		mutationFn: addAddressFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ['user-address', data?.userId],
+			});
+		},
 	});
+};
 
 export const getUserAddresss = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => GetUserAddressSchema.parse(data))

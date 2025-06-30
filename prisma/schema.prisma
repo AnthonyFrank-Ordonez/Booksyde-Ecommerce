@@ -21,6 +21,7 @@ model Comment {
 model Address {
   id             Int @id @default(autoincrement())
   houseNo        Int
+  street         String
   city           String
   province       String
   country        String

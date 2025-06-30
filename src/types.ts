@@ -1,5 +1,6 @@
 type AddressNameValues =
 	| 'houseNo'
+	| 'street'
 	| 'city'
 	| 'province'
 	| 'country'
@@ -72,6 +73,7 @@ export interface AddresFormObjType {
 
 export interface AddressType {
 	houseNo: number;
+	street: string;
 	city: string;
 	province: string;
 	country: string;
