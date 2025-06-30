@@ -25,6 +25,10 @@ function Profile() {
 		getUserDefaultAddQueryOptions(session.id)
 	).data;
 
+	if (typeof window !== 'undefined') {
+		window.userSession = session;
+	}
+
 	return (
 		<div className='px-4 py-3 md:px-7 md:py-5 xl:px-8 xl:py-5'>
 			<h2 className='mb-3 text-xl font-bold md:mb-6 xl:mb-7'>Profile</h2>

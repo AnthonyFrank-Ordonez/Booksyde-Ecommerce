@@ -91,3 +91,13 @@ export interface DeleteAddressObjType {
 	userId: string;
 	addressId: number | null;
 }
+
+export interface UserSessionType {
+	id: string | undefined;
+	name: string | undefined;
+	image: string | null | undefined;
+	email: string | undefined;
+	firstName: string | null | undefined;
+	lastName: string | null | undefined;
+	phone: string | null | undefined;
+}

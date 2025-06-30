@@ -1,7 +1,12 @@
-import type { AddresFormObjType, AddressType, UserAddressType } from './types';
+import type {
+	AddresFormObjType,
+	AddressType,
+	UserAddressType,
+	UserSessionType,
+} from './types';
 
 declare global {
 	interface Window {
-		// userAddress: UserAddressType[] | undefined;
+		userSession: UserSessionType;
 	}
 }
