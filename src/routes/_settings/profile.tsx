@@ -1,11 +1,16 @@
+import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
 import { getUserSession } from '@/utils/servers/auth-server';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { CiEdit } from 'react-icons/ci';
 
 export const Route = createFileRoute('/_settings/profile')({
 	component: Profile,
-	loader: async () => {
+	loader: async ({ context }) => {
 		const session = await getUserSession();
+		await context.queryClient.ensureQueryData(
+			getUserDefaultAddQueryOptions(session.id)
+		);
 
 		return {
 			session,
@@ -15,6 +20,9 @@ export const Route = createFileRoute('/_settings/profile')({
 
 function Profile() {
 	const { session } = Route.useLoaderData();
+	const userDefaultAddress = useSuspenseQuery(
+		getUserDefaultAddQueryOptions(session.id)
+	).data;
 
 	return (
 		<div className='px-4 py-3 md:px-7 md:py-5 xl:px-8 xl:py-5'>
@@ -99,24 +107,32 @@ function Profile() {
 					<div className='mb-7 flex flex-col gap-5 md:mb-0'>
 						<div className='flex flex-col gap-1'>
 							<p className='text-sm font-medium text-gray-500'>House No.</p>
-							<p>House Number</p>
+							<p>{userDefaultAddress?.houseNo || 'House Number'}</p>
 						</div>
 
 						<div className='flex flex-col gap-1'>
-							<p className='text-sm font-medium text-gray-500'>Country</p>
-							<p>Country</p>
+							<p className='text-sm font-medium text-gray-500'>City, Country</p>
+							<p>
+								{`${userDefaultAddress?.province}, ${userDefaultAddress?.country}` ||
+									'Province, Country'}
+							</p>
 						</div>
 					</div>
 
 					<div className='flex flex-col gap-5'>
 						<div className='flex flex-col gap-1'>
-							<p className='text-sm font-medium text-gray-500'>City/Province</p>
-							<p>City, Province</p>
+							<p className='text-sm font-medium text-gray-500'>
+								Street/Province
+							</p>
+							<p>
+								{`${userDefaultAddress?.street}, ${userDefaultAddress?.city}` ||
+									'Street, City'}
+							</p>
 						</div>
 
 						<div className='flex flex-col gap-1'>
 							<p className='text-sm font-medium text-gray-500'>Postal</p>
-							<p>Postal</p>
+							<p>{userDefaultAddress?.postal || 'Postal'}</p>
 						</div>
 					</div>
 				</div>

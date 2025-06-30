@@ -1,5 +1,9 @@
 import { createServerFn } from '@tanstack/react-start';
-import { GetUserAddressSchema, UserAddressSchema } from '../zod';
+import {
+	GetUserAddressSchema,
+	GetUserDefaultAddressSchema,
+	UserAddressSchema,
+} from '../zod';
 import {
 	queryOptions,
 	useMutation,
@@ -54,7 +58,7 @@ export const useAddAddress = () => {
 	});
 };
 
-export const getUserAddresss = createServerFn({ method: 'GET' })
+export const getUserAddressses = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => GetUserAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -82,6 +86,41 @@ export const getUserAddQueryOptions = (userId: string) =>
 		retry: 1,
 		refetchOnWindowFocus: false,
 		staleTime: Infinity,
-		queryFn: () => getUserAddresss({ data: { userId: userId } }),
+		queryFn: () => getUserAddressses({ data: { userId: userId } }),
 		enabled: !!userId,
+	});
+
+export const getUserDefaultAddress = createServerFn({ method: 'GET' })
+	.validator((data: unknown) => GetUserDefaultAddressSchema.parse(data))
+	.handler(async ({ data }) => {
+		const sessionId = data.sessionId;
+		console.log('🟢 Received session id ==>', sessionId);
+
+		try {
+			const defaultAddress = await prisma.address.findFirst({
+				where: {
+					userId: sessionId,
+				},
+			});
+
+			return defaultAddress;
+		} catch (error: unknown) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				console.error('Error fetching data', error);
+			} else if (error instanceof Error) {
+				console.error('Error fetching user address', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
+	});
+
+export const getUserDefaultAddQueryOptions = (sessionId: string | undefined) =>
+	queryOptions({
+		queryKey: ['user-default-address'],
+		retry: 1,
+		refetchOnWindowFocus: false,
+		staleTime: Infinity,
+		enabled: !!sessionId,
+		queryFn: () => getUserDefaultAddress({ data: { sessionId: sessionId } }),
 	});

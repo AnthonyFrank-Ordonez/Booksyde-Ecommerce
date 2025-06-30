@@ -56,3 +56,7 @@ export const UserAddressSchema = z.object({
 export const GetUserAddressSchema = z.object({
 	userId: z.string(),
 });
+
+export const GetUserDefaultAddressSchema = z.object({
+	sessionId: z.string(),
+});
