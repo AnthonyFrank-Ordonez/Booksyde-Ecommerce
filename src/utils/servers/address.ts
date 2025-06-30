@@ -2,6 +2,7 @@ import { createServerFn } from '@tanstack/react-start';
 import {
 	GetUserAddressSchema,
 	GetUserDefaultAddressSchema,
+	UpdateAddressSchema,
 	UserAddressSchema,
 } from '../zod';
 import {
@@ -58,7 +59,7 @@ export const useAddAddress = () => {
 	});
 };
 
-export const getUserAddressses = createServerFn({ method: 'GET' })
+export const getUserAddresssesFn = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => GetUserAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -86,11 +87,11 @@ export const getUserAddQueryOptions = (userId: string) =>
 		retry: 1,
 		refetchOnWindowFocus: false,
 		staleTime: Infinity,
-		queryFn: () => getUserAddressses({ data: { userId: userId } }),
+		queryFn: () => getUserAddresssesFn({ data: { userId: userId } }),
 		enabled: !!userId,
 	});
 
-export const getUserDefaultAddress = createServerFn({ method: 'GET' })
+export const getUserDefaultAddressFn = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => GetUserDefaultAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		const sessionId = data.sessionId;
@@ -100,6 +101,7 @@ export const getUserDefaultAddress = createServerFn({ method: 'GET' })
 			const defaultAddress = await prisma.address.findFirst({
 				where: {
 					userId: sessionId,
+					defaultAddress: true,
 				},
 			});
 
@@ -117,10 +119,54 @@ export const getUserDefaultAddress = createServerFn({ method: 'GET' })
 
 export const getUserDefaultAddQueryOptions = (sessionId: string | undefined) =>
 	queryOptions({
-		queryKey: ['user-default-address'],
+		queryKey: ['user-default-address', sessionId],
 		retry: 1,
 		refetchOnWindowFocus: false,
 		staleTime: Infinity,
 		enabled: !!sessionId,
-		queryFn: () => getUserDefaultAddress({ data: { sessionId: sessionId } }),
+		queryFn: () => getUserDefaultAddressFn({ data: { sessionId: sessionId } }),
 	});
+
+export const updateDefaultAddressFn = createServerFn({ method: 'POST' })
+	.validator((data: unknown) => UpdateAddressSchema.parse(data))
+	.handler(async ({ data }) => {
+		// Update the exisint default addresss to false
+		await prisma.address.updateMany({
+			where: {
+				userId: data.userId,
+				defaultAddress: true,
+			},
+			data: {
+				defaultAddress: false,
+			},
+		});
+
+		// Set the new address to default address
+		await prisma.address.update({
+			where: {
+				id: data.addressId,
+				userId: data.userId,
+			},
+			data: {
+				defaultAddress: true,
+			},
+		});
+
+		return data;
+	});
+
+export const useUpdateDefaultAddress = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: updateDefaultAddressFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ['user-address', data.userId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['user-default-address', data.userId],
+			});
+		},
+	});
+};

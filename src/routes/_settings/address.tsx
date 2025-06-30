@@ -5,8 +5,16 @@ import { useState } from 'react';
 
 import FieldInfo from '@/components/FieldInfo';
 import { AddressSchema } from '@/utils/zod';
-import type { AddresFormObjType, AddressType } from '@/types';
-import { getUserAddQueryOptions, useAddAddress } from '@/utils/servers/address';
+import type {
+	AddresFormObjType,
+	AddressType,
+	UpdateAddressObjType,
+} from '@/types';
+import {
+	getUserAddQueryOptions,
+	useAddAddress,
+	useUpdateDefaultAddress,
+} from '@/utils/servers/address';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const Route = createFileRoute('/_settings/address')({
@@ -25,6 +33,7 @@ function Address() {
 	const { userId } = Route.useLoaderData();
 	const userAddress = useSuspenseQuery(getUserAddQueryOptions(userId)).data;
 	const { mutateAsync: addAddress } = useAddAddress();
+	const { mutateAsync: updateAddress } = useUpdateDefaultAddress();
 	const [isFormOpen, setFormOpen] = useState(false);
 	const addressFormObj: AddresFormObjType[] = [
 		{ label: 'House Number', name: 'houseNo', type: 'number' },
@@ -46,6 +55,15 @@ function Address() {
 
 	const handleCancelForm = () => {
 		setFormOpen(false);
+	};
+
+	const handleChangeDefaultAddress = async (id: number) => {
+		const updateAddressObj: UpdateAddressObjType = {
+			userId: userId,
+			addressId: id,
+		};
+
+		await updateAddress({ data: updateAddressObj });
 	};
 
 	const form = useForm({
@@ -72,35 +90,40 @@ function Address() {
 
 	return (
 		<div className='px-4 py-3 md:px-7 md:py-5'>
-			{userAddress?.map((addresses) => (
-				<div
-					key={addresses.id}
-					className='mb-3 w-full rounded-lg border border-gray-400 px-4 py-5'
-				>
-					<div className='flex flex-col gap-2 md:flex-row md:items-center md:justify-between'>
-						<h2 className='text-[0.95rem] font-light'>
-							• {addresses.houseNo} {addresses.street}, {addresses.city},{' '}
-							{addresses.province}, {addresses.country}, {addresses.postal}
-						</h2>
+			{userAddress
+				?.sort((add1, add2) => +add2.defaultAddress - +add1?.defaultAddress)
+				?.map((addresses) => (
+					<div
+						key={addresses.id}
+						className='mb-3 w-full rounded-lg border border-gray-400 px-4 py-5'
+					>
+						<div className='flex flex-col gap-2 md:flex-row md:items-center md:justify-between'>
+							<h2 className='text-[0.95rem] font-light'>
+								• {addresses.houseNo} {addresses.street}, {addresses.city},{' '}
+								{addresses.province}, {addresses.country}, {addresses.postal}
+							</h2>
 
-						{addresses.defaultAddress ? (
-							<button
-								disabled
-								className='rounded-full bg-green-300 px-1 py-2 text-xs font-medium text-black md:px-3 md:py-1 md:text-sm'
-							>
-								Default address
-							</button>
-						) : (
-							<div className='flex items-center gap-2'>
-								<button className='w-full cursor-pointer rounded-full border bg-black px-3 py-2 text-xs text-white transition-colors duration-300 hover:bg-black/80 md:py-1 md:text-sm'>
-									Set as default address
+							{addresses.defaultAddress ? (
+								<button
+									disabled
+									className='rounded-full bg-green-300 px-1 py-2 text-xs font-medium text-black md:px-3 md:py-1 md:text-sm'
+								>
+									Default address
 								</button>
-								<FaTrash className='h-4.5 w-4.5 cursor-pointer md:h-4 md:w-4' />
-							</div>
-						)}
+							) : (
+								<div className='flex items-center gap-2'>
+									<button
+										onClick={() => handleChangeDefaultAddress(addresses.id)}
+										className='w-full cursor-pointer rounded-full border bg-black px-3 py-2 text-xs text-white transition-colors duration-300 hover:bg-black/80 md:py-1 md:text-sm'
+									>
+										Set as default address
+									</button>
+									<FaTrash className='h-4.5 w-4.5 cursor-pointer md:h-4 md:w-4' />
+								</div>
+							)}
+						</div>
 					</div>
-				</div>
-			))}
+				))}
 
 			<button
 				disabled={isFormOpen}

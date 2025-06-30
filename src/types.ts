@@ -82,12 +82,7 @@ export interface AddressType {
 	userId: string;
 }
 
-// export interface UserAddressType {
-// 	id?: number;
-// 	houseNo: number;
-// 	city: string;
-// 	province: string;
-// 	country: string;
-// 	postal: number;
-// 	defaultAddress: boolean;
-// }
+export interface UpdateAddressObjType {
+	userId: string;
+	addressId: number;
+}
