@@ -3,6 +3,7 @@ import { getUserSession } from '@/utils/servers/auth-server';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { CiEdit } from 'react-icons/ci';
+import { FaUser } from 'react-icons/fa';
 
 export const Route = createFileRoute('/_settings/profile')({
 	component: Profile,
@@ -31,12 +32,14 @@ function Profile() {
 			{/* Profile Section */}
 			<div className='relative mb-5 flex w-full flex-col gap-5 rounded-xl border border-gray-300 px-5 py-6 md:flex-row xl:mb-7'>
 				<div className='ml-2 flex h-35 w-35 flex-shrink-0 items-center justify-center rounded-full sm:ml-5 sm:h-38 sm:w-38 md:ml-0 md:h-25 md:w-25 xl:h-20 xl:w-20'>
-					{session.image && (
+					{session.image ? (
 						<img
 							src={session.image}
 							alt=''
 							className='h-full w-full rounded-full object-cover'
 						/>
+					) : (
+						<FaUser className='h-full w-full rounded-full bg-gray-500 object-cover text-white' />
 					)}
 				</div>
 
