@@ -29,12 +29,31 @@ export const addAddressFn = createServerFn({ method: 'POST' })
 		};
 
 		try {
-			const userAddress = await prisma.address.create({
-				data: newUserAddress,
-			});
+			if (newUserAddress.defaultAddress) {
+				await prisma.address.updateMany({
+					where: {
+						userId: newUserAddress.userId,
+						defaultAddress: true,
+					},
+					data: {
+						defaultAddress: false,
+					},
+				});
 
-			console.log('🟢 User Addresss Created!');
-			return userAddress;
+				const userAddress = await prisma.address.create({
+					data: newUserAddress,
+				});
+
+				console.log('🟢 User Addresss Created!');
+				return userAddress;
+			} else {
+				const userAddress = await prisma.address.create({
+					data: newUserAddress,
+				});
+
+				console.log('🟢 User Addresss Created!');
+				return userAddress;
+			}
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
 				console.error('Error creating data', error);
@@ -130,29 +149,39 @@ export const getUserDefaultAddQueryOptions = (sessionId: string | undefined) =>
 export const updateDefaultAddressFn = createServerFn({ method: 'POST' })
 	.validator((data: unknown) => UpdateAddressSchema.parse(data))
 	.handler(async ({ data }) => {
-		// Update the exisint default addresss to false
-		await prisma.address.updateMany({
-			where: {
-				userId: data.userId,
-				defaultAddress: true,
-			},
-			data: {
-				defaultAddress: false,
-			},
-		});
+		try {
+			// Update the exisint default addresss to false
+			await prisma.address.updateMany({
+				where: {
+					userId: data.userId,
+					defaultAddress: true,
+				},
+				data: {
+					defaultAddress: false,
+				},
+			});
 
-		// Set the new address to default address
-		await prisma.address.update({
-			where: {
-				id: data.addressId,
-				userId: data.userId,
-			},
-			data: {
-				defaultAddress: true,
-			},
-		});
+			// Set the new address to default address
+			await prisma.address.update({
+				where: {
+					id: data.addressId,
+					userId: data.userId,
+				},
+				data: {
+					defaultAddress: true,
+				},
+			});
 
-		return data;
+			return data;
+		} catch (error: unknown) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				console.error('Error creating data', error);
+			} else if (error instanceof Error) {
+				console.error('Error creating user address', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
 	});
 
 export const useUpdateDefaultAddress = () => {
@@ -162,10 +191,10 @@ export const useUpdateDefaultAddress = () => {
 		mutationFn: updateDefaultAddressFn,
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ['user-address', data.userId],
+				queryKey: ['user-address', data?.userId],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ['user-default-address', data.userId],
+				queryKey: ['user-default-address', data?.userId],
 			});
 		},
 	});
