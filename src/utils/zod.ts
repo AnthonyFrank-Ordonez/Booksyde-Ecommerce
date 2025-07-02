@@ -53,11 +53,7 @@ export const UserAddressSchema = z.object({
 	userId: z.string(),
 });
 
-export const GetUserAddressSchema = z.object({
-	userId: z.string(),
-});
-
-export const GetUserBySessionSchema = z.object({
+export const GetUserIdSchema = z.object({
 	userId: z.string(),
 });
 

@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start';
 import {
 	DeleteAddressSchema,
-	GetUserAddressSchema,
 	GetUserDefaultAddressSchema,
+	GetUserIdSchema,
 	UpdateAddressSchema,
 	UserAddressSchema,
 } from '../zod';
@@ -80,7 +80,7 @@ export const useAddAddress = () => {
 };
 
 export const getUserAddresssesFn = createServerFn({ method: 'GET' })
-	.validator((data: unknown) => GetUserAddressSchema.parse(data))
+	.validator((data: unknown) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
 			const userAdresses = await prisma.address.findMany({

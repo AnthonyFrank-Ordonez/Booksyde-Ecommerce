@@ -4,7 +4,7 @@ import { auth } from '../auth';
 import { getWebRequest } from '@tanstack/react-start/server';
 
 import type { ErrorSignInType, SignInType, SignUpType } from '@/types';
-import { GetUserBySessionSchema } from '../zod';
+import { GetUserIdSchema } from '../zod';
 import prisma from '../prisma';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 
@@ -100,7 +100,7 @@ export const signOutUserFn = createServerFn({ method: 'POST' }).handler(
 );
 
 export const findUserBySession = createServerFn({ method: 'GET' })
-	.validator((data: unknown) => GetUserBySessionSchema.parse(data))
+	.validator((data: unknown) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
 			const userData = await prisma.user.findUnique({
