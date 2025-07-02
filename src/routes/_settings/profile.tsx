@@ -204,7 +204,7 @@ function Profile() {
 								</div>
 							</div>
 
-							<div className='grid grid-cols-1 items-center gap-5 md:grid-cols-2 md:gap-10 xl:grid-cols-[350px_500px]'>
+							<div className='grid grid-cols-1 items-center gap-5 md:grid-cols-2 md:gap-10 xl:grid-cols-[350px_350px]'>
 								<div className='flex flex-col gap-5 md:mb-0'>
 									<form.Field
 										name='firstName'
@@ -224,7 +224,7 @@ function Profile() {
 													id={field.name}
 													value={field.state.value}
 													onChange={(e) => field.handleChange(e.target.value)}
-													className='border-b border-gray-400 focus:border-transparent focus:ring-1 focus:outline-none'
+													className='w-full border-b border-gray-400 focus:border-transparent focus:ring-1 focus:ring-gray-400 focus:outline-none'
 												/>
 											</div>
 										)}
@@ -257,7 +257,7 @@ function Profile() {
 													id={field.name}
 													value={field.state.value}
 													onChange={(e) => field.handleChange(e.target.value)}
-													className='border-b border-gray-400 focus:border-transparent focus:ring-1 focus:outline-none'
+													className='w-full border-b border-gray-400 focus:border-transparent focus:ring-1 focus:ring-gray-400 focus:outline-none'
 												/>
 											</div>
 										)}
@@ -281,7 +281,7 @@ function Profile() {
 													id={field.name}
 													value={field.state.value}
 													onChange={(e) => field.handleChange(e.target.value)}
-													className='border-b border-gray-400 focus:border-transparent focus:ring-1 focus:outline-none'
+													className='w-full border-b border-gray-400 focus:border-transparent focus:ring-1 focus:ring-gray-400 focus:outline-none'
 												/>
 											</div>
 										)}
