@@ -70,3 +70,16 @@ export const DeleteAddressSchema = z.object({
 	userId: z.string(),
 	addressId: z.number(),
 });
+
+export const UpdateUserInformationSchema = z.object({
+	userId: z.string(),
+	firstName: z.string().min(3, 'Minimum first name length should be 3 or more'),
+	lastName: z.string().min(3, 'Minimum last name length should be 3 or more'),
+	phone: z.string().min(8, 'Invalid phone number'),
+});
+
+export const UserInformationSchema = z.object({
+	firstName: z.string().min(3, 'First name length should be 3 or more'),
+	lastName: z.string().min(3, 'Last name length should be 3 or more'),
+	phone: z.string().min(8, 'Invalid phone number'),
+});

@@ -176,9 +176,9 @@ export const updateDefaultAddressFn = createServerFn({ method: 'POST' })
 			return data;
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
-				console.error('Error creating data', error);
+				console.error('Error updating data', error);
 			} else if (error instanceof Error) {
-				console.error('Error creating user address', error);
+				console.error('Error updating user address', error);
 			} else {
 				console.error('Unkown Error', error);
 			}
@@ -201,7 +201,7 @@ export const useUpdateDefaultAddress = () => {
 	});
 };
 
-export const deleteUserAddress = createServerFn({ method: 'POST' })
+export const deleteUserAddressFn = createServerFn({ method: 'POST' })
 	.validator((data: unknown) => DeleteAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -229,7 +229,7 @@ export const useDeleteAddress = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: deleteUserAddress,
+		mutationFn: deleteUserAddressFn,
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
 				queryKey: ['user-address', data?.userId],

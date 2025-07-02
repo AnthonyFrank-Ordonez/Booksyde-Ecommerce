@@ -4,9 +4,10 @@ import { auth } from '../auth';
 import { getWebRequest } from '@tanstack/react-start/server';
 
 import type { ErrorSignInType, SignInType, SignUpType } from '@/types';
-import { GetUserIdSchema } from '../zod';
+import { GetUserIdSchema, UpdateUserInformationSchema } from '../zod';
 import prisma from '../prisma';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
+import { useMutation } from '@tanstack/react-query';
 
 export const signInServer = createServerFn({ method: 'POST' })
 	.validator((cred: unknown): SignInType => {
@@ -120,3 +121,41 @@ export const findUserBySession = createServerFn({ method: 'GET' })
 			}
 		}
 	});
+
+export const updateUserInformationFn = createServerFn({ method: 'GET' })
+	.validator((data: unknown) => UpdateUserInformationSchema.parse(data))
+	.handler(async ({ data }) => {
+		try {
+			await prisma.user.update({
+				where: {
+					id: data.userId,
+				},
+				data: {
+					firstName: data.firstName,
+					lastName: data.lastName,
+					phone: data.phone,
+				},
+			});
+
+			// return data;
+		} catch (error: unknown) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				console.error('Error updating data', error);
+			} else if (error instanceof Error) {
+				console.error('Error updating user address', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
+	});
+
+export const useUpdateUserInformation = () => {
+	// const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: updateUserInformationFn,
+		// onSuccess: (data) => {
+		// queryClient.invalidateQueries({queryKey: []})
+		// }
+	});
+};

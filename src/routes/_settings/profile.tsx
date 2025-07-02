@@ -1,5 +1,9 @@
+import FieldInfo from '@/components/FieldInfo';
+import type { UpdateUserInformationType } from '@/types';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
 import { getUserSession } from '@/utils/servers/auth-server';
+import { useUpdateUserInformation } from '@/utils/servers/user';
+import { UserInformationSchema } from '@/utils/zod';
 import { useForm } from '@tanstack/react-form';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -26,6 +30,7 @@ function Profile() {
 	const userDefaultAddress = useSuspenseQuery(
 		getUserDefaultAddQueryOptions(session.id)
 	).data;
+	const { mutateAsync: updateUserInformation } = useUpdateUserInformation();
 	const [isEdit, setIsEdit] = useState(false);
 	const [editType, setEditType] = useState('');
 
@@ -46,6 +51,22 @@ function Profile() {
 			firstName: session.firstName || '',
 			lastName: session.lastName || '',
 			phone: session.phone || '',
+		},
+		validators: {
+			onChange: UserInformationSchema,
+		},
+		onSubmit: async ({ value }) => {
+			const UpdateUserInformationObj: UpdateUserInformationType = {
+				userId: session.id,
+				firstName: value.firstName,
+				lastName: value.lastName,
+				phone: value.phone,
+			};
+
+			await updateUserInformation({ data: UpdateUserInformationObj });
+
+			setIsEdit(false);
+			setEditType('');
 		},
 	});
 
@@ -187,7 +208,7 @@ function Profile() {
 									<button
 										type='button'
 										onClick={handleCancel}
-										className='cursor-pointer rounded-lg border border-gray-400 px-1.5 transition-colors duration-300 hover:bg-black/5 md:px-2 md:py-1'
+										className='cursor-pointer rounded-lg border border-gray-400 px-1.5 transition-colors duration-300 hover:bg-black/5 md:px-2 md:py-0'
 									>
 										Cancel
 									</button>
@@ -205,7 +226,7 @@ function Profile() {
 													htmlFor={field.name}
 													className='text-sm font-medium text-gray-500'
 												>
-													First Name
+													First Name <FieldInfo field={field} />
 												</label>
 												<input
 													type='text'
@@ -214,6 +235,7 @@ function Profile() {
 													id={field.name}
 													value={field.state.value}
 													onChange={(e) => field.handleChange(e.target.value)}
+													required
 													className='w-full border-b border-gray-400 focus:border-transparent focus:ring-1 focus:ring-gray-400 focus:outline-none'
 												/>
 											</div>
@@ -238,7 +260,7 @@ function Profile() {
 													htmlFor={field.name}
 													className='text-sm font-medium text-gray-500'
 												>
-													Last Name
+													Last Name <FieldInfo field={field} />
 												</label>
 												<input
 													type='text'
@@ -247,6 +269,7 @@ function Profile() {
 													id={field.name}
 													value={field.state.value}
 													onChange={(e) => field.handleChange(e.target.value)}
+													required
 													className='w-full border-b border-gray-400 focus:border-transparent focus:ring-1 focus:ring-gray-400 focus:outline-none'
 												/>
 											</div>
@@ -262,7 +285,7 @@ function Profile() {
 													htmlFor={field.name}
 													className='text-sm font-medium text-gray-500'
 												>
-													Phone
+													Phone <FieldInfo field={field} />
 												</label>
 												<input
 													type='text'
@@ -271,6 +294,7 @@ function Profile() {
 													id={field.name}
 													value={field.state.value}
 													onChange={(e) => field.handleChange(e.target.value)}
+													required
 													className='w-full border-b border-gray-400 focus:border-transparent focus:ring-1 focus:ring-gray-400 focus:outline-none'
 												/>
 											</div>

@@ -101,3 +101,10 @@ export interface UserSessionType {
 	lastName: string | null | undefined;
 	phone: string | null | undefined;
 }
+
+export interface UpdateUserInformationType {
+	userId: string | undefined;
+	firstName: string;
+	lastName: string;
+	phone: string;
+}
