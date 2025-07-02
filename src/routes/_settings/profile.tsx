@@ -6,7 +6,7 @@ import { useUpdateUserInformation } from '@/utils/servers/user';
 import { UserInformationSchema } from '@/utils/zod';
 import { useForm } from '@tanstack/react-form';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FaUser } from 'react-icons/fa';
@@ -26,6 +26,7 @@ export const Route = createFileRoute('/_settings/profile')({
 });
 
 function Profile() {
+	const router = useRouter();
 	const { session } = Route.useLoaderData();
 	const userDefaultAddress = useSuspenseQuery(
 		getUserDefaultAddQueryOptions(session.id)
@@ -65,6 +66,7 @@ function Profile() {
 
 			await updateUserInformation({ data: UpdateUserInformationObj });
 
+			router.invalidate();
 			setIsEdit(false);
 			setEditType('');
 		},
