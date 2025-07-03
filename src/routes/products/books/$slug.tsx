@@ -18,8 +18,7 @@ export const Route = createFileRoute('/products/books/$slug')({
 function RouteComponent() {
 	const [descExpanded, setDescExpanded] = useState(false);
 	const { slug } = Route.useParams();
-	const booksQueryData = useSuspenseQuery(bookslugQueryOptions(slug));
-	const book = booksQueryData.data;
+	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
 
 	return (
 		<div className='col-span-1 md:col-span-12'>
