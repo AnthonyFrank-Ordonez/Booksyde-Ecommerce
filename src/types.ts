@@ -108,3 +108,10 @@ export interface UpdateUserInformationType {
 	lastName: string;
 	phone: string;
 }
+
+export interface UserReviewType {
+	userId: string;
+	bookId: number;
+	rating: number;
+	reviewContent: string;
+}

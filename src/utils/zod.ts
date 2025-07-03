@@ -83,3 +83,14 @@ export const UserInformationSchema = z.object({
 	lastName: z.string().min(3, 'Last name length should be 3 or more'),
 	phone: z.string().min(8, 'Invalid phone number'),
 });
+
+export const ReviewSchema = z.object({
+	reviewContent: z.string().min(3, 'Invalid Comment, must be 3 or more long'),
+});
+
+export const AddReviewSchema = z.object({
+	bookId: z.number(),
+	userId: z.string(),
+	rating: z.number(),
+	reviewContent: z.string(),
+});
