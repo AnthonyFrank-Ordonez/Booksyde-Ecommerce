@@ -30,11 +30,15 @@ function Cart() {
 	return (
 		<>
 			<div className='pb-28'>
-				<div className='grid grid-cols-1 gap-5'>
+				<div className='grid grid-cols-1 gap-3'>
+					<div className='flex flex-row justify-between px-2 text-sm text-gray-400/80'>
+						<p>Total items in cart:</p>
+						<p>2</p>
+					</div>
 					{carts.map((item) => (
 						<div
 							key={item.id}
-							className='grid grid-cols-[3px_100px_2fr_50px] gap-5 rounded-lg border border-gray-400 px-3 py-4'
+							className='grid grid-cols-[3px_100px_2fr_50px] gap-5 rounded-lg border border-gray-300 px-3 py-4'
 						>
 							<div className=''>
 								<input type='checkbox' className='h-4 w-4 accent-black' />
@@ -46,8 +50,12 @@ function Cart() {
 
 							<div className='flex flex-col justify-between'>
 								<div className='flex flex-col gap-1'>
-									<h2 className='line-clamp-2 font-bold'>{item.bookTitle}</h2>
-									<p className='font-light text-gray-500'>{item.author}</p>
+									<h2 className='line-clamp-2 text-[14px] font-medium'>
+										{item.bookTitle}
+									</h2>
+									<p className='text-[14px] font-light text-gray-500'>
+										{item.author}
+									</p>
 								</div>
 
 								<div>
@@ -72,7 +80,7 @@ function Cart() {
 							</div>
 
 							<div className='flex flex-col items-center justify-between'>
-								<p className='font-extrabold'>{item.price}</p>
+								<p className='text-[15px] font-extrabold'>{item.price}</p>
 
 								<div className='flex h-6 w-6 items-center justify-center rounded-full border p-1 text-gray-400/80'>
 									<FaRegTrashAlt className='h-3 w-3' />
