@@ -3,6 +3,7 @@ import {
 	HeadContent,
 	Scripts,
 	createRootRouteWithContext,
+	useLocation,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { QueryClient } from '@tanstack/react-query';
@@ -63,6 +64,9 @@ export const Route = createRootRouteWithContext<{
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	const { session } = Route.useLoaderData();
+	const location = useLocation();
+	const hideFooterPaths = ['/cart', 'checkout', '/payment'];
+	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
 
 	return (
 		<html lang='en'>
@@ -72,7 +76,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<body>
 				<Header session={session} />
 				<main className='grid grid-cols-1 md:grid-cols-12'>{children}</main>
-				<Footer />
+				{!shouldHideFooter && <Footer />}
 				<Scripts />
 			</body>
 		</html>
