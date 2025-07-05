@@ -146,7 +146,7 @@ export default function Header({ session }: HeaderProps) {
 							</div>
 
 							<Link
-								to='/'
+								to='/cart'
 								aria-label='Cart'
 								className='flex items-center space-x-1 text-black hover:text-gray-600'
 							>
