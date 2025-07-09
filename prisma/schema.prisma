@@ -57,6 +57,7 @@ model User {
   comments      Comment[]
   sessions      Session[]
   address       Address[]
+  cart          Cart?
 
   @@map("users")
 }
@@ -120,6 +121,7 @@ model Book {
   slug        String @unique 
 
   comments    Comment[]
+  cartItem    CartItem[]
 
   @@map("books")
 }
@@ -131,4 +133,56 @@ model RateLimit {
   lastRequest BigInt?
 
   @@map("rateLimit")
+}
+
+model Cart {
+  id        String    @id @default(cuid())
+
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  items     CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+
+  itemType  ItemType
+  itemId    String
+
+  // Direct Relations
+  bookId    Int?
+  mangaId   String?
+  novelId   String?
+
+  book      Book?   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  // For Perfomance
+  @@index([cartId])                    // For cart queries
+  @@index([cartId, itemType, itemId]) // For duplicate checking
+  @@index([itemType, itemId])         // For item-specific queries
+
+  // Prevent duplicate items in the same cart
+  @@unique([cartId, itemType, itemId])
+
+  @@map("cart_items")
+}
+
+enum ItemType {
+  BOOK
+  MANGA
+  NOVEL
 }
