@@ -1,3 +1,18 @@
+import type { Prisma } from './generated/prisma';
+
+// Prisma Schema Types
+const cartInclude = {
+	items: {
+		include: {
+			book: true,
+		},
+	},
+} satisfies Prisma.CartInclude;
+
+export type UserCartType = Prisma.CartGetPayload<{
+	include: typeof cartInclude;
+}>;
+
 type AddressNameValues =
 	| 'houseNo'
 	| 'street'
@@ -60,10 +75,6 @@ export interface CredentialsType {
 export interface BookSlugType {
 	slug: string;
 }
-
-// export interface UserAddressType {
-// 	userId: string;
-// }
 
 export interface AddresFormObjType {
 	label: string;

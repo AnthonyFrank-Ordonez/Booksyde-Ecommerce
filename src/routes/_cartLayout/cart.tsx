@@ -1,11 +1,32 @@
-import { createFileRoute } from '@tanstack/react-router';
+import type { UserCartType } from '@/types';
+import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { FaRegTrashAlt } from 'react-icons/fa';
 
 export const Route = createFileRoute('/_cartLayout/cart')({
 	component: Cart,
+	beforeLoad: async ({ context }) => {
+		const userId = context.userID;
+
+		if (!userId) throw redirect({ to: '/signin' });
+
+		await context.queryClient.ensureQueryData(
+			getOrCreateCartQueryOptions(userId)
+		);
+
+		return { userId };
+	},
 });
 
 function Cart() {
+	const { userId } = Route.useRouteContext();
+	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
+
+	if (typeof window !== 'undefined') {
+		window.userCart = userCart as UserCartType;
+	}
+
 	const carts = [
 		{
 			id: 1,
