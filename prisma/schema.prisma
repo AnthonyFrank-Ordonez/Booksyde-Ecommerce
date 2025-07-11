@@ -9,8 +9,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Comment {
-  id        Int    @id @default(autoincrement())
+model Review {
+  id        String    @id @default(cuid())
   content   String
   rating    Int?
   createdAt DateTime @default(now())
@@ -22,7 +22,7 @@ model Comment {
   bookId    Int?
   book      Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  @@map("comments")
+  @@map("reviews")
 }
 
 model Address {
@@ -54,7 +54,7 @@ model User {
   phone         String?
 
   accounts      Account[]
-  comments      Comment[]
+  comments      Review[]
   sessions      Session[]
   address       Address[]
   cart          Cart?
@@ -120,7 +120,7 @@ model Book {
   language    String
   slug        String @unique 
 
-  comments    Comment[]
+  comments    Review[]
   cartItem    CartItem[]
 
   @@map("books")

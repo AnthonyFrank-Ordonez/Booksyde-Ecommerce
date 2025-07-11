@@ -9,7 +9,7 @@ import { useState } from 'react';
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
 // import type { UserReviewType } from '@/types';
-// import { useAddReview } from '@/utils/servers/comment';
+// import { useAddReview } from '@/utils/servers/review';
 
 export const Route = createFileRoute('/products/books/$slug')({
 	component: RouteComponent,

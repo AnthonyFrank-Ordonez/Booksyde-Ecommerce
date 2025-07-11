@@ -7,7 +7,7 @@ export const addReviewFn = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => AddReviewSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
-			await prisma.comment.create({
+			await prisma.review.create({
 				data: {
 					content: data.reviewContent,
 					rating: data.rating,
