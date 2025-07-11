@@ -89,7 +89,7 @@ export const ReviewSchema = z.object({
 });
 
 export const AddReviewSchema = z.object({
-	bookId: z.number(),
+	bookId: z.string(),
 	userId: z.string(),
 	rating: z.number(),
 	reviewContent: z.string(),

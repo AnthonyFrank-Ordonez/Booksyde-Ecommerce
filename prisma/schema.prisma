@@ -19,7 +19,7 @@ model Review {
   userId    String
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  bookId    Int?
+  bookId    String?
   book      Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
@@ -109,13 +109,13 @@ model Verification {
 }
 
 model Book {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(cuid())
   title       String
   author      String
   genres      String[]
-  price       Decimal
+  price       Decimal     @db.Decimal(10, 2)
   description String
-  rating      Decimal
+  rating      Decimal     @db.Decimal(10, 2)
   coverImg    String
   language    String
   slug        String @unique 
@@ -160,7 +160,7 @@ model CartItem {
   itemId    String
 
   // Direct Relations
-  bookId    Int?
+  bookId    String?
   mangaId   String?
   novelId   String?
 

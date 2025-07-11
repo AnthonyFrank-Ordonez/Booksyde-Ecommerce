@@ -23,7 +23,7 @@ type AddressNameValues =
 	| 'defaultAddress';
 
 export interface BookType {
-	id: number;
+	id: string;
 	title: string;
 	author: string;
 	genres: string[];
@@ -122,7 +122,7 @@ export interface UpdateUserInformationType {
 
 export interface UserReviewType {
 	userId: string;
-	bookId: number;
+	bookId: string;
 	rating: number;
 	reviewContent: string;
 }
