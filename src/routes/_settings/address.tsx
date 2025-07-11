@@ -41,7 +41,7 @@ function Address() {
 	const [isFormOpen, setFormOpen] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [typeModal, setTypeModal] = useState('');
-	const [selectedAddressId, setSelectedAddressId] = useState<null | number>(
+	const [selectedAddressId, setSelectedAddressId] = useState<null | string>(
 		null
 	);
 	const addressFormObj: AddresFormObjType[] = [
@@ -66,7 +66,7 @@ function Address() {
 		setFormOpen(false);
 	};
 
-	const handleShowModal = (id: number, type: string) => {
+	const handleShowModal = (id: string, type: string) => {
 		setSelectedAddressId(id);
 		setTypeModal(type);
 		setShowModal(true);

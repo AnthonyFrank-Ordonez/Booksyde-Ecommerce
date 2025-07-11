@@ -63,12 +63,12 @@ export const GetUserDefaultAddressSchema = z.object({
 
 export const UpdateAddressSchema = z.object({
 	userId: z.string(),
-	addressId: z.number(),
+	addressId: z.string(),
 });
 
 export const DeleteAddressSchema = z.object({
 	userId: z.string(),
-	addressId: z.number(),
+	addressId: z.string(),
 });
 
 export const UpdateUserInformationSchema = z.object({

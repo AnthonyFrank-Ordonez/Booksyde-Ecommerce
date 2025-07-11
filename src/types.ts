@@ -95,12 +95,12 @@ export interface AddressType {
 
 export interface UpdateAddressObjType {
 	userId: string;
-	addressId: number | null;
+	addressId: string | null;
 }
 
 export interface DeleteAddressObjType {
 	userId: string;
-	addressId: number | null;
+	addressId: string | null;
 }
 
 export interface UserSessionType {
