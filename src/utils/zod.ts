@@ -24,6 +24,11 @@ export const signUpSchema = z
 		}
 	});
 
+export const UserCredentialsSchema = z.object({
+	email: z.string().email(),
+	password: z.string(),
+});
+
 export const EmailSchema = z.object({
 	to: z.string(),
 	username: z.string(),

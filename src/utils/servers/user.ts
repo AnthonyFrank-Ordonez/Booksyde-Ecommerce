@@ -1,31 +1,23 @@
 import { createServerFn } from '@tanstack/react-start';
-import { redirect } from '@tanstack/react-router';
+import { redirect, useNavigate } from '@tanstack/react-router';
 import { auth } from '../auth';
 import { getWebRequest } from '@tanstack/react-start/server';
 
-import type { ErrorSignInType, SignInType, SignUpType } from '@/types';
-import { GetUserIdSchema, UpdateUserInformationSchema } from '../zod';
+import type { ErrorSignInType, SignUpType } from '@/types';
+import {
+	GetUserIdSchema,
+	UpdateUserInformationSchema,
+	UserCredentialsSchema,
+} from '../zod';
 import prisma from '../prisma';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 import { useMutation } from '@tanstack/react-query';
 
 export const signInServer = createServerFn({ method: 'POST' })
-	.validator((cred: unknown): SignInType => {
-		if (typeof cred !== 'object' || cred === null) {
-			throw new Error('Credentials required');
-		}
-
-		if ('email' in cred && typeof cred.email !== 'string') {
-			throw new Error('Email must be string');
-		}
-
-		if ('password' in cred && typeof cred.password !== 'string') {
-			throw new Error('Password must be string');
-		}
-
-		return cred as SignInType;
-	})
+	.validator((cred: unknown) => UserCredentialsSchema.parse(cred))
 	.handler(async ({ data }) => {
+		console.log('🟢 Credentials: ', data);
+
 		const response = await auth.api.signInEmail({
 			body: {
 				email: data.email,
@@ -35,7 +27,7 @@ export const signInServer = createServerFn({ method: 'POST' })
 		});
 
 		if (response.ok) {
-			throw redirect({ to: '/products' });
+			return { success: true };
 		} else {
 			const errorData: ErrorSignInType = await response.json();
 
@@ -46,6 +38,18 @@ export const signInServer = createServerFn({ method: 'POST' })
 			}
 		}
 	});
+
+export const useSignInUser = () => {
+	const navigate = useNavigate();
+
+	return useMutation({
+		mutationFn: signInServer,
+		onSuccess: () => {
+			console.log('SUCESSS!');
+			navigate({ to: '/products' });
+		},
+	});
+};
 
 export const signUpServer = createServerFn({ method: 'POST' })
 	.validator((input: unknown): SignUpType => {
