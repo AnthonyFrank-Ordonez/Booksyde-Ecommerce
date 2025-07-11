@@ -11,7 +11,7 @@ import {
 } from '../zod';
 import prisma from '../prisma';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const signInServer = createServerFn({ method: 'POST' })
 	.validator((cred: unknown) => UserCredentialsSchema.parse(cred))
@@ -41,11 +41,13 @@ export const signInServer = createServerFn({ method: 'POST' })
 
 export const useSignInUser = () => {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: signInServer,
 		onSuccess: () => {
-			console.log('SUCESSS!');
+			queryClient.resetQueries({ queryKey: ['user-id'] });
+			queryClient.resetQueries({ queryKey: ['user-session'] });
 			navigate({ to: '/products' });
 		},
 	});
@@ -100,9 +102,23 @@ export const signOutUserFn = createServerFn({ method: 'POST' }).handler(
 			headers: request.headers,
 		});
 
-		throw redirect({ to: '/' });
+		return { success: true };
 	}
 );
+
+export const useSignOutUser = () => {
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: () => signOutUserFn(),
+		onSuccess: () => {
+			queryClient.resetQueries({ queryKey: ['user-id'] });
+			queryClient.resetQueries({ queryKey: ['user-session'] });
+			navigate({ to: '/' });
+		},
+	});
+};
 
 export const findUserBySession = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => GetUserIdSchema.parse(data))

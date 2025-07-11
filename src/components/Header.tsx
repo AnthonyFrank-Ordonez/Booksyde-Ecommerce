@@ -6,8 +6,7 @@ import { useState } from 'react';
 // import { useSession, signOut } from '@/utils/auth-client for client-side';
 import type { SessionType } from '@/types';
 
-import { useServerFn } from '@tanstack/react-start';
-import { signOutUserFn } from '@/utils/servers/user';
+import { useSignOutUser } from '@/utils/servers/user';
 
 interface HeaderProps {
 	session: {
@@ -15,17 +14,20 @@ interface HeaderProps {
 		name: string | undefined;
 		image: string | null | undefined;
 		email: string | undefined;
-	};
+	} | null;
 }
 
 export default function Header({ session }: HeaderProps) {
-	// const { data: session } = useSession() for client-side;
-	const signOutUser = useServerFn(signOutUserFn);
+	const { mutateAsync: signOutUser } = useSignOutUser();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const isEmpty = (session: SessionType) => {
 		if (Object.keys(session).length === 0) return true;
 		if (Object.values(session).some((val) => val === undefined)) return true;
+	};
+
+	const handleSignOut = async () => {
+		await signOutUser();
 	};
 
 	return (
@@ -136,7 +138,7 @@ export default function Header({ session }: HeaderProps) {
 										Settings
 									</Link>
 									<button
-										onClick={() => signOutUser()}
+										onClick={handleSignOut}
 										aria-label='signOut'
 										className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
 									>

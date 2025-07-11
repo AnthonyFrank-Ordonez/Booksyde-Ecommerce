@@ -19,16 +19,24 @@ import { getUserID, getUserSession } from '@/utils/servers/auth-server';
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
 }>()({
-	beforeLoad: async () => {
-		const userID = await getUserID();
+	beforeLoad: async ({ context }) => {
+		const [userID, session] = await Promise.all([
+			context.queryClient.ensureQueryData({
+				queryKey: ['user-id'],
+				queryFn: getUserID,
+				staleTime: 1000 * 60 * 5, // 5 minutes
+			}),
+			context.queryClient.ensureQueryData({
+				queryKey: ['user-session'],
+				queryFn: getUserSession,
+				staleTime: 1000 * 60 * 5, // 5 minutes
+			}),
+		]);
 
 		return {
 			userID,
+			session,
 		};
-	},
-	loader: async () => {
-		const session = await getUserSession();
-		return { session };
 	},
 	head: () => ({
 		meta: [
@@ -63,7 +71,7 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { session } = Route.useLoaderData();
+	const { session } = Route.useRouteContext();
 	const location = useLocation();
 	const hideFooterPaths = ['/cart', 'checkout', '/payment'];
 	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
