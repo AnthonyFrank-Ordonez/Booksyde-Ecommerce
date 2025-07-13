@@ -9,23 +9,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Comment {
-  id      Int    @id @default(autoincrement())
-  comment String
-  userId  String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Review {
+  id        String    @id @default(cuid())
+  content   String
+  rating    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@map("comments")
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bookId    String?
+  book      Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
 }
 
 model Address {
-  id             Int @id @default(autoincrement())
+  id             String @id @default(cuid())
   houseNo        Int
+  street         String
   city           String
   province       String
   country        String
   postal         Int
   defaultAddress Boolean
+
   userId         String
   user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,10 +49,15 @@ model User {
   email         String    @unique
   emailVerified Boolean
   image         String?
+  firstName     String?
+  lastName      String?
+  phone         String?
+
   accounts      Account[]
-  comment       Comment[]
+  comments      Review[]
   sessions      Session[]
   address       Address[]
+  cart          Cart?
 
   @@map("users")
 }
@@ -57,6 +71,7 @@ model Session {
   ipAddress String?
   userAgent String?
   userId    String
+
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
@@ -75,6 +90,7 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
+
   userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -93,16 +109,19 @@ model Verification {
 }
 
 model Book {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(cuid())
   title       String
   author      String
   genres      String[]
-  price       Decimal
+  price       Decimal     @db.Decimal(10, 2)
   description String
-  rating      Decimal
+  rating      Decimal     @db.Decimal(10, 2)
   coverImg    String
   language    String
   slug        String @unique 
+
+  comments    Review[]
+  cartItem    CartItem[]
 
   @@map("books")
 }
@@ -114,4 +133,56 @@ model RateLimit {
   lastRequest BigInt?
 
   @@map("rateLimit")
+}
+
+model Cart {
+  id        String    @id @default(cuid())
+
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  items     CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+
+  itemType  ItemType
+  itemId    String
+
+  // Direct Relations
+  bookId    String?
+  mangaId   String?
+  novelId   String?
+
+  book      Book?   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  // For Perfomance
+  @@index([cartId])                    // For cart queries
+  @@index([cartId, itemType, itemId]) // For duplicate checking
+  @@index([itemType, itemId])         // For item-specific queries
+
+  // Prevent duplicate items in the same cart
+  @@unique([cartId, itemType, itemId])
+
+  @@map("cart_items")
+}
+
+enum ItemType {
+  BOOK
+  MANGA
+  NOVEL
 }

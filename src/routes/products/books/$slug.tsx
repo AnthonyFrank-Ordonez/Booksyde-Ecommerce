@@ -1,25 +1,85 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { FaRegStar, FaStar } from 'react-icons/fa';
+import { FaRegStar, FaStar, FaUserCircle } from 'react-icons/fa';
 import { MdArrowBackIos, MdArrowRight } from 'react-icons/md';
 import { RiCoupon3Line } from 'react-icons/ri';
 
 import { bookslugQueryOptions } from '@/utils/servers/books';
 import { useState } from 'react';
+import {
+	getOrCreateCartQueryOptions,
+	useAddToCart,
+} from '@/utils/servers/cart';
+import type { ItemType } from '@/generated/prisma';
+import { successMsg } from '@/utils/utilities';
+
+// import { useForm } from '@tanstack/react-form';
+// import { ReviewSchema } from '@/utils/zod';
+// import type { UserReviewType } from '@/types';
+// import { useAddReview } from '@/utils/servers/review';
 
 export const Route = createFileRoute('/products/books/$slug')({
 	component: RouteComponent,
 	loader: async ({ context, params }) => {
 		const slug = params.slug;
+		const userId = context.userID!;
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
+		await context.queryClient.ensureQueryData(
+			getOrCreateCartQueryOptions(userId)
+		);
+
+		return { userId };
 	},
 });
 
 function RouteComponent() {
+	const { userId } = Route.useLoaderData();
+	// const { mutateAsync: addReview } = useAddReview();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const { slug } = Route.useParams();
-	const booksQueryData = useSuspenseQuery(bookslugQueryOptions(slug));
-	const book = booksQueryData.data;
+	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
+	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
+
+	// Server Actions
+	const { mutateAsync: addToCart } = useAddToCart();
+
+	const handleAddToCart = async (
+		itemId: string,
+		itemType: ItemType,
+		quantity: number = 1
+	) => {
+		const cartItemObj = {
+			cartId: userCart.id,
+			userId,
+			itemId,
+			itemType,
+			quantity,
+		};
+
+		await addToCart({ data: cartItemObj });
+		successMsg('Item successfully added to cart!');
+	};
+
+	// const form = useForm({
+	// 	defaultValues: {
+	// 		reviewContent: '',
+	// 	},
+	// 	validators: {
+	// 		onChange: ReviewSchema,
+	// 	},
+	// 	onSubmit: async ({ value }) => {
+	// 		const userReviewObj: UserReviewType = {
+	// 			userId: userId,
+	// 			bookId: book.id,
+	// 			reviewContent: value.reviewContent,
+	// 			rating: 5,
+	// 		};
+
+	// 		await addReview({ data: userReviewObj });
+
+	// 		form.reset();
+	// 	},
+	// });
 
 	return (
 		<div className='col-span-1 md:col-span-12'>
@@ -106,7 +166,10 @@ function RouteComponent() {
 
 					{/* Add to Cart/Wishlist Buttons */}
 					<div className='flex flex-col gap-3'>
-						<button className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'>
+						<button
+							onClick={() => handleAddToCart(book.id, 'BOOK')}
+							className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'
+						>
 							Add to Cart
 						</button>
 
@@ -116,6 +179,160 @@ function RouteComponent() {
 					</div>
 				</div>
 			</div>
+
+			{/* Comments */}
+			<div className='px-8 py-5 sm:mx-auto sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-[78rem] 2xl:max-w-[90rem]'>
+				<h2 className='mb-2 text-xl font-bold'>Comments and Reviews</h2>
+				<div className='mb-7 border border-gray-500/20'></div>
+
+				<div className='grid grid-cols-1'>
+					{/* User and Rating */}
+					<div className='mb-3 flex gap-3'>
+						<FaUserCircle className='h-18 w-18 text-gray-500' />
+						<div className='flex flex-col'>
+							<h2 className='mb-1 text-[1.1rem] font-normal'>
+								First Name, Last Name
+							</h2>
+
+							<div className='mb-2 flex gap-1 text-yellow-500'>
+								<FaStar className='h-4 w-4' />
+								<FaStar className='h-4 w-4' />
+								<FaStar className='h-4 w-4' />
+								<FaStar className='h-4 w-4' />
+								<FaStar className='h-4 w-4' />
+							</div>
+
+							<p className='text-md text-gray-500'>Posted on: July 03, 2025</p>
+						</div>
+					</div>
+
+					{/* Content */}
+					<div className='md:pl-20'>
+						<p className='rounded-lg bg-gray-200 p-5 md:max-w-4xl xl:max-w-7xl 2xl:max-w-[95rem]'>
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum ad
+							quidem explicabo quae facilis cumque consequatur harum similique
+							deleniti mollitia qui velit at, odio ipsa iste. At a nisi
+							officiis. Lorem ipsum dolor sit, amet consectetur adipisicing
+							elit. Quam accusamus laboriosam nostrum incidunt repellendus culpa
+							dignissimos! Ex porro at unde necessitatibus similique? Facilis
+							aperiam dolores eligendi sint. Sunt, at nemo.
+						</p>
+					</div>
+
+					{/* Images */}
+					<div></div>
+				</div>
+			</div>
+
+			{/* <form
+				onSubmit={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					form.handleSubmit();
+				}}
+			>
+				<form.Field
+					name='reviewContent'
+					children={(field) => (
+						<>
+							<label aria-label={field.name} htmlFor={field.name}>
+								TESTTING COMMENT
+							</label>
+							<input
+								aria-label={`${field.name} input`}
+								type='text'
+								value={field.state.value}
+								id={field.name}
+								onChange={(e) => field.handleChange(e.target.value)}
+								required
+								className='w-full max-w-7xl border'
+							/>
+						</>
+					)}
+				/>
+
+				<form.Subscribe
+					selector={(state) => [state.canSubmit, state.isSubmitting]}
+					children={([canSubmit, isSubmitting]) => (
+						<div>
+							<button
+								type='submit'
+								aria-label='comment btn'
+								disabled={!canSubmit || isSubmitting}
+								className='w-full cursor-pointer rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-black/85 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
+							>
+								{isSubmitting ? (
+									<svg
+										xmlns='http://www.w3.org/2000/svg'
+										viewBox='0 0 200 200'
+										className='mx-auto h-7 w-7'
+									>
+										<rect
+											fill='#FFFFFF'
+											stroke='#FFFFFF'
+											strokeWidth='15'
+											width='30'
+											height='30'
+											x='25'
+											y='85'
+										>
+											<animate
+												attributeName='opacity'
+												calcMode='spline'
+												dur='2'
+												values='1;0;1;'
+												keySplines='.5 0 .5 1;.5 0 .5 1'
+												repeatCount='indefinite'
+												begin='-.4'
+											></animate>
+										</rect>
+										<rect
+											fill='#FFFFFF'
+											stroke='#FFFFFF'
+											strokeWidth='15'
+											width='30'
+											height='30'
+											x='85'
+											y='85'
+										>
+											<animate
+												attributeName='opacity'
+												calcMode='spline'
+												dur='2'
+												values='1;0;1;'
+												keySplines='.5 0 .5 1;.5 0 .5 1'
+												repeatCount='indefinite'
+												begin='-.2'
+											></animate>
+										</rect>
+										<rect
+											fill='#FFFFFF'
+											stroke='#FFFFFF'
+											strokeWidth='15'
+											width='30'
+											height='30'
+											x='145'
+											y='85'
+										>
+											<animate
+												attributeName='opacity'
+												calcMode='spline'
+												dur='2'
+												values='1;0;1;'
+												keySplines='.5 0 .5 1;.5 0 .5 1'
+												repeatCount='indefinite'
+												begin='0'
+											></animate>
+										</rect>
+									</svg>
+								) : (
+									'Add Comment'
+								)}
+							</button>
+						</div>
+					)}
+				/>
+			</form> */}
 		</div>
 	);
 }

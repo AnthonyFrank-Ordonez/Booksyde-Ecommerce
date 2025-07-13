@@ -7,5 +7,6 @@ dist-ssr
 .vinxi
 .env
 .vscode
+Notes.txt
 
 /src/generated/prisma

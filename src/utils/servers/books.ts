@@ -45,7 +45,16 @@ export const fetchBookBySlugFn = createServerFn({ method: 'GET' })
 		const bookSlug = data.slug;
 
 		const book = await prisma.book.findUnique({
-			where: { slug: bookSlug },
+			where: {
+				slug: bookSlug,
+			},
+			include: {
+				comments: {
+					include: {
+						user: true,
+					},
+				},
+			},
 		});
 
 		if (book) {

@@ -16,12 +16,14 @@ import { Route as SigninImport } from './routes/signin'
 import { Route as ContactImport } from './routes/contact'
 import { Route as AboutImport } from './routes/about'
 import { Route as SettingsImport } from './routes/_settings'
+import { Route as CartLayoutImport } from './routes/_cartLayout'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as SettingsProfileImport } from './routes/_settings/profile'
 import { Route as SettingsOrdersImport } from './routes/_settings/orders'
 import { Route as SettingsBillingImport } from './routes/_settings/billing'
 import { Route as SettingsAddressImport } from './routes/_settings/address'
+import { Route as CartLayoutCartImport } from './routes/_cartLayout/cart'
 import { Route as ProductsNovelsIndexImport } from './routes/products/novels/index'
 import { Route as ProductsMangaIndexImport } from './routes/products/manga/index'
 import { Route as ProductsBooksIndexImport } from './routes/products/books/index'
@@ -55,6 +57,11 @@ const AboutRoute = AboutImport.update({
 
 const SettingsRoute = SettingsImport.update({
   id: '/_settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CartLayoutRoute = CartLayoutImport.update({
+  id: '/_cartLayout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -94,6 +101,12 @@ const SettingsAddressRoute = SettingsAddressImport.update({
   getParentRoute: () => SettingsRoute,
 } as any)
 
+const CartLayoutCartRoute = CartLayoutCartImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => CartLayoutRoute,
+} as any)
+
 const ProductsNovelsIndexRoute = ProductsNovelsIndexImport.update({
   id: '/products/novels/',
   path: '/products/novels/',
@@ -127,6 +140,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_cartLayout': {
+      id: '/_cartLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof CartLayoutImport
       parentRoute: typeof rootRoute
     }
     '/_settings': {
@@ -163,6 +183,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/signup'
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
+    }
+    '/_cartLayout/cart': {
+      id: '/_cartLayout/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartLayoutCartImport
+      parentRoute: typeof CartLayoutImport
     }
     '/_settings/address': {
       id: '/_settings/address'
@@ -232,6 +259,18 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface CartLayoutRouteChildren {
+  CartLayoutCartRoute: typeof CartLayoutCartRoute
+}
+
+const CartLayoutRouteChildren: CartLayoutRouteChildren = {
+  CartLayoutCartRoute: CartLayoutCartRoute,
+}
+
+const CartLayoutRouteWithChildren = CartLayoutRoute._addFileChildren(
+  CartLayoutRouteChildren,
+)
+
 interface SettingsRouteChildren {
   SettingsAddressRoute: typeof SettingsAddressRoute
   SettingsBillingRoute: typeof SettingsBillingRoute
@@ -257,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/cart': typeof CartLayoutCartRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
@@ -275,6 +315,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/cart': typeof CartLayoutCartRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
@@ -289,11 +330,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_cartLayout': typeof CartLayoutRouteWithChildren
   '/_settings': typeof SettingsRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/_cartLayout/cart': typeof CartLayoutCartRoute
   '/_settings/address': typeof SettingsAddressRoute
   '/_settings/billing': typeof SettingsBillingRoute
   '/_settings/orders': typeof SettingsOrdersRoute
@@ -314,6 +357,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/signin'
     | '/signup'
+    | '/cart'
     | '/address'
     | '/billing'
     | '/orders'
@@ -331,6 +375,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/signin'
     | '/signup'
+    | '/cart'
     | '/address'
     | '/billing'
     | '/orders'
@@ -343,11 +388,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_cartLayout'
     | '/_settings'
     | '/about'
     | '/contact'
     | '/signin'
     | '/signup'
+    | '/_cartLayout/cart'
     | '/_settings/address'
     | '/_settings/billing'
     | '/_settings/orders'
@@ -362,6 +409,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CartLayoutRoute: typeof CartLayoutRouteWithChildren
   SettingsRoute: typeof SettingsRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
@@ -376,6 +424,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CartLayoutRoute: CartLayoutRouteWithChildren,
   SettingsRoute: SettingsRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
@@ -399,6 +448,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_cartLayout",
         "/_settings",
         "/about",
         "/contact",
@@ -413,6 +463,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_cartLayout": {
+      "filePath": "_cartLayout.tsx",
+      "children": [
+        "/_cartLayout/cart"
+      ]
     },
     "/_settings": {
       "filePath": "_settings.tsx",
@@ -434,6 +490,10 @@ export const routeTree = rootRoute
     },
     "/signup": {
       "filePath": "signup.tsx"
+    },
+    "/_cartLayout/cart": {
+      "filePath": "_cartLayout/cart.tsx",
+      "parent": "/_cartLayout"
     },
     "/_settings/address": {
       "filePath": "_settings/address.tsx",

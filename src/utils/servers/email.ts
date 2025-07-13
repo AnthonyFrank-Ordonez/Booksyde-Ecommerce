@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 
 import { transporter } from '../nodemailer';
 
-export const sendEmailFn = createServerFn({ method: 'GET' })
+export const sendEmailFn = createServerFn({ method: 'POST' })
 	.validator((data: unknown) => {
 		return EmailSchema.parse(data);
 	})

@@ -1,13 +1,31 @@
+import type { Prisma } from './generated/prisma';
+
+// Prisma Schema Types
+const cartInclude = {
+	items: {
+		include: {
+			book: true,
+		},
+	},
+} satisfies Prisma.CartInclude;
+
+export type UserCartType = Prisma.CartGetPayload<{
+	include: typeof cartInclude;
+}>;
+
 type AddressNameValues =
 	| 'houseNo'
+	| 'street'
 	| 'city'
 	| 'province'
 	| 'country'
 	| 'postal'
 	| 'defaultAddress';
 
+export type ItemType = 'BOOK' | 'MANGA' | 'NOVEL';
+
 export interface BookType {
-	id: number;
+	id: string;
 	title: string;
 	author: string;
 	genres: string[];
@@ -64,4 +82,61 @@ export interface AddresFormObjType {
 	label: string;
 	name: AddressNameValues;
 	type: string;
+}
+
+export interface AddressType {
+	houseNo: number;
+	street: string;
+	city: string;
+	province: string;
+	country: string;
+	postal: number;
+	defaultAddress: boolean;
+	userId: string;
+}
+
+export interface UpdateAddressObjType {
+	userId: string;
+	addressId: string | null;
+}
+
+export interface DeleteAddressObjType {
+	userId: string;
+	addressId: string | null;
+}
+
+export interface UserSessionType {
+	id: string | undefined;
+	name: string | undefined;
+	image: string | null | undefined;
+	email: string | undefined;
+	firstName: string | null | undefined;
+	lastName: string | null | undefined;
+	phone: string | null | undefined;
+}
+
+export interface UpdateUserInformationType {
+	userId: string | undefined;
+	firstName: string;
+	lastName: string;
+	phone: string;
+}
+
+export interface UserReviewType {
+	userId: string;
+	bookId: string;
+	rating: number;
+	reviewContent: string;
+}
+
+export interface CartItemDataType {
+	cartId: string;
+	itemId: string;
+	itemType: ItemType;
+	quantity: number;
+
+	// OPTIONALS
+	bookId?: string;
+	mangaId?: string;
+	novelId?: string;
 }

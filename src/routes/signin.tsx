@@ -10,8 +10,7 @@ import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
 import { useRateLimiter } from '@tanstack/react-pacer';
 
-import { signInServer } from '@/utils/servers/user';
-import { useServerFn } from '@tanstack/react-start';
+import { useSignInUser } from '@/utils/servers/user';
 import { errorMsg, successMsg } from '@/utils/utilities';
 import type { CredentialsType } from '@/types';
 
@@ -24,7 +23,7 @@ export const Route = createFileRoute('/signin')({
 
 function Login() {
 	const router = useRouter();
-	const userSignIn = useServerFn(signInServer);
+	const { mutateAsync: userSignIn } = useSignInUser();
 
 	// Sign In user with Rate Limit
 	const signInUser = useRateLimiter(

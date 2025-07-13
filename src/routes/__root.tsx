@@ -3,6 +3,7 @@ import {
 	HeadContent,
 	Scripts,
 	createRootRouteWithContext,
+	useLocation,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { QueryClient } from '@tanstack/react-query';
@@ -18,16 +19,24 @@ import { getUserID, getUserSession } from '@/utils/servers/auth-server';
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
 }>()({
-	beforeLoad: async () => {
-		const userID = await getUserID();
+	beforeLoad: async ({ context }) => {
+		const [userID, session] = await Promise.all([
+			context.queryClient.ensureQueryData({
+				queryKey: ['user-id'],
+				queryFn: getUserID,
+				staleTime: 1000 * 60 * 5, // 5 minutes
+			}),
+			context.queryClient.ensureQueryData({
+				queryKey: ['user-session'],
+				queryFn: getUserSession,
+				staleTime: 1000 * 60 * 5, // 5 minutes
+			}),
+		]);
 
 		return {
 			userID,
+			session,
 		};
-	},
-	loader: async () => {
-		const session = await getUserSession();
-		return { session };
 	},
 	head: () => ({
 		meta: [
@@ -62,7 +71,10 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { session } = Route.useLoaderData();
+	const { session } = Route.useRouteContext();
+	const location = useLocation();
+	const hideFooterPaths = ['/cart', 'checkout', '/payment'];
+	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
 
 	return (
 		<html lang='en'>
@@ -72,7 +84,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<body>
 				<Header session={session} />
 				<main className='grid grid-cols-1 md:grid-cols-12'>{children}</main>
-				<Footer />
+				{!shouldHideFooter && <Footer />}
 				<Scripts />
 			</body>
 		</html>
