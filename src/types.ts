@@ -22,6 +22,8 @@ type AddressNameValues =
 	| 'postal'
 	| 'defaultAddress';
 
+export type ItemType = 'BOOK' | 'MANGA' | 'NOVEL';
+
 export interface BookType {
 	id: string;
 	title: string;
@@ -125,4 +127,16 @@ export interface UserReviewType {
 	bookId: string;
 	rating: number;
 	reviewContent: string;
+}
+
+export interface CartItemDataType {
+	cartId: string;
+	itemId: string;
+	itemType: ItemType;
+	quantity: number;
+
+	// OPTIONALS
+	bookId?: string;
+	mangaId?: string;
+	novelId?: string;
 }

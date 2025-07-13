@@ -6,6 +6,13 @@ import { RiCoupon3Line } from 'react-icons/ri';
 
 import { bookslugQueryOptions } from '@/utils/servers/books';
 import { useState } from 'react';
+import {
+	getOrCreateCartQueryOptions,
+	useAddToCart,
+} from '@/utils/servers/cart';
+import type { ItemType } from '@/generated/prisma';
+import { successMsg } from '@/utils/utilities';
+
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
 // import type { UserReviewType } from '@/types';
@@ -17,17 +24,41 @@ export const Route = createFileRoute('/products/books/$slug')({
 		const slug = params.slug;
 		const userId = context.userID!;
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
+		await context.queryClient.ensureQueryData(
+			getOrCreateCartQueryOptions(userId)
+		);
 
 		return { userId };
 	},
 });
 
 function RouteComponent() {
-	// const { userId } = Route.useLoaderData();
+	const { userId } = Route.useLoaderData();
 	// const { mutateAsync: addReview } = useAddReview();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const { slug } = Route.useParams();
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
+	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
+
+	// Server Actions
+	const { mutateAsync: addToCart } = useAddToCart();
+
+	const handleAddToCart = async (
+		itemId: string,
+		itemType: ItemType,
+		quantity: number = 1
+	) => {
+		const cartItemObj = {
+			cartId: userCart.id,
+			userId,
+			itemId,
+			itemType,
+			quantity,
+		};
+
+		await addToCart({ data: cartItemObj });
+		successMsg('Item successfully added to cart!');
+	};
 
 	// const form = useForm({
 	// 	defaultValues: {
@@ -135,7 +166,10 @@ function RouteComponent() {
 
 					{/* Add to Cart/Wishlist Buttons */}
 					<div className='flex flex-col gap-3'>
-						<button className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'>
+						<button
+							onClick={() => handleAddToCart(book.id, 'BOOK')}
+							className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'
+						>
 							Add to Cart
 						</button>
 

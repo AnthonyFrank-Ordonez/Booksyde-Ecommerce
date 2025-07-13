@@ -27,28 +27,22 @@ function Cart() {
 		window.userCart = userCart as UserCartType;
 	}
 
-	const carts = [
-		{
-			id: 1,
-			imgUrl:
-				'https://res.cloudinary.com/dcurf3qko/image/upload/v1749132295/harry-potter-phoenix_k4bxto.jpg',
-			bookTitle: 'Harry Potter and the Order of the Phoenix',
-			author: 'Author Name',
-			price: '$7.38',
-			quantity: 1,
-			lang: 'English',
-		},
-		{
-			id: 2,
-			imgUrl:
-				'https://res.cloudinary.com/dcurf3qko/image/upload/v1749132295/harry-potter-phoenix_k4bxto.jpg',
-			bookTitle: 'Twilight',
-			author: 'Author Name',
-			price: '$7.38',
-			quantity: 1,
-			lang: 'English',
-		},
-	];
+	const cartItems = userCart.items.map((item) => {
+		switch (item.itemType) {
+			case 'BOOK':
+				return {
+					...item.book,
+					price: Number(item.book?.price),
+					quantity: item.quantity,
+				};
+			case 'MANGA':
+				// In development
+				break;
+			case 'NOVEL':
+				//  in development
+				break;
+		}
+	});
 
 	return (
 		<>
@@ -59,74 +53,80 @@ function Cart() {
 						<p>Total items in cart:</p>
 						<p>2</p>
 					</div>
-					{carts.map((item) => (
-						<div
-							key={item.id}
-							className='grid grid-cols-[3px_100px_2fr_50px] gap-5 rounded-lg border border-gray-300 px-3 py-4 sm:gap-6 sm:px-6 sm:py-6 md:gap-7 md:px-7 md:py-5'
-						>
-							<div>
-								<input
-									type='checkbox'
-									className='h-4 w-4 cursor-pointer accent-black'
-								/>
-							</div>
-
-							<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
-								<img src={item.imgUrl} className='h-full w-full' />
-							</div>
-
-							<div className='flex flex-col justify-between'>
-								<div className='flex flex-col'>
-									<h2 className='line-clamp-2 text-[14px] font-medium sm:text-[17px] md:text-[19px]'>
-										{item.bookTitle}
-									</h2>
-									<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
-										{item.author}
-									</p>
-									<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
-										{item.lang}
-									</p>
+					{cartItems.length ? (
+						cartItems.map((item) => (
+							<div
+								key={item?.id}
+								className='grid grid-cols-[3px_100px_2fr_50px] gap-5 rounded-lg border border-gray-300 px-3 py-4 sm:gap-6 sm:px-6 sm:py-6 md:gap-7 md:px-7 md:py-5'
+							>
+								<div>
+									<input
+										type='checkbox'
+										className='h-4 w-4 cursor-pointer accent-black'
+									/>
 								</div>
 
-								<div>
-									<div className='mt-2 flex items-center'>
-										<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100 sm:h-7 sm:w-7'>
-											<span className='cursor-pointer text-sm font-bold'>
-												-
-											</span>
-										</button>
+								<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
+									<img src={item?.coverImg} className='h-full w-full' />
+								</div>
 
-										<input
-											type='number'
-											value={item.quantity || 1}
-											className='h-6 w-7 rounded text-center focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none sm:h-7 sm:w-9'
-											min='1'
-											readOnly
-										/>
+								<div className='flex flex-col justify-between'>
+									<div className='flex flex-col'>
+										<h2 className='line-clamp-2 text-[14px] font-medium sm:text-[17px] md:text-[19px]'>
+											{item?.title}
+										</h2>
+										<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
+											{item?.author}
+										</p>
+										<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
+											{item?.language}
+										</p>
+									</div>
 
-										<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100 sm:h-7 sm:w-7'>
-											<span className='cursor-pointer text-sm font-bold'>
-												+
-											</span>
-										</button>
+									<div>
+										<div className='mt-2 flex items-center'>
+											<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100 sm:h-7 sm:w-7'>
+												<span className='cursor-pointer text-sm font-bold'>
+													-
+												</span>
+											</button>
+
+											<input
+												type='number'
+												value={item?.quantity || 1}
+												className='h-6 w-7 rounded text-center focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none sm:h-7 sm:w-9'
+												min='1'
+												readOnly
+											/>
+
+											<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100 sm:h-7 sm:w-7'>
+												<span className='cursor-pointer text-sm font-bold'>
+													+
+												</span>
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<div className='flex flex-col items-end justify-between'>
+									<div className='flex flex-col items-end'>
+										<p className='text-[15px] font-extrabold sm:text-[17px] md:text-[19px]'>
+											{`$${item?.price}`}
+										</p>
+										<p className='text-sm text-gray-300 line-through'>$10.38</p>
+									</div>
+
+									<div className='flex h-6 w-6 items-center justify-center rounded-full border border-black p-1 text-black sm:h-7 sm:w-7'>
+										<FaRegTrashAlt className='h-3 w-3 sm:h-4 sm:w-4' />
 									</div>
 								</div>
 							</div>
-
-							<div className='flex flex-col items-end justify-between'>
-								<div className='flex flex-col items-end'>
-									<p className='text-[15px] font-extrabold sm:text-[17px] md:text-[19px]'>
-										{item.price}
-									</p>
-									<p className='text-sm text-gray-300 line-through'>$10.38</p>
-								</div>
-
-								<div className='flex h-6 w-6 items-center justify-center rounded-full border border-black p-1 text-black sm:h-7 sm:w-7'>
-									<FaRegTrashAlt className='h-3 w-3 sm:h-4 sm:w-4' />
-								</div>
-							</div>
-						</div>
-					))}
+						))
+					) : (
+						<p className='rounded-lg border border-gray-500/50 px-2 py-4 text-center text-[0.8rem] font-bold text-gray-400'>
+							Your cart is currently empty. Start shopping to add items!
+						</p>
+					)}
 				</div>
 			</div>
 
@@ -155,66 +155,76 @@ function Cart() {
 			{/* For Large Devices */}
 			<div className='hidden grid-cols-[2fr_1fr] gap-5 lg:grid xl:gap-8 2xl:grid-cols-[3fr_1.2fr]'>
 				<div className='rounded-lg border border-gray-300 px-5 py-6'>
-					{carts.map((item) => (
-						<div
-							key={item.id}
-							className='mb-5 grid grid-cols-[10px_130px_290px_2fr] gap-5 rounded-lg border border-gray-300 px-4 py-3'
-						>
-							<div>
-								<input
-									type='checkbox'
-									className='h-4 w-4 cursor-pointer accent-black'
-								/>
-							</div>
-
-							<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
-								<img src={item.imgUrl} className='h-full w-full' />
-							</div>
-
-							<div className='flex flex-col justify-between'>
-								<div className='flex flex-col'>
-									<h2 className='text-[22px] font-bold'>{item.bookTitle}</h2>
-									<p className='text-[15px] font-light text-gray-400/80'>
-										{item.author}
-									</p>
-									<p className='text-[15px] font-light text-gray-400/80'>
-										{item.lang}
-									</p>
-								</div>
-
+					{cartItems.length ? (
+						cartItems.map((item) => (
+							<div
+								key={item?.id}
+								className='mb-5 grid grid-cols-[10px_130px_290px_2fr] gap-5 rounded-lg border border-gray-300 px-4 py-3'
+							>
 								<div>
-									<p className='text-[15px] text-gray-300 line-through'>
-										$10.38
-									</p>
-									<p className='text-2xl font-bold'>{item.price}</p>
-								</div>
-							</div>
-
-							<div className='flex flex-col items-end justify-between'>
-								<div className='flex h-7 w-7 items-center justify-center rounded-full border border-black p-1 text-black'>
-									<FaRegTrashAlt className='h-4 w-4 cursor-pointer' />
-								</div>
-
-								<div className='mt-2 flex items-center'>
-									<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'>
-										<span className='cursor-pointer text-sm font-bold'>-</span>
-									</button>
-
 									<input
-										type='text'
-										value={item.quantity || 1}
-										className='h-6 w-7 rounded border-0 px-0 text-center focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none'
-										min='1'
-										readOnly
+										type='checkbox'
+										className='h-4 w-4 cursor-pointer accent-black'
 									/>
+								</div>
 
-									<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'>
-										<span className='cursor-pointer text-sm font-bold'>+</span>
-									</button>
+								<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
+									<img src={item?.coverImg} className='h-full w-full' />
+								</div>
+
+								<div className='flex flex-col justify-between'>
+									<div className='flex flex-col'>
+										<h2 className='text-[22px] font-bold'>{item?.title}</h2>
+										<p className='text-[15px] font-light text-gray-400/80'>
+											{item?.author}
+										</p>
+										<p className='text-[15px] font-light text-gray-400/80'>
+											{item?.language}
+										</p>
+									</div>
+
+									<div>
+										<p className='text-[15px] text-gray-300 line-through'>
+											$10.38
+										</p>
+										<p className='text-2xl font-bold'>{`$${item?.price}`}</p>
+									</div>
+								</div>
+
+								<div className='flex flex-col items-end justify-between'>
+									<div className='flex h-7 w-7 items-center justify-center rounded-full border border-black p-1 text-black'>
+										<FaRegTrashAlt className='h-4 w-4 cursor-pointer' />
+									</div>
+
+									<div className='mt-2 flex items-center'>
+										<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'>
+											<span className='cursor-pointer text-sm font-bold'>
+												-
+											</span>
+										</button>
+
+										<input
+											type='text'
+											value={item?.quantity || 1}
+											className='h-6 w-7 rounded border-0 px-0 text-center focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none'
+											min='1'
+											readOnly
+										/>
+
+										<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'>
+											<span className='cursor-pointer text-sm font-bold'>
+												+
+											</span>
+										</button>
+									</div>
 								</div>
 							</div>
-						</div>
-					))}
+						))
+					) : (
+						<p className='rounded-lg border border-gray-500/50 px-2 py-2 text-center text-[1rem] font-bold text-gray-400'>
+							Your cart is currently empty. Start shopping to add items!
+						</p>
+					)}
 				</div>
 
 				{/* Order Summary */}

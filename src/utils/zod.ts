@@ -99,3 +99,11 @@ export const AddReviewSchema = z.object({
 	rating: z.number(),
 	reviewContent: z.string(),
 });
+
+export const AddToCartSchema = z.object({
+	cartId: z.string(),
+	userId: z.string(),
+	itemId: z.string(),
+	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
+	quantity: z.number(),
+});
