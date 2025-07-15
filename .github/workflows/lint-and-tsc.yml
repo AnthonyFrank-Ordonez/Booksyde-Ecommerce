@@ -51,6 +51,10 @@ jobs:
         run: ls -R ./generated
         continue-on-error: true
 
+      - name: Check Source Code
+        run: ls -R ./src
+        continue-on-error: true
+
       - name: Run Eslint
         run: pnpm eslint .
         continue-on-error: false
