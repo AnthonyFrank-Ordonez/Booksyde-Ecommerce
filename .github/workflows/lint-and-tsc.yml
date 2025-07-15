@@ -38,12 +38,15 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm prisma generate
         continue-on-error: true
-        
+
       - name: Check prisma generated folder
         run: ls -R ./src/generated
 
       - name: Check prisma generated folder with alias
         run: ls -R @/generated
+
+      - name: Check prisma generated folder
+        run: ls -R ./generated
 
       - name: Run Eslint
         run: pnpm eslint .
