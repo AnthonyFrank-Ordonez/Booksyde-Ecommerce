@@ -39,26 +39,10 @@ jobs:
         run: pnpm prisma generate
         continue-on-error: true
 
-      - name: Check prisma generated folder
-        run: ls -R ./src/generated
-        continue-on-error: true
-
-      - name: Check prisma generated folder with alias
-        run: ls -R @/generated
-        continue-on-error: true
-
-      - name: Check prisma generated folder
-        run: ls -R ./generated
-        continue-on-error: true
-
-      - name: Check Source Code
-        run: ls -R ./src
-        continue-on-error: true
-
       - name: Run Eslint
         run: pnpm eslint .
         continue-on-error: false
 
       - name: Run Typescript Compiler
-        run: pnpm tsc --project ./tsconfig.json
+        run: pnpm tsc --project ./tsconfig.build.json
         continue-on-error: true
