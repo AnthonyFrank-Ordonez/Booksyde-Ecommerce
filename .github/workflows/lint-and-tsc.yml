@@ -39,6 +39,9 @@ jobs:
         run: |
           pnpm prisma generate
           ls -la node_modules/.prisma/client
+          ls -la @/generated/prisma
+          ls -la ./src/generated/prisma
+          ls -la ./generated/prisma
         continue-on-error: true
 
       - name: Run Eslint
