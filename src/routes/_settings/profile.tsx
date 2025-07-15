@@ -1,20 +1,25 @@
-import FieldInfo from '@/components/FieldInfo';
-import type { UpdateUserInformationType } from '@/types';
-import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
-import { getUserSession } from '@/utils/servers/auth-server';
-import { useUpdateUserInformation } from '@/utils/servers/user';
-import { UserInformationSchema } from '@/utils/zod';
 import { useForm } from '@tanstack/react-form';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FaUser } from 'react-icons/fa';
+import type { UpdateUserInformationType } from '@/types';
+import { UserInformationSchema } from '@/utils/zod';
+import { useUpdateUserInformation } from '@/utils/servers/user';
+import { getUserSession } from '@/utils/servers/auth-server';
+import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
+import FieldInfo from '@/components/FieldInfo';
 
 export const Route = createFileRoute('/_settings/profile')({
 	component: Profile,
 	loader: async ({ context }) => {
 		const session = await getUserSession();
+
+		if (!session) {
+			throw new Error('User session not found');
+		}
+
 		await context.queryClient.ensureQueryData(
 			getUserDefaultAddQueryOptions(session.id)
 		);

@@ -1,9 +1,7 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import { Link, createFileRoute, redirect } from '@tanstack/react-router';
 
-import { bookQueryOptions } from '@/utils/servers/books';
 import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import type { BookType, NewArrrivalBookType } from '@/types';
 import {
 	FaArrowLeft,
 	FaRegHeart,
@@ -11,12 +9,14 @@ import {
 	FaStar,
 	FaX,
 } from 'react-icons/fa6';
+import type { BookType, NewArrrivalBookType } from '@/types';
+import { bookQueryOptions } from '@/utils/servers/books';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import NewArrival from '@/components/NewArrival';
 
 export const Route = createFileRoute('/products/manga/')({
 	component: MangaIndex,
-	beforeLoad: async ({ context }) => {
+	beforeLoad: ({ context }) => {
 		if (!context.userID) throw redirect({ to: '/signin' });
 	},
 	loader: async ({ context }) => {

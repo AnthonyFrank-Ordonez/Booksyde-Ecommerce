@@ -4,14 +4,14 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import FieldInfo from '@/components/FieldInfo';
-import { AddressSchema } from '@/utils/zod';
 import type {
 	AddresFormObjType,
 	AddressType,
 	DeleteAddressObjType,
 	UpdateAddressObjType,
 } from '@/types';
+import FieldInfo from '@/components/FieldInfo';
+import { AddressSchema } from '@/utils/zod';
 import {
 	getUserAddQueryOptions,
 	useAddAddress,
@@ -44,7 +44,7 @@ function Address() {
 	const [selectedAddressId, setSelectedAddressId] = useState<null | string>(
 		null
 	);
-	const addressFormObj: AddresFormObjType[] = [
+	const addressFormObj: Array<AddresFormObjType> = [
 		{ label: 'House Number', name: 'houseNo', type: 'number' },
 		{ label: 'Street', name: 'street', type: 'text' },
 		{ label: 'City', name: 'city', type: 'text' },
@@ -129,8 +129,8 @@ function Address() {
 	return (
 		<div className='px-4 py-3 md:px-7 md:py-5'>
 			{userAddress
-				?.sort((add1, add2) => +add2.defaultAddress - +add1?.defaultAddress)
-				?.map((addresses) => (
+				.sort((add1, add2) => +add2.defaultAddress - +add1.defaultAddress)
+				.map((addresses) => (
 					<div
 						key={addresses.id}
 						className='mb-3 w-full rounded-lg border border-gray-400 px-4 py-5'

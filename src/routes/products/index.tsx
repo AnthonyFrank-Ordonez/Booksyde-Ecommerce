@@ -1,12 +1,12 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+import type { BookType } from '@/types';
 import Carousel from '@/components/Carousel';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import HoverContainer from '@/components/HoverContainer';
 import { bookQueryOptions } from '@/utils/servers/books';
-import type { BookType } from '@/types';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,

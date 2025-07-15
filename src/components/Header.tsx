@@ -21,9 +21,10 @@ export default function Header({ session }: HeaderProps) {
 	const { mutateAsync: signOutUser } = useSignOutUser();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-	const isEmpty = (session: SessionType) => {
-		if (Object.keys(session).length === 0) return true;
-		if (Object.values(session).some((val) => val === undefined)) return true;
+	const isEmpty = (userSession: SessionType) => {
+		if (Object.keys(userSession).length === 0) return true;
+		if (Object.values(userSession).some((val) => val === undefined))
+			return true;
 	};
 
 	const handleSignOut = async () => {
@@ -103,7 +104,7 @@ export default function Header({ session }: HeaderProps) {
 									<div className='border-b border-gray-100 px-4 py-3'>
 										<div className='flex items-center space-x-3'>
 											<div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-200'>
-												{session?.image ? (
+												{session.image ? (
 													<img
 														src={session.image}
 														alt={`${session.name || 'User'}'s profile`}
@@ -115,10 +116,10 @@ export default function Header({ session }: HeaderProps) {
 											</div>
 											<div className='min-w-0 flex-grow'>
 												<p className='truncate font-medium text-gray-800'>
-													{session?.name}
+													{session.name}
 												</p>
 												<p className='truncate text-sm text-gray-500'>
-													{session?.email}
+													{session.email}
 												</p>
 											</div>
 										</div>

@@ -1,16 +1,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { FaRegStar, FaStar, FaUserCircle } from 'react-icons/fa';
 import { MdArrowBackIos, MdArrowRight } from 'react-icons/md';
 import { RiCoupon3Line } from 'react-icons/ri';
 
-import { bookslugQueryOptions } from '@/utils/servers/books';
 import { useState } from 'react';
+import type { ItemType } from '@/generated/prisma';
+import { bookslugQueryOptions } from '@/utils/servers/books';
 import {
 	getOrCreateCartQueryOptions,
 	useAddToCart,
 } from '@/utils/servers/cart';
-import type { ItemType } from '@/generated/prisma';
 import { successMsg } from '@/utils/utilities';
 
 // import { useForm } from '@tanstack/react-form';

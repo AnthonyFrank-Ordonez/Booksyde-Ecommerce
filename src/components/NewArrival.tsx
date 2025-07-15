@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { ScrollFadeSection } from './ScrollFadeSection';
 import { useState } from 'react';
+import { ScrollFadeSection } from './ScrollFadeSection';
 
 interface NewArrivalProps {
 	title?: string;

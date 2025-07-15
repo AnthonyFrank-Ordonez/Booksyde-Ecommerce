@@ -6,7 +6,7 @@ import {
 import { createServerFn } from '@tanstack/react-start';
 import { AddToCartSchema, GetUserIdSchema } from '../zod';
 import prisma from '../prisma';
-import type { CartItemDataType, UserCartType } from '@/types';
+import type { CartItemDataType } from '@/types';
 
 export const getOrCreateCartFn = createServerFn({ method: 'POST' })
 	.validator((data: unknown) => GetUserIdSchema.parse(data))
@@ -36,7 +36,17 @@ export const getOrCreateCartFn = createServerFn({ method: 'POST' })
 			});
 		}
 
-		return cart satisfies UserCartType;
+		return {
+			...cart,
+			items: cart.items.map((items) => ({
+				...items,
+				book: items.book && {
+					...items.book,
+					price: items.book.price.toJSON(),
+					rating: items.book.rating.toJSON(),
+				},
+			})),
+		};
 	});
 
 export const getOrCreateCartQueryOptions = (userId: string) =>
@@ -46,7 +56,7 @@ export const getOrCreateCartQueryOptions = (userId: string) =>
 		staleTime: Infinity,
 		retry: 1,
 		refetchOnWindowFocus: false,
-		queryFn: () => getOrCreateCartFn({ data: { userId: userId } }),
+		queryFn: () => getOrCreateCartFn({ data: { userId } }),
 	});
 
 export const addToCartFn = createServerFn({ method: 'POST' })

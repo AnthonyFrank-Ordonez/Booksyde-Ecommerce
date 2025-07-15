@@ -14,15 +14,17 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
 
 	return await next({
 		context: {
-			user: {
-				id: session?.user.id,
-				name: session?.user.name,
-				image: session?.user.image,
-				email: session?.user.email,
-				firstName: session?.user.firstName,
-				lastName: session?.user.lastName,
-				phone: session?.user.phone,
-			},
+			user: session?.user
+				? {
+						id: session.user.id,
+						name: session.user.name,
+						image: session.user.image,
+						email: session.user.email,
+						firstName: session.user.firstName,
+						lastName: session.user.lastName,
+						phone: session.user.phone,
+					}
+				: null,
 		},
 	});
 });

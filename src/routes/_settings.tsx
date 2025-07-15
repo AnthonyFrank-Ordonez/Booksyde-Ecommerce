@@ -1,19 +1,19 @@
 import {
-	createFileRoute,
 	Link,
 	Outlet,
+	createFileRoute,
 	redirect,
 } from '@tanstack/react-router';
 import {
 	MdOutlineAccountCircle,
-	MdOutlinePayment,
 	MdOutlineHome,
+	MdOutlinePayment,
 	MdOutlineShoppingBag,
 } from 'react-icons/md';
 
 export const Route = createFileRoute('/_settings')({
 	component: SettingsLayout,
-	beforeLoad: async ({ context }) => {
+	beforeLoad: ({ context }) => {
 		if (!context.userID) return redirect({ to: '/signin' });
 	},
 });

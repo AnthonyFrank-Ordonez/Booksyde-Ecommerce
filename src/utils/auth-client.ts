@@ -5,7 +5,7 @@ export const { useSession, signIn, signOut, signUp, getSession } =
 		// baseURL: 'http://localhost:3000',
 		redirectTo: '/',
 		fetchOptions: {
-			onError: async (context) => {
+			onError: (context) => {
 				const { response, error } = context;
 				if (response.status === 429) {
 					const retryAfter = response.headers.get('X-Retry-After');

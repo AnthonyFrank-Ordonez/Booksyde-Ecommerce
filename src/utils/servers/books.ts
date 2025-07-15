@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start';
+import { queryOptions } from '@tanstack/react-query';
 import prisma from '../prisma';
 
 import type { BookSlugType, BookType } from '@/types';
-import { queryOptions } from '@tanstack/react-query';
 
 export const fetchBooks = createServerFn({ method: 'GET' }).handler(
 	async () => {
@@ -10,7 +10,7 @@ export const fetchBooks = createServerFn({ method: 'GET' }).handler(
 
 		const books = await prisma.book.findMany();
 
-		const serializedBooks: BookType[] = books.map((book) => ({
+		const serializedBooks: Array<BookType> = books.map((book) => ({
 			...book,
 			price: book.price.toNumber(),
 			rating: book.rating.toNumber(),
@@ -60,8 +60,8 @@ export const fetchBookBySlugFn = createServerFn({ method: 'GET' })
 		if (book) {
 			const serializedBooks: BookType = {
 				...book,
-				price: book?.price.toNumber(),
-				rating: book?.rating.toNumber(),
+				price: book.price.toNumber(),
+				rating: book.rating.toNumber(),
 			};
 
 			return serializedBooks;

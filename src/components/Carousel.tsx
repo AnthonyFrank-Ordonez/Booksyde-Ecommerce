@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface CarouselProps {
-	images: string[];
+	images: Array<string>;
 	className: string;
 }
 

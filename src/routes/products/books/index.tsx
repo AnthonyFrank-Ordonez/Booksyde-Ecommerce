@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import {
 	FaArrowLeft,
 	FaRegHeart,
@@ -8,9 +8,9 @@ import {
 } from 'react-icons/fa6';
 import { useState } from 'react';
 
-import { bookQueryOptions } from '@/utils/servers/books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { BookType, NewArrrivalBookType } from '@/types';
+import { bookQueryOptions } from '@/utils/servers/books';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import NewArrival from '@/components/NewArrival';
 

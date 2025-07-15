@@ -7,7 +7,10 @@
 		"start": "vinxi start",
 		"build": "prisma generate && vinxi build",
 		"serve": "vite preview",
-		"test": "vitest run"
+		"test": "vitest run",
+		"tsc": "tsc --noEmit",
+		"lint": "eslint",
+		"checkpoint": "tsc --noEmit && eslint"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
@@ -39,12 +42,20 @@
 		"zod": "^3.25.49"
 	},
 	"devDependencies": {
+		"@tanstack/eslint-config": "^0.2.0",
+		"@tanstack/eslint-plugin-query": "^5.81.2",
+		"@tanstack/eslint-plugin-router": "^1.125.0",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/react": "^16.2.0",
+		"@types/eslint": "^9.6.1",
+		"@types/node": "^24.0.13",
 		"@types/nodemailer": "^6.4.17",
 		"@types/react": "^19.0.8",
 		"@types/react-dom": "^19.0.3",
+		"@typescript-eslint/eslint-plugin": "^8.36.0",
+		"@typescript-eslint/parser": "^8.36.0",
 		"@vitejs/plugin-react": "^4.3.4",
+		"eslint": "^9.31.0",
 		"jsdom": "^26.0.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",

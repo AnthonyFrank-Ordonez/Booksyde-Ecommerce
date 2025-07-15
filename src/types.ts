@@ -1,16 +1,14 @@
 import type { Prisma } from './generated/prisma';
 
 // Prisma Schema Types
-const cartInclude = {
-	items: {
-		include: {
-			book: true,
-		},
-	},
-} satisfies Prisma.CartInclude;
-
 export type UserCartType = Prisma.CartGetPayload<{
-	include: typeof cartInclude;
+	include: {
+		items: {
+			include: {
+				book: true;
+			};
+		};
+	};
 }>;
 
 type AddressNameValues =
@@ -28,7 +26,7 @@ export interface BookType {
 	id: string;
 	title: string;
 	author: string;
-	genres: string[];
+	genres: Array<string>;
 	description: string;
 	coverImg: string;
 	language: string;

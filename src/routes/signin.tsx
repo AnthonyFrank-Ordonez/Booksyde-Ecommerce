@@ -1,22 +1,22 @@
 import {
-	createFileRoute,
 	Link,
+	createFileRoute,
 	redirect,
 	useRouter,
 } from '@tanstack/react-router';
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
-import { signIn } from '@/utils/auth-client';
-import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { useForm } from '@tanstack/react-form';
 import { useRateLimiter } from '@tanstack/react-pacer';
+import type { CredentialsType } from '@/types';
+import { signIn } from '@/utils/auth-client';
+import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
 import { useSignInUser } from '@/utils/servers/user';
 import { errorMsg, successMsg } from '@/utils/utilities';
-import type { CredentialsType } from '@/types';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
-	beforeLoad: async ({ context }) => {
+	beforeLoad: ({ context }) => {
 		if (context.userID) throw redirect({ to: '/' });
 	},
 });
@@ -56,7 +56,7 @@ function Login() {
 			email: '',
 			password: '',
 		},
-		onSubmit: async ({ value }) => {
+		onSubmit: ({ value }) => {
 			const userCred: CredentialsType = {
 				email: value.email,
 				password: value.password,

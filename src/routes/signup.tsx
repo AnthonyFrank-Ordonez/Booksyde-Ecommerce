@@ -1,21 +1,21 @@
-import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import {
-	createFileRoute,
 	Link,
+	createFileRoute,
 	redirect,
 	useRouter,
 } from '@tanstack/react-router';
 import { useForm } from '@tanstack/react-form';
+import { useServerFn } from '@tanstack/react-start';
+import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
 import { signUpSchema } from '@/utils/zod';
 import FieldInfo from '@/components/FieldInfo';
 // import { signUp } from '@/utils/auth-client'; for client side
-import { useServerFn } from '@tanstack/react-start';
 import { signUpServer } from '@/utils/servers/user';
 
 export const Route = createFileRoute('/signup')({
 	component: SignUp,
-	beforeLoad: async ({ context }) => {
+	beforeLoad: ({ context }) => {
 		if (context.userID) throw redirect({ to: '/' });
 	},
 });
