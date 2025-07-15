@@ -32,6 +32,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Inject DATABASE_URL into .env
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+
+      - name: Generate Prisma Client
+        run: pnpm prisma generate
+        continue-on-error: false
+
       - name: Run Eslint
         run: pnpm eslint .
         continue-on-error: false
