@@ -41,12 +41,15 @@ jobs:
 
       - name: Check prisma generated folder
         run: ls -R ./src/generated
+        continue-on-error: true
 
       - name: Check prisma generated folder with alias
         run: ls -R @/generated
+        continue-on-error: true
 
       - name: Check prisma generated folder
         run: ls -R ./generated
+        continue-on-error: true
 
       - name: Run Eslint
         run: pnpm eslint .
