@@ -36,13 +36,14 @@ jobs:
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
       - name: Generate Prisma Client
-        run: |
-          pnpm prisma generate
-          ls -la node_modules/.prisma/client
-          ls -la @/generated/prisma
-          ls -la ./src/generated/prisma
-          ls -la ./generated/prisma
+        run: pnpm prisma generate
         continue-on-error: true
+        
+      - name: Check prisma generated folder
+        run: ls -R ./src/generated
+
+      - name: Check prisma generated folder with alias
+        run: ls -R @/generated
 
       - name: Run Eslint
         run: pnpm eslint .
