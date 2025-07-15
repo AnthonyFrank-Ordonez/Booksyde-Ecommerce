@@ -1,16 +1,16 @@
 import {
-	Outlet,
 	HeadContent,
+	Outlet,
 	Scripts,
 	createRootRouteWithContext,
 	useLocation,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { QueryClient } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 
 import Header from '../components/Header';
 import appCss from '../styles.css?url';
+import type { QueryClient } from '@tanstack/react-query';
 import { seo } from '@/utils/seo';
 import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';

@@ -1,8 +1,8 @@
-import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import { createFileRoute } from '@tanstack/react-router';
 import { FaClock } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
 import { MdCall, MdEmail, MdPhoneAndroid } from 'react-icons/md';
+import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
 export const Route = createFileRoute('/contact')({
 	component: ContactUs,

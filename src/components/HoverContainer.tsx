@@ -1,4 +1,5 @@
-import { motion, type TargetAndTransition } from 'motion/react';
+import {  motion } from 'motion/react';
+import type {TargetAndTransition} from 'motion/react';
 
 interface HoverContainerProps {
 	children: React.ReactNode;

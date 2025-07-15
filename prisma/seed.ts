@@ -1,8 +1,8 @@
-import { Prisma } from '@/generated/prisma';
+import type { Prisma } from '@/generated/prisma';
 
 import prisma from '@/utils/prisma';
 
-const booksData: Prisma.BookCreateInput[] = [
+const booksData: Array<Prisma.BookCreateInput> = [
 	{
 		// id: 1,
 		title: 'The Hunger Games',

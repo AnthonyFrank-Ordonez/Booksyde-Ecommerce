@@ -1,8 +1,8 @@
-import type { UserCartType } from '@/types';
-import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import type { UserCartType } from '@/types';
+import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 
 export const Route = createFileRoute('/_cartLayout/cart')({
 	component: Cart,

@@ -1,4 +1,4 @@
-import { useAnimation, useInView, motion } from 'motion/react';
+import { motion, useAnimation, useInView } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
 interface ScrollFadeSectionProps {

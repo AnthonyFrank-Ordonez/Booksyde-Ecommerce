@@ -8,7 +8,7 @@ import type {
 
 declare global {
 	interface Window {
-		userSession: UserSessionType;
+		userSession: UserSessionType | null;
 		userCart: UserCartType;
 	}
 }

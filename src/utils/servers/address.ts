@@ -1,19 +1,19 @@
 import { createServerFn } from '@tanstack/react-start';
 import {
+	queryOptions,
+	useMutation,
+	useQueryClient,
+} from '@tanstack/react-query';
+import {
 	DeleteAddressSchema,
 	GetUserDefaultAddressSchema,
 	GetUserIdSchema,
 	UpdateAddressSchema,
 	UserAddressSchema,
 } from '../zod';
-import {
-	queryOptions,
-	useMutation,
-	useQueryClient,
-} from '@tanstack/react-query';
 import prisma from '../prisma';
-import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 import type { AddressType } from '@/types';
+import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 
 export const addAddressFn = createServerFn({ method: 'POST' })
 	.validator((data: unknown) => UserAddressSchema.parse(data))
@@ -92,11 +92,11 @@ export const getUserAddresssesFn = createServerFn({ method: 'GET' })
 			return userAdresses;
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
-				console.error('Error fetching data', error);
+				throw new Error('Error fetching data', error);
 			} else if (error instanceof Error) {
-				console.error('Error fetching user address', error);
+				throw new Error('Error fetching user address', error);
 			} else {
-				console.error('Unkown Error', error);
+				throw new Error('Unkown Error');
 			}
 		}
 	});
@@ -128,11 +128,11 @@ export const getUserDefaultAddressFn = createServerFn({ method: 'GET' })
 			return defaultAddress;
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
-				console.error('Error fetching data', error);
+				throw new Error('Error fetching data', error);
 			} else if (error instanceof Error) {
-				console.error('Error fetching user address', error);
+				throw new Error('Error fetching user address', error);
 			} else {
-				console.error('Unkown Error', error);
+				throw new Error('Unkown Error');
 			}
 		}
 	});
