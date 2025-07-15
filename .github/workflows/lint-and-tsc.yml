@@ -1,0 +1,39 @@
+name: Lint and Type Check on PR Merge to Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  lint_and_typecheck:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: 'pnpm'
+
+      - name: Check Node.js version
+        run: node --version
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Eslint
+        run: pnpm eslint .
+        continue-on-error: false
+
+      - name: Run Typescript Compiler
+        run: pnpm tsc --noEmit
+        continue-on-error: false
