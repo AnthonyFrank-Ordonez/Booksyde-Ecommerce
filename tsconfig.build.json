@@ -1,5 +1,12 @@
 {
-	"include": ["src/**/*", "**/*.ts", "**/*.tsx"],
+	"include": [
+		"src/**/*",
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.mjs",
+		"prisma/seed.ts",
+		"src/generated/prisma/**/*"
+	],
 	"compilerOptions": {
 		"target": "ES2022",
 		"jsx": "react-jsx",
