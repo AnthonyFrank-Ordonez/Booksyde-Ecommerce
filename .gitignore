@@ -9,4 +9,4 @@ dist-ssr
 .vscode
 Notes.txt
 
-/src/generated/prisma
+# /src/generated/prisma
