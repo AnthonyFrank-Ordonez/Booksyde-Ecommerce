@@ -1,9 +1,6 @@
 name: Lint and Type Check on PR Merge to Main
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     types: [closed]
     branches:
