@@ -1,4 +1,4 @@
-import type { Prisma } from './generated/prisma';
+import type { Prisma } from '@/generated/prisma';
 
 // Prisma Schema Types
 export type UserCartType = Prisma.CartGetPayload<{
