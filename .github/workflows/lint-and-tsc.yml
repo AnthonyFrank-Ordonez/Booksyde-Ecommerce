@@ -47,10 +47,6 @@ jobs:
         run: pnpm eslint .
         continue-on-error: true
 
-      - name: Check tsconfig.json file
-        run: ls -R tsconfig.json
-        continue-on-error: true
-
       - name: Run Typescript Compiler
-        run: pnpm tsc --project tsconfig.json
+        run: pnpm tsc --project tsconfig.build.json
         continue-on-error: true
