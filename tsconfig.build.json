@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"target": "ES2022",
 		"jsx": "react-jsx",
-		"module": "es2022",
+		"module": "ESNext",
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"types": ["vite/client"],
 
@@ -22,8 +22,7 @@
 		"noUncheckedSideEffectImports": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
-			"@generated/prisma": ["./src/generated/prisma"]
+			"@/*": ["src/*"]
 		}
 	}
 }
