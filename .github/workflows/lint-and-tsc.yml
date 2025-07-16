@@ -42,6 +42,9 @@ jobs:
       - name: Check Prisma Generated folder
         run: ls -R ./src/generated/prisma
 
+      - name: Check if path alias in utils is working
+        run: ls -R @/utils/prisma
+
       - name: Run Eslint
         run: pnpm eslint .
         continue-on-error: false
