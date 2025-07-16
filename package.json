@@ -9,8 +9,7 @@
 		"serve": "vite preview",
 		"test": "vitest run",
 		"tsc": "tsc --noEmit --skipLibCheck",
-		"lint": "eslint",
-		"checkpoint": "tsc --noEmit && eslint"
+		"lint": "eslint"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
