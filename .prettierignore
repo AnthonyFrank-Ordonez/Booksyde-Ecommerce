@@ -1,6 +1,9 @@
-# Ignore artifacts:
+# Ignore artifacts and build outputs
 build/
 coverage/
 node_modules/
 dist/
+public/
 
+# Optional: Ignore configs only if you don't want Prettier to touch them
+.eslint.config.ts
