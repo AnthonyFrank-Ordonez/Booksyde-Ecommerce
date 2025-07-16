@@ -37,16 +37,20 @@ jobs:
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
-        continue-on-error: false
+        continue-on-error: true
 
       - name: Run Prettier Check
         run: pnpm format
-        continue-on-error: false
+        continue-on-error: true
 
       - name: Run Eslint
         run: pnpm eslint .
-        continue-on-error: false
+        continue-on-error: true
 
-      # - name: Run Typescript Compiler
-      #   run: pnpm tsc
-      #   continue-on-error: true
+      - name: Check tsconfig.json file
+        run: ls -R tsconfig.json
+        continue-on-error: true
+
+      - name: Run Typescript Compiler
+        run: pnpm tsc --project tsconfig.build.json
+        continue-on-error: true

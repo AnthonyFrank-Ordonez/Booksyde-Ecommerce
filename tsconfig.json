@@ -22,8 +22,7 @@
 		"noUncheckedSideEffectImports": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
-			"@/generated/prisma": ["./src/generated/prisma/"]
+			"@/*": ["./src/*"]
 		}
 	}
 }
