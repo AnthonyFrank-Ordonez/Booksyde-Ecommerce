@@ -39,6 +39,9 @@ jobs:
         run: pnpm prisma generate
         continue-on-error: true
 
+      - name: Check Prisma Generated folder
+        run: ls -R ./src/generated/prisma
+
       - name: Run Eslint
         run: pnpm eslint .
         continue-on-error: false

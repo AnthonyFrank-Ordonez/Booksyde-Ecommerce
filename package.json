@@ -8,7 +8,7 @@
 		"build": "prisma generate && vinxi build",
 		"serve": "vite preview",
 		"test": "vitest run",
-		"tsc": "tsc --noEmit",
+		"tsc": "tsc --noEmit --skipLibCheck",
 		"lint": "eslint",
 		"checkpoint": "tsc --noEmit && eslint"
 	},

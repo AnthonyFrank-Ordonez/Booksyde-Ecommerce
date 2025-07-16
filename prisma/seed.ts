@@ -1,4 +1,4 @@
-import type { Prisma } from '../src/generated/prisma';
+import type { Prisma } from '@/generated/prisma';
 
 import prisma from '@/utils/prisma';
 
