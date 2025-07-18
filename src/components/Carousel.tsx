@@ -14,7 +14,6 @@ export default function Carousel({ images, className }: CarouselProps) {
 	const [touchEnd, setTouchEnd] = useState(0);
 	const [direction, setDirection] = useState('right');
 	const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
-	console.log('testing');
 
 	const moveToNextSlide = () => {
 		if (timeoutRef.current) clearTimeout(timeoutRef.current);
