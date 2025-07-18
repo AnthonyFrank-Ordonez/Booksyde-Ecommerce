@@ -10,7 +10,8 @@
 		"test": "vitest run",
 		"tsc": "tsc",
 		"lint": "eslint",
-		"format": "prettier --check ."
+		"format": "prettier --check .",
+		"prepare": "husky"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
@@ -56,6 +57,7 @@
 		"@typescript-eslint/parser": "^8.36.0",
 		"@vitejs/plugin-react": "^4.3.4",
 		"eslint": "^9.31.0",
+		"husky": "^9.1.7",
 		"jsdom": "^26.0.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
