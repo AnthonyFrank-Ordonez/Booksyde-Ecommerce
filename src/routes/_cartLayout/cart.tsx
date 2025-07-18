@@ -44,6 +44,11 @@ function Cart() {
 		}
 	});
 
+	const cartTotal = cartItems
+		.map((item) => (item?.price ?? 0) * (item?.quantity ?? 0))
+		.reduce((sum, itemTotal) => sum + itemTotal, 0)
+		.toFixed(2);
+
 	return (
 		<>
 			{/* For Small Devices */}
@@ -138,7 +143,7 @@ function Cart() {
 							<span className='text-lg font-medium text-gray-900'>
 								Subtotal
 							</span>
-							<span className='text-lg font-bold text-gray-900'>$12.00</span>
+							<span className='text-lg font-bold text-gray-900'>{`$${cartTotal}`}</span>
 						</div>
 
 						<p className='text-sm font-light text-gray-400'>
@@ -234,7 +239,7 @@ function Cart() {
 					<div className='flex flex-col'>
 						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
 							<p className=''>Subtotal</p>
-							<p className='font-semibold'>$14.00</p>
+							<p className='font-semibold'>{`$${cartTotal}`}</p>
 						</div>
 
 						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
@@ -251,7 +256,7 @@ function Cart() {
 
 						<div className='mb-1.5 flex justify-between text-lg font-bold'>
 							<p>Total</p>
-							<p>$38.00</p>
+							<p>{`$${cartTotal}`}</p>
 						</div>
 
 						<div className='mb-3 border border-gray-400/50'></div>
