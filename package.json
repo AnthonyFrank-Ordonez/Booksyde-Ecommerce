@@ -11,6 +11,7 @@
 		"tsc": "tsc",
 		"lint": "eslint",
 		"format": "prettier --check .",
+		"format:write": "prettier --write .",
 		"prepare": "husky"
 	},
 	"prisma": {
