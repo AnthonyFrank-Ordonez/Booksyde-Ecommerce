@@ -48,5 +48,5 @@ jobs:
         continue-on-error: true
 
       - name: Run Typescript Compiler
-        run: pnpm tsc --project tsconfig.build.json
+        run: pnpm tsc
         continue-on-error: true
