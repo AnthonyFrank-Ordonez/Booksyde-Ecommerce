@@ -7,8 +7,7 @@ on:
       - main
 
 jobs:
-  lint_and_typecheck:
-    if: github.event.pull_request.merged == true
+  lint_and_format:
     runs-on: ubuntu-latest
 
     steps:
