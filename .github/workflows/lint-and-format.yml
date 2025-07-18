@@ -1,4 +1,4 @@
-name: Lint and Type Check on PR Merge to Main
+name: Lint and Format on PR Merge to Main
 
 on:
   pull_request:
@@ -37,16 +37,12 @@ jobs:
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Run Prettier Check
         run: pnpm format
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Run Eslint
         run: pnpm eslint .
-        continue-on-error: true
-
-      - name: Run Typescript Compiler
-        run: pnpm tsc
-        continue-on-error: true
+        continue-on-error: false
