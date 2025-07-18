@@ -1,8 +1,8 @@
-name: Lint and Format on PR Merge to Main
+name: Lint and Format on PR to Main
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize, reopened]
     branches:
       - main
 
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -37,12 +39,9 @@ jobs:
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
-        continue-on-error: false
 
       - name: Run Prettier Check
         run: pnpm format
-        continue-on-error: false
 
       - name: Run Eslint
         run: pnpm eslint .
-        continue-on-error: false
