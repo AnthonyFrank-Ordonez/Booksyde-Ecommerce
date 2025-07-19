@@ -7,6 +7,8 @@ dist-ssr
 .vinxi
 .env
 .vscode
+.nitro
+.tanstack
 Notes.txt
 
 /src/generated/prisma

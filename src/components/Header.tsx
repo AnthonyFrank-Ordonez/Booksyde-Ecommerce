@@ -1,12 +1,11 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { FaBars, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
-// import { useSession, signOut } from '@/utils/auth-client for client-side';
 import type { SessionType } from '@/types';
 
-import { useSignOutUser } from '@/utils/servers/user';
+import { signOut } from '@/utils/auth-client';
 
 interface HeaderProps {
 	session: {
@@ -18,7 +17,7 @@ interface HeaderProps {
 }
 
 export default function Header({ session }: HeaderProps) {
-	const { mutateAsync: signOutUser } = useSignOutUser();
+	const router = useRouter();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const isEmpty = (userSession: SessionType) => {
@@ -28,7 +27,9 @@ export default function Header({ session }: HeaderProps) {
 	};
 
 	const handleSignOut = async () => {
-		await signOutUser();
+		// await signOutUser();
+		await signOut();
+		router.invalidate();
 	};
 
 	return (

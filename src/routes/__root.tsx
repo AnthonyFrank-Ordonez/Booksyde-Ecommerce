@@ -6,6 +6,7 @@ import {
 	useLocation,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
 
 import Header from '../components/Header';
@@ -19,18 +20,10 @@ import { getUserID, getUserSession } from '@/utils/servers/auth-server';
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
 }>()({
-	beforeLoad: async ({ context }) => {
+	beforeLoad: async () => {
 		const [userID, session] = await Promise.all([
-			context.queryClient.ensureQueryData({
-				queryKey: ['user-id'],
-				queryFn: getUserID,
-				staleTime: 1000 * 60 * 5, // 5 minutes
-			}),
-			context.queryClient.ensureQueryData({
-				queryKey: ['user-session'],
-				queryFn: getUserSession,
-				staleTime: 1000 * 60 * 5, // 5 minutes
-			}),
+			getUserID(),
+			getUserSession(),
 		]);
 
 		return {
@@ -63,7 +56,8 @@ export const Route = createRootRouteWithContext<{
 	component: () => (
 		<RootDocument>
 			<Outlet />
-			<TanStackRouterDevtools />
+			<TanStackRouterDevtools position='bottom-right' />
+			<ReactQueryDevtools buttonPosition='bottom-left' />
 			<ToastContainer newestOnTop />
 		</RootDocument>
 	),

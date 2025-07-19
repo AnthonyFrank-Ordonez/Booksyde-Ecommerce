@@ -7,12 +7,15 @@ import {
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { useForm } from '@tanstack/react-form';
 import { useRateLimiter } from '@tanstack/react-pacer';
+import { useState } from 'react';
 import type { CredentialsType } from '@/types';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
-import { useSignInUser } from '@/utils/servers/user';
-import { errorMsg, successMsg } from '@/utils/utilities';
+import {
+	errorMsg,
+	// successMsg
+} from '@/utils/utilities';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -22,23 +25,30 @@ export const Route = createFileRoute('/signin')({
 });
 
 function Login() {
+	const [showLoading, setShowLoading] = useState(false);
 	const router = useRouter();
-	const { mutateAsync: userSignIn } = useSignInUser();
 
 	// Sign In user with Rate Limit
 	const signInUser = useRateLimiter(
 		async (cred: CredentialsType) => {
-			try {
-				await userSignIn({
-					data: { email: cred.email, password: cred.password },
-				});
-				router.invalidate();
-				successMsg(`Welcome Back, User!`);
-			} catch (error: unknown) {
-				if (error instanceof Error) {
-					errorMsg(error.message);
+			setShowLoading(true);
+			await signIn.email(
+				{
+					email: cred.email,
+					password: cred.password,
+				},
+				{
+					onSuccess: () => {
+						setShowLoading(false);
+						router.navigate({ to: '/products' });
+						router.invalidate();
+					},
+					onError: (ctx) => {
+						setShowLoading(false);
+						errorMsg(ctx.error.message);
+					},
 				}
-			}
+			);
 		},
 		{
 			limit: 3,
@@ -63,26 +73,6 @@ function Login() {
 			};
 
 			signInUser.maybeExecute(userCred);
-
-			// Server without Rate Limit
-			// await userSignIn({
-			// 	data: { email: value.email, password: value.password },
-			// });
-			// router.invalidate();
-
-			// CLIENT-SIDE
-			// await signIn.email(
-			// 	{
-			// 		email: value.email,
-			// 		password: value.password,
-			// 	},
-			// 	{
-			// 		onSuccess: () => {
-			// 			router.navigate({ to: '/products' });
-			// 			router.invalidate();
-			// 		},
-			// 	}
-			// );
 		},
 	});
 
@@ -166,7 +156,7 @@ function Login() {
 												disabled={!canSubmit || isSubmitting}
 												className='w-full cursor-pointer rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-black/85 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
 											>
-												{isSubmitting ? (
+												{isSubmitting || showLoading ? (
 													<svg
 														xmlns='http://www.w3.org/2000/svg'
 														viewBox='0 0 200 200'
