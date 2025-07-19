@@ -8,524 +8,450 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { createServerRootRoute } from '@tanstack/react-start/server'
 
-import { Route as rootRoute } from './routes/__root';
-import { Route as SignupImport } from './routes/signup';
-import { Route as SigninImport } from './routes/signin';
-import { Route as ContactImport } from './routes/contact';
-import { Route as AboutImport } from './routes/about';
-import { Route as SettingsImport } from './routes/_settings';
-import { Route as CartLayoutImport } from './routes/_cartLayout';
-import { Route as IndexImport } from './routes/index';
-import { Route as ProductsIndexImport } from './routes/products/index';
-import { Route as SettingsProfileImport } from './routes/_settings/profile';
-import { Route as SettingsOrdersImport } from './routes/_settings/orders';
-import { Route as SettingsBillingImport } from './routes/_settings/billing';
-import { Route as SettingsAddressImport } from './routes/_settings/address';
-import { Route as CartLayoutCartImport } from './routes/_cartLayout/cart';
-import { Route as ProductsNovelsIndexImport } from './routes/products/novels/index';
-import { Route as ProductsMangaIndexImport } from './routes/products/manga/index';
-import { Route as ProductsBooksIndexImport } from './routes/products/books/index';
-import { Route as ProductsBooksSlugImport } from './routes/products/books/$slug';
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as SettingsRouteImport } from './routes/_settings'
+import { Route as CartLayoutRouteImport } from './routes/_cartLayout'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as SettingsProfileRouteImport } from './routes/_settings/profile'
+import { Route as SettingsOrdersRouteImport } from './routes/_settings/orders'
+import { Route as SettingsBillingRouteImport } from './routes/_settings/billing'
+import { Route as SettingsAddressRouteImport } from './routes/_settings/address'
+import { Route as CartLayoutCartRouteImport } from './routes/_cartLayout/cart'
+import { Route as ProductsNovelsIndexRouteImport } from './routes/products/novels/index'
+import { Route as ProductsMangaIndexRouteImport } from './routes/products/manga/index'
+import { Route as ProductsBooksIndexRouteImport } from './routes/products/books/index'
+import { Route as ProductsBooksSlugRouteImport } from './routes/products/books/$slug'
+import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
-// Create/Update Routes
+const rootServerRouteImport = createServerRootRoute()
 
-const SignupRoute = SignupImport.update({
-	id: '/signup',
-	path: '/signup',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const SigninRoute = SigninImport.update({
-	id: '/signin',
-	path: '/signin',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const ContactRoute = ContactImport.update({
-	id: '/contact',
-	path: '/contact',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const AboutRoute = AboutImport.update({
-	id: '/about',
-	path: '/about',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const SettingsRoute = SettingsImport.update({
-	id: '/_settings',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const CartLayoutRoute = CartLayoutImport.update({
-	id: '/_cartLayout',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const IndexRoute = IndexImport.update({
-	id: '/',
-	path: '/',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const ProductsIndexRoute = ProductsIndexImport.update({
-	id: '/products/',
-	path: '/products/',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const SettingsProfileRoute = SettingsProfileImport.update({
-	id: '/profile',
-	path: '/profile',
-	getParentRoute: () => SettingsRoute,
-} as any);
-
-const SettingsOrdersRoute = SettingsOrdersImport.update({
-	id: '/orders',
-	path: '/orders',
-	getParentRoute: () => SettingsRoute,
-} as any);
-
-const SettingsBillingRoute = SettingsBillingImport.update({
-	id: '/billing',
-	path: '/billing',
-	getParentRoute: () => SettingsRoute,
-} as any);
-
-const SettingsAddressRoute = SettingsAddressImport.update({
-	id: '/address',
-	path: '/address',
-	getParentRoute: () => SettingsRoute,
-} as any);
-
-const CartLayoutCartRoute = CartLayoutCartImport.update({
-	id: '/cart',
-	path: '/cart',
-	getParentRoute: () => CartLayoutRoute,
-} as any);
-
-const ProductsNovelsIndexRoute = ProductsNovelsIndexImport.update({
-	id: '/products/novels/',
-	path: '/products/novels/',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const ProductsMangaIndexRoute = ProductsMangaIndexImport.update({
-	id: '/products/manga/',
-	path: '/products/manga/',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const ProductsBooksIndexRoute = ProductsBooksIndexImport.update({
-	id: '/products/books/',
-	path: '/products/books/',
-	getParentRoute: () => rootRoute,
-} as any);
-
-const ProductsBooksSlugRoute = ProductsBooksSlugImport.update({
-	id: '/products/books/$slug',
-	path: '/products/books/$slug',
-	getParentRoute: () => rootRoute,
-} as any);
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-	interface FileRoutesByPath {
-		'/': {
-			id: '/';
-			path: '/';
-			fullPath: '/';
-			preLoaderRoute: typeof IndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/_cartLayout': {
-			id: '/_cartLayout';
-			path: '';
-			fullPath: '';
-			preLoaderRoute: typeof CartLayoutImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/_settings': {
-			id: '/_settings';
-			path: '';
-			fullPath: '';
-			preLoaderRoute: typeof SettingsImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/about': {
-			id: '/about';
-			path: '/about';
-			fullPath: '/about';
-			preLoaderRoute: typeof AboutImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/contact': {
-			id: '/contact';
-			path: '/contact';
-			fullPath: '/contact';
-			preLoaderRoute: typeof ContactImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/signin': {
-			id: '/signin';
-			path: '/signin';
-			fullPath: '/signin';
-			preLoaderRoute: typeof SigninImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/signup': {
-			id: '/signup';
-			path: '/signup';
-			fullPath: '/signup';
-			preLoaderRoute: typeof SignupImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/_cartLayout/cart': {
-			id: '/_cartLayout/cart';
-			path: '/cart';
-			fullPath: '/cart';
-			preLoaderRoute: typeof CartLayoutCartImport;
-			parentRoute: typeof CartLayoutImport;
-		};
-		'/_settings/address': {
-			id: '/_settings/address';
-			path: '/address';
-			fullPath: '/address';
-			preLoaderRoute: typeof SettingsAddressImport;
-			parentRoute: typeof SettingsImport;
-		};
-		'/_settings/billing': {
-			id: '/_settings/billing';
-			path: '/billing';
-			fullPath: '/billing';
-			preLoaderRoute: typeof SettingsBillingImport;
-			parentRoute: typeof SettingsImport;
-		};
-		'/_settings/orders': {
-			id: '/_settings/orders';
-			path: '/orders';
-			fullPath: '/orders';
-			preLoaderRoute: typeof SettingsOrdersImport;
-			parentRoute: typeof SettingsImport;
-		};
-		'/_settings/profile': {
-			id: '/_settings/profile';
-			path: '/profile';
-			fullPath: '/profile';
-			preLoaderRoute: typeof SettingsProfileImport;
-			parentRoute: typeof SettingsImport;
-		};
-		'/products/': {
-			id: '/products/';
-			path: '/products';
-			fullPath: '/products';
-			preLoaderRoute: typeof ProductsIndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/products/books/$slug': {
-			id: '/products/books/$slug';
-			path: '/products/books/$slug';
-			fullPath: '/products/books/$slug';
-			preLoaderRoute: typeof ProductsBooksSlugImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/products/books/': {
-			id: '/products/books/';
-			path: '/products/books';
-			fullPath: '/products/books';
-			preLoaderRoute: typeof ProductsBooksIndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/products/manga/': {
-			id: '/products/manga/';
-			path: '/products/manga';
-			fullPath: '/products/manga';
-			preLoaderRoute: typeof ProductsMangaIndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/products/novels/': {
-			id: '/products/novels/';
-			path: '/products/novels';
-			fullPath: '/products/novels';
-			preLoaderRoute: typeof ProductsNovelsIndexImport;
-			parentRoute: typeof rootRoute;
-		};
-	}
-}
-
-// Create and export the route tree
-
-interface CartLayoutRouteChildren {
-	CartLayoutCartRoute: typeof CartLayoutCartRoute;
-}
-
-const CartLayoutRouteChildren: CartLayoutRouteChildren = {
-	CartLayoutCartRoute: CartLayoutCartRoute,
-};
-
-const CartLayoutRouteWithChildren = CartLayoutRoute._addFileChildren(
-	CartLayoutRouteChildren
-);
-
-interface SettingsRouteChildren {
-	SettingsAddressRoute: typeof SettingsAddressRoute;
-	SettingsBillingRoute: typeof SettingsBillingRoute;
-	SettingsOrdersRoute: typeof SettingsOrdersRoute;
-	SettingsProfileRoute: typeof SettingsProfileRoute;
-}
-
-const SettingsRouteChildren: SettingsRouteChildren = {
-	SettingsAddressRoute: SettingsAddressRoute,
-	SettingsBillingRoute: SettingsBillingRoute,
-	SettingsOrdersRoute: SettingsOrdersRoute,
-	SettingsProfileRoute: SettingsProfileRoute,
-};
-
-const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
-	SettingsRouteChildren
-);
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/_settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartLayoutRoute = CartLayoutRouteImport.update({
+  id: '/_cartLayout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsProfileRoute = SettingsProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsOrdersRoute = SettingsOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsBillingRoute = SettingsBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsAddressRoute = SettingsAddressRouteImport.update({
+  id: '/address',
+  path: '/address',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const CartLayoutCartRoute = CartLayoutCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => CartLayoutRoute,
+} as any)
+const ProductsNovelsIndexRoute = ProductsNovelsIndexRouteImport.update({
+  id: '/products/novels/',
+  path: '/products/novels/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsMangaIndexRoute = ProductsMangaIndexRouteImport.update({
+  id: '/products/manga/',
+  path: '/products/manga/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsBooksIndexRoute = ProductsBooksIndexRouteImport.update({
+  id: '/products/books/',
+  path: '/products/books/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsBooksSlugRoute = ProductsBooksSlugRouteImport.update({
+  id: '/products/books/$slug',
+  path: '/products/books/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-	'/': typeof IndexRoute;
-	'': typeof SettingsRouteWithChildren;
-	'/about': typeof AboutRoute;
-	'/contact': typeof ContactRoute;
-	'/signin': typeof SigninRoute;
-	'/signup': typeof SignupRoute;
-	'/cart': typeof CartLayoutCartRoute;
-	'/address': typeof SettingsAddressRoute;
-	'/billing': typeof SettingsBillingRoute;
-	'/orders': typeof SettingsOrdersRoute;
-	'/profile': typeof SettingsProfileRoute;
-	'/products': typeof ProductsIndexRoute;
-	'/products/books/$slug': typeof ProductsBooksSlugRoute;
-	'/products/books': typeof ProductsBooksIndexRoute;
-	'/products/manga': typeof ProductsMangaIndexRoute;
-	'/products/novels': typeof ProductsNovelsIndexRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/cart': typeof CartLayoutCartRoute
+  '/address': typeof SettingsAddressRoute
+  '/billing': typeof SettingsBillingRoute
+  '/orders': typeof SettingsOrdersRoute
+  '/profile': typeof SettingsProfileRoute
+  '/products': typeof ProductsIndexRoute
+  '/products/books/$slug': typeof ProductsBooksSlugRoute
+  '/products/books': typeof ProductsBooksIndexRoute
+  '/products/manga': typeof ProductsMangaIndexRoute
+  '/products/novels': typeof ProductsNovelsIndexRoute
 }
-
 export interface FileRoutesByTo {
-	'/': typeof IndexRoute;
-	'': typeof SettingsRouteWithChildren;
-	'/about': typeof AboutRoute;
-	'/contact': typeof ContactRoute;
-	'/signin': typeof SigninRoute;
-	'/signup': typeof SignupRoute;
-	'/cart': typeof CartLayoutCartRoute;
-	'/address': typeof SettingsAddressRoute;
-	'/billing': typeof SettingsBillingRoute;
-	'/orders': typeof SettingsOrdersRoute;
-	'/profile': typeof SettingsProfileRoute;
-	'/products': typeof ProductsIndexRoute;
-	'/products/books/$slug': typeof ProductsBooksSlugRoute;
-	'/products/books': typeof ProductsBooksIndexRoute;
-	'/products/manga': typeof ProductsMangaIndexRoute;
-	'/products/novels': typeof ProductsNovelsIndexRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/cart': typeof CartLayoutCartRoute
+  '/address': typeof SettingsAddressRoute
+  '/billing': typeof SettingsBillingRoute
+  '/orders': typeof SettingsOrdersRoute
+  '/profile': typeof SettingsProfileRoute
+  '/products': typeof ProductsIndexRoute
+  '/products/books/$slug': typeof ProductsBooksSlugRoute
+  '/products/books': typeof ProductsBooksIndexRoute
+  '/products/manga': typeof ProductsMangaIndexRoute
+  '/products/novels': typeof ProductsNovelsIndexRoute
 }
-
 export interface FileRoutesById {
-	__root__: typeof rootRoute;
-	'/': typeof IndexRoute;
-	'/_cartLayout': typeof CartLayoutRouteWithChildren;
-	'/_settings': typeof SettingsRouteWithChildren;
-	'/about': typeof AboutRoute;
-	'/contact': typeof ContactRoute;
-	'/signin': typeof SigninRoute;
-	'/signup': typeof SignupRoute;
-	'/_cartLayout/cart': typeof CartLayoutCartRoute;
-	'/_settings/address': typeof SettingsAddressRoute;
-	'/_settings/billing': typeof SettingsBillingRoute;
-	'/_settings/orders': typeof SettingsOrdersRoute;
-	'/_settings/profile': typeof SettingsProfileRoute;
-	'/products/': typeof ProductsIndexRoute;
-	'/products/books/$slug': typeof ProductsBooksSlugRoute;
-	'/products/books/': typeof ProductsBooksIndexRoute;
-	'/products/manga/': typeof ProductsMangaIndexRoute;
-	'/products/novels/': typeof ProductsNovelsIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_cartLayout': typeof CartLayoutRouteWithChildren
+  '/_settings': typeof SettingsRouteWithChildren
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/_cartLayout/cart': typeof CartLayoutCartRoute
+  '/_settings/address': typeof SettingsAddressRoute
+  '/_settings/billing': typeof SettingsBillingRoute
+  '/_settings/orders': typeof SettingsOrdersRoute
+  '/_settings/profile': typeof SettingsProfileRoute
+  '/products/': typeof ProductsIndexRoute
+  '/products/books/$slug': typeof ProductsBooksSlugRoute
+  '/products/books/': typeof ProductsBooksIndexRoute
+  '/products/manga/': typeof ProductsMangaIndexRoute
+  '/products/novels/': typeof ProductsNovelsIndexRoute
 }
-
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths:
-		| '/'
-		| ''
-		| '/about'
-		| '/contact'
-		| '/signin'
-		| '/signup'
-		| '/cart'
-		| '/address'
-		| '/billing'
-		| '/orders'
-		| '/profile'
-		| '/products'
-		| '/products/books/$slug'
-		| '/products/books'
-		| '/products/manga'
-		| '/products/novels';
-	fileRoutesByTo: FileRoutesByTo;
-	to:
-		| '/'
-		| ''
-		| '/about'
-		| '/contact'
-		| '/signin'
-		| '/signup'
-		| '/cart'
-		| '/address'
-		| '/billing'
-		| '/orders'
-		| '/profile'
-		| '/products'
-		| '/products/books/$slug'
-		| '/products/books'
-		| '/products/manga'
-		| '/products/novels';
-	id:
-		| '__root__'
-		| '/'
-		| '/_cartLayout'
-		| '/_settings'
-		| '/about'
-		| '/contact'
-		| '/signin'
-		| '/signup'
-		| '/_cartLayout/cart'
-		| '/_settings/address'
-		| '/_settings/billing'
-		| '/_settings/orders'
-		| '/_settings/profile'
-		| '/products/'
-		| '/products/books/$slug'
-		| '/products/books/'
-		| '/products/manga/'
-		| '/products/novels/';
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/signin'
+    | '/signup'
+    | '/cart'
+    | '/address'
+    | '/billing'
+    | '/orders'
+    | '/profile'
+    | '/products'
+    | '/products/books/$slug'
+    | '/products/books'
+    | '/products/manga'
+    | '/products/novels'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/signin'
+    | '/signup'
+    | '/cart'
+    | '/address'
+    | '/billing'
+    | '/orders'
+    | '/profile'
+    | '/products'
+    | '/products/books/$slug'
+    | '/products/books'
+    | '/products/manga'
+    | '/products/novels'
+  id:
+    | '__root__'
+    | '/'
+    | '/_cartLayout'
+    | '/_settings'
+    | '/about'
+    | '/contact'
+    | '/signin'
+    | '/signup'
+    | '/_cartLayout/cart'
+    | '/_settings/address'
+    | '/_settings/billing'
+    | '/_settings/orders'
+    | '/_settings/profile'
+    | '/products/'
+    | '/products/books/$slug'
+    | '/products/books/'
+    | '/products/manga/'
+    | '/products/novels/'
+  fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	CartLayoutRoute: typeof CartLayoutRouteWithChildren;
-	SettingsRoute: typeof SettingsRouteWithChildren;
-	AboutRoute: typeof AboutRoute;
-	ContactRoute: typeof ContactRoute;
-	SigninRoute: typeof SigninRoute;
-	SignupRoute: typeof SignupRoute;
-	ProductsIndexRoute: typeof ProductsIndexRoute;
-	ProductsBooksSlugRoute: typeof ProductsBooksSlugRoute;
-	ProductsBooksIndexRoute: typeof ProductsBooksIndexRoute;
-	ProductsMangaIndexRoute: typeof ProductsMangaIndexRoute;
-	ProductsNovelsIndexRoute: typeof ProductsNovelsIndexRoute;
+  IndexRoute: typeof IndexRoute
+  CartLayoutRoute: typeof CartLayoutRouteWithChildren
+  SettingsRoute: typeof SettingsRouteWithChildren
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
+  ProductsBooksSlugRoute: typeof ProductsBooksSlugRoute
+  ProductsBooksIndexRoute: typeof ProductsBooksIndexRoute
+  ProductsMangaIndexRoute: typeof ProductsMangaIndexRoute
+  ProductsNovelsIndexRoute: typeof ProductsNovelsIndexRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths: '/api/auth/$'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to: '/api/auth/$'
+  id: '__root__' | '/api/auth/$'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	CartLayoutRoute: CartLayoutRouteWithChildren,
-	SettingsRoute: SettingsRouteWithChildren,
-	AboutRoute: AboutRoute,
-	ContactRoute: ContactRoute,
-	SigninRoute: SigninRoute,
-	SignupRoute: SignupRoute,
-	ProductsIndexRoute: ProductsIndexRoute,
-	ProductsBooksSlugRoute: ProductsBooksSlugRoute,
-	ProductsBooksIndexRoute: ProductsBooksIndexRoute,
-	ProductsMangaIndexRoute: ProductsMangaIndexRoute,
-	ProductsNovelsIndexRoute: ProductsNovelsIndexRoute,
-};
-
-export const routeTree = rootRoute
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_cartLayout",
-        "/_settings",
-        "/about",
-        "/contact",
-        "/signin",
-        "/signup",
-        "/products/",
-        "/products/books/$slug",
-        "/products/books/",
-        "/products/manga/",
-        "/products/novels/"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_cartLayout": {
-      "filePath": "_cartLayout.tsx",
-      "children": [
-        "/_cartLayout/cart"
-      ]
-    },
-    "/_settings": {
-      "filePath": "_settings.tsx",
-      "children": [
-        "/_settings/address",
-        "/_settings/billing",
-        "/_settings/orders",
-        "/_settings/profile"
-      ]
-    },
-    "/about": {
-      "filePath": "about.tsx"
-    },
-    "/contact": {
-      "filePath": "contact.tsx"
-    },
-    "/signin": {
-      "filePath": "signin.tsx"
-    },
-    "/signup": {
-      "filePath": "signup.tsx"
-    },
-    "/_cartLayout/cart": {
-      "filePath": "_cartLayout/cart.tsx",
-      "parent": "/_cartLayout"
-    },
-    "/_settings/address": {
-      "filePath": "_settings/address.tsx",
-      "parent": "/_settings"
-    },
-    "/_settings/billing": {
-      "filePath": "_settings/billing.tsx",
-      "parent": "/_settings"
-    },
-    "/_settings/orders": {
-      "filePath": "_settings/orders.tsx",
-      "parent": "/_settings"
-    },
-    "/_settings/profile": {
-      "filePath": "_settings/profile.tsx",
-      "parent": "/_settings"
-    },
-    "/products/": {
-      "filePath": "products/index.tsx"
-    },
-    "/products/books/$slug": {
-      "filePath": "products/books/$slug.tsx"
-    },
-    "/products/books/": {
-      "filePath": "products/books/index.tsx"
-    },
-    "/products/manga/": {
-      "filePath": "products/manga/index.tsx"
-    },
-    "/products/novels/": {
-      "filePath": "products/novels/index.tsx"
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_settings': {
+      id: '/_settings'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_cartLayout': {
+      id: '/_cartLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof CartLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_settings/profile': {
+      id: '/_settings/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/_settings/orders': {
+      id: '/_settings/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof SettingsOrdersRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/_settings/billing': {
+      id: '/_settings/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof SettingsBillingRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/_settings/address': {
+      id: '/_settings/address'
+      path: '/address'
+      fullPath: '/address'
+      preLoaderRoute: typeof SettingsAddressRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/_cartLayout/cart': {
+      id: '/_cartLayout/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartLayoutCartRouteImport
+      parentRoute: typeof CartLayoutRoute
+    }
+    '/products/novels/': {
+      id: '/products/novels/'
+      path: '/products/novels'
+      fullPath: '/products/novels'
+      preLoaderRoute: typeof ProductsNovelsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/manga/': {
+      id: '/products/manga/'
+      path: '/products/manga'
+      fullPath: '/products/manga'
+      preLoaderRoute: typeof ProductsMangaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/books/': {
+      id: '/products/books/'
+      path: '/products/books'
+      fullPath: '/products/books'
+      preLoaderRoute: typeof ProductsBooksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/books/$slug': {
+      id: '/products/books/$slug'
+      path: '/products/books/$slug'
+      fullPath: '/products/books/$slug'
+      preLoaderRoute: typeof ProductsBooksSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-ROUTE_MANIFEST_END */
+declare module '@tanstack/react-start/server' {
+  interface ServerFileRoutesByPath {
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+  }
+}
+
+interface CartLayoutRouteChildren {
+  CartLayoutCartRoute: typeof CartLayoutCartRoute
+}
+
+const CartLayoutRouteChildren: CartLayoutRouteChildren = {
+  CartLayoutCartRoute: CartLayoutCartRoute,
+}
+
+const CartLayoutRouteWithChildren = CartLayoutRoute._addFileChildren(
+  CartLayoutRouteChildren,
+)
+
+interface SettingsRouteChildren {
+  SettingsAddressRoute: typeof SettingsAddressRoute
+  SettingsBillingRoute: typeof SettingsBillingRoute
+  SettingsOrdersRoute: typeof SettingsOrdersRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsAddressRoute: SettingsAddressRoute,
+  SettingsBillingRoute: SettingsBillingRoute,
+  SettingsOrdersRoute: SettingsOrdersRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
+}
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  CartLayoutRoute: CartLayoutRouteWithChildren,
+  SettingsRoute: SettingsRouteWithChildren,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
+  ProductsBooksSlugRoute: ProductsBooksSlugRoute,
+  ProductsBooksIndexRoute: ProductsBooksIndexRoute,
+  ProductsMangaIndexRoute: ProductsMangaIndexRoute,
+  ProductsNovelsIndexRoute: ProductsNovelsIndexRoute,
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
+const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
+}
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()

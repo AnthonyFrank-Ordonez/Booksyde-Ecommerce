@@ -96,7 +96,7 @@ export const signUpServer = createServerFn({ method: 'POST' })
 
 export const signOutUserFn = createServerFn({ method: 'POST' }).handler(
 	async () => {
-		const request = getWebRequest()!;
+		const request = getWebRequest();
 
 		await auth.api.signOut({
 			headers: request.headers,

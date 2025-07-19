@@ -6,6 +6,7 @@ import {
 	useLocation,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
 
 import Header from '../components/Header';
@@ -32,6 +33,8 @@ export const Route = createRootRouteWithContext<{
 				staleTime: 1000 * 60 * 5, // 5 minutes
 			}),
 		]);
+
+		console.log('🚀 ~ beforeLoad: ~ userID:', userID);
 
 		return {
 			userID,
@@ -63,7 +66,8 @@ export const Route = createRootRouteWithContext<{
 	component: () => (
 		<RootDocument>
 			<Outlet />
-			<TanStackRouterDevtools />
+			<TanStackRouterDevtools position='bottom-right' />
+			<ReactQueryDevtools buttonPosition='bottom-left' />
 			<ToastContainer newestOnTop />
 		</RootDocument>
 	),

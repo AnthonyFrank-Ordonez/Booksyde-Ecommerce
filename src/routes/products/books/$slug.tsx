@@ -1,5 +1,10 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
+import {
+	Link,
+	createFileRoute,
+	redirect,
+	useNavigate,
+} from '@tanstack/react-router';
 import { FaRegStar, FaStar, FaUserCircle } from 'react-icons/fa';
 import { MdArrowBackIos, MdArrowRight } from 'react-icons/md';
 import { RiCoupon3Line } from 'react-icons/ri';
@@ -21,6 +26,11 @@ import ConfirmationModal from '@/components/ConfirmationModal';
 
 export const Route = createFileRoute('/products/books/$slug')({
 	component: BookSlugComponent,
+	beforeLoad: ({ context }) => {
+		if (!context.userID) {
+			throw redirect({ to: '/signin' });
+		}
+	},
 	loader: async ({ context, params }) => {
 		const slug = params.slug;
 		const userId = context.userID!;
