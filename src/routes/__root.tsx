@@ -26,8 +26,6 @@ export const Route = createRootRouteWithContext<{
 			getUserSession(),
 		]);
 
-		console.log('🚀 ~ beforeLoad: ~ userID:', userID);
-
 		return {
 			userID,
 			session,
