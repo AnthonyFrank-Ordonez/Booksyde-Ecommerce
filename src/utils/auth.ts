@@ -12,7 +12,6 @@ export const auth = betterAuth({
 		provider: 'postgresql',
 	}),
 	plugins: [
-		reactStartCookies(),
 		customSession(async ({ user, session }) => {
 			const newUserData = await findUserBySession({
 				data: { userId: session.userId },
@@ -27,6 +26,7 @@ export const auth = betterAuth({
 				},
 			};
 		}),
+		reactStartCookies(),
 	],
 	emailAndPassword: {
 		enabled: true,
@@ -46,19 +46,6 @@ export const auth = betterAuth({
 		facebook: {
 			clientId: process.env.FACEBOOK_CLIENT_ID!,
 			clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-		},
-	},
-	rateLimit: {
-		enabled: true,
-		storage: 'database',
-		modelName: 'rateLimit',
-		window: 60,
-		max: 3,
-		customRules: {
-			'/sign-in/email': {
-				window: 60,
-				max: 3,
-			},
 		},
 	},
 	emailVerification: {

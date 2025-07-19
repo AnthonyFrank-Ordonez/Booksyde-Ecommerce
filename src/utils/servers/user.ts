@@ -28,6 +28,13 @@ export const signInServer = createServerFn({ method: 'POST' })
 
 		if (response.ok) {
 			return { success: true };
+			// return new Response(JSON.stringify({ success: true }), {
+			// 	status: 200,
+			// 	headers: {
+			// 		'set-cookie': response.headers.get('set-cookie') ?? '',
+			// 		'content-type': 'application/json',
+			// 	},
+			// });
 		} else {
 			const errorData: ErrorSignInType = await response.json();
 
@@ -113,8 +120,8 @@ export const useSignOutUser = () => {
 	return useMutation({
 		mutationFn: () => signOutUserFn(),
 		onSuccess: () => {
-			queryClient.resetQueries({ queryKey: ['user-id'] });
-			queryClient.resetQueries({ queryKey: ['user-session'] });
+			queryClient.invalidateQueries({ queryKey: ['user-id'] });
+			queryClient.invalidateQueries({ queryKey: ['user-session'] });
 			navigate({ to: '/' });
 		},
 	});

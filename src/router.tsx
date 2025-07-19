@@ -18,7 +18,6 @@ export const createRouter = () => {
 			context: { queryClient },
 			defaultPreload: 'intent',
 			scrollRestoration: true,
-			defaultPreloadStaleTime: 0,
 			defaultNotFoundComponent: () => <NotFound />,
 		}),
 		queryClient

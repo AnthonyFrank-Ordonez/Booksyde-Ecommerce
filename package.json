@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "prisma generate && vite dev",
 		"start": "vite start",
+		"start:prod": "node .output/server/index.mjs ",
 		"build": "prisma generate && vite build",
 		"serve": "vite preview",
 		"test": "vitest run",

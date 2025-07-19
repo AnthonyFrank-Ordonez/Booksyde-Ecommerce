@@ -2,7 +2,7 @@ import {
 	Link,
 	createFileRoute,
 	redirect,
-	// useRouter,
+	useRouter,
 } from '@tanstack/react-router';
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { useForm } from '@tanstack/react-form';
@@ -12,7 +12,10 @@ import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
 import { useSignInUser } from '@/utils/servers/user';
-import { errorMsg, successMsg } from '@/utils/utilities';
+import {
+	errorMsg,
+	// successMsg
+} from '@/utils/utilities';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -22,7 +25,7 @@ export const Route = createFileRoute('/signin')({
 });
 
 function Login() {
-	// const router = useRouter();
+	const router = useRouter();
 	const { mutateAsync: userSignIn } = useSignInUser();
 
 	// Sign In user with Rate Limit
@@ -32,8 +35,8 @@ function Login() {
 				await userSignIn({
 					data: { email: cred.email, password: cred.password },
 				});
-				// router.invalidate();
-				successMsg('Welcome back user!');
+				router.invalidate();
+				// successMsg('Welcome back user!');
 			} catch (error: unknown) {
 				if (error instanceof Error) {
 					errorMsg(error.message);
