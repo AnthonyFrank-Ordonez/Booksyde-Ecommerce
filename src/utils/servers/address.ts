@@ -75,6 +75,10 @@ export const useAddAddress = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['user-address', data?.userId],
 			});
+
+			queryClient.invalidateQueries({
+				queryKey: ['user-default-address', data?.userId],
+			});
 		},
 	});
 };
