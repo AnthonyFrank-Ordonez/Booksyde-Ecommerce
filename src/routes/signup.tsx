@@ -155,7 +155,7 @@ function SignUp() {
 												htmlFor={field.name}
 												className='text-md mb-1 block font-medium'
 											>
-												Confirm Password:
+												Confirm Password: <FieldInfo field={field} />
 											</label>
 											<input
 												aria-label='confirmPass'
