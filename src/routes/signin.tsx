@@ -7,6 +7,7 @@ import {
 import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { useForm } from '@tanstack/react-form';
 import { useRateLimiter } from '@tanstack/react-pacer';
+import { useState } from 'react';
 import type { CredentialsType } from '@/types';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
@@ -24,11 +25,13 @@ export const Route = createFileRoute('/signin')({
 });
 
 function Login() {
+	const [showLoading, setShowLoading] = useState(false);
 	const router = useRouter();
 
 	// Sign In user with Rate Limit
 	const signInUser = useRateLimiter(
 		async (cred: CredentialsType) => {
+			setShowLoading(true);
 			await signIn.email(
 				{
 					email: cred.email,
@@ -36,10 +39,12 @@ function Login() {
 				},
 				{
 					onSuccess: () => {
+						setShowLoading(false);
 						router.navigate({ to: '/products' });
 						router.invalidate();
 					},
 					onError: (ctx) => {
+						setShowLoading(false);
 						errorMsg(ctx.error.message);
 					},
 				}
@@ -151,7 +156,7 @@ function Login() {
 												disabled={!canSubmit || isSubmitting}
 												className='w-full cursor-pointer rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-black/85 focus:ring-1 focus:ring-gray-700 focus:ring-offset-2 focus:outline-none'
 											>
-												{isSubmitting ? (
+												{isSubmitting || showLoading ? (
 													<svg
 														xmlns='http://www.w3.org/2000/svg'
 														viewBox='0 0 200 200'
