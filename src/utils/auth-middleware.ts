@@ -13,8 +13,6 @@ export const authMiddleware = createMiddleware({ type: 'function' }).server(
 			headers: request.headers,
 		});
 
-		console.log('🚀 ~ session:', session);
-
 		const result = await next({
 			context: {
 				user: session?.user
