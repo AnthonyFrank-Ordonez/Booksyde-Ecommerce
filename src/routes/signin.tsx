@@ -11,7 +11,6 @@ import type { CredentialsType } from '@/types';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
-import { useSignInUser } from '@/utils/servers/user';
 import {
 	errorMsg,
 	// successMsg
@@ -26,22 +25,25 @@ export const Route = createFileRoute('/signin')({
 
 function Login() {
 	const router = useRouter();
-	const { mutateAsync: userSignIn } = useSignInUser();
 
 	// Sign In user with Rate Limit
 	const signInUser = useRateLimiter(
 		async (cred: CredentialsType) => {
-			try {
-				await userSignIn({
-					data: { email: cred.email, password: cred.password },
-				});
-				router.invalidate();
-				// successMsg('Welcome back user!');
-			} catch (error: unknown) {
-				if (error instanceof Error) {
-					errorMsg(error.message);
+			await signIn.email(
+				{
+					email: cred.email,
+					password: cred.password,
+				},
+				{
+					onSuccess: () => {
+						router.navigate({ to: '/products' });
+						router.invalidate();
+					},
+					onError: (ctx) => {
+						errorMsg(ctx.error.message);
+					},
 				}
-			}
+			);
 		},
 		{
 			limit: 3,
@@ -66,26 +68,6 @@ function Login() {
 			};
 
 			signInUser.maybeExecute(userCred);
-
-			// Server without Rate Limit
-			// await userSignIn({
-			// 	data: { email: value.email, password: value.password },
-			// });
-			// router.invalidate();
-
-			// CLIENT-SIDE
-			// await signIn.email(
-			// 	{
-			// 		email: value.email,
-			// 		password: value.password,
-			// 	},
-			// 	{
-			// 		onSuccess: () => {
-			// 			router.navigate({ to: '/products' });
-			// 			router.invalidate();
-			// 		},
-			// 	}
-			// );
 		},
 	});
 

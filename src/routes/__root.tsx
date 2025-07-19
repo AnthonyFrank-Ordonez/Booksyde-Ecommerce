@@ -20,18 +20,10 @@ import { getUserID, getUserSession } from '@/utils/servers/auth-server';
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
 }>()({
-	beforeLoad: async ({ context }) => {
+	beforeLoad: async () => {
 		const [userID, session] = await Promise.all([
-			context.queryClient.ensureQueryData({
-				queryKey: ['user-id'],
-				queryFn: getUserID,
-				staleTime: 1000 * 60 * 5, // 5 minutes
-			}),
-			context.queryClient.ensureQueryData({
-				queryKey: ['user-session'],
-				queryFn: getUserSession,
-				staleTime: 1000 * 60 * 5, // 5 minutes
-			}),
+			getUserID(),
+			getUserSession(),
 		]);
 
 		console.log('🚀 ~ beforeLoad: ~ userID:', userID);
