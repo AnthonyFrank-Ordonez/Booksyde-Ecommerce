@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { FaRegStar, FaStar, FaUserCircle } from 'react-icons/fa';
 import { MdArrowBackIos, MdArrowRight } from 'react-icons/md';
 import { RiCoupon3Line } from 'react-icons/ri';
@@ -11,15 +11,16 @@ import {
 	getOrCreateCartQueryOptions,
 	useAddToCart,
 } from '@/utils/servers/cart';
-import { successMsg } from '@/utils/utilities';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
 // import type { UserReviewType } from '@/types';
 // import { useAddReview } from '@/utils/servers/review';
+// import { successMsg } from '@/utils/utilities';
 
 export const Route = createFileRoute('/products/books/$slug')({
-	component: RouteComponent,
+	component: BookSlugComponent,
 	loader: async ({ context, params }) => {
 		const slug = params.slug;
 		const userId = context.userID!;
@@ -32,11 +33,16 @@ export const Route = createFileRoute('/products/books/$slug')({
 	},
 });
 
-function RouteComponent() {
+function BookSlugComponent() {
+	// React Tanstack Start Hooks
 	const { userId } = Route.useLoaderData();
+	const { slug } = Route.useParams();
+	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
 	const [descExpanded, setDescExpanded] = useState(false);
-	const { slug } = Route.useParams();
+	const [showModal, setShowModal] = useState(false);
+
+	// React Query Data
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
 	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
 
@@ -57,7 +63,17 @@ function RouteComponent() {
 		};
 
 		await addToCart({ data: cartItemObj });
-		successMsg('Item successfully added to cart!');
+		setShowModal(true);
+		// successMsg('Item successfully added to cart!');
+	};
+
+	const handleConfirm = () => {
+		navigate({ to: '/cart' });
+	};
+
+	const handleCancel = () => {
+		setShowModal(false);
+		navigate({ to: '/products/books' });
 	};
 
 	// const form = useForm({
@@ -223,6 +239,17 @@ function RouteComponent() {
 					<div></div>
 				</div>
 			</div>
+
+			{showModal && (
+				<ConfirmationModal
+					modalTitle='Added to Cart'
+					message={`"${book.title}" has been added to cart`}
+					confirmFn={handleConfirm}
+					cancelFn={handleCancel}
+					confirmBtn='Proceed to Cart'
+					cancelBtn='Browse More'
+				/>
+			)}
 
 			{/* <form
 				onSubmit={(e) => {
