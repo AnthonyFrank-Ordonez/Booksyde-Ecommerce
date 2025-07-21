@@ -4,7 +4,7 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
-import { AddToCartSchema, GetUserIdSchema } from '../zod';
+import { AddToCartSchema, DeleteCartitemSchema, GetUserIdSchema } from '../zod';
 import prisma from '../prisma';
 import type { CartItemDataType } from '@/types';
 
@@ -115,6 +115,59 @@ export const useAddToCart = () => {
 		mutationFn: addToCartFn,
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ['cart', data.userId] });
+		},
+	});
+};
+
+const deleteCartItemFn = createServerFn({ method: 'POST' })
+	.validator((data: unknown) => DeleteCartitemSchema.parse(data))
+	.handler(async ({ data }) => {
+		try {
+			await prisma.$transaction(async (tx) => {
+				// Get Current Item
+				const cartItem = await tx.cartItem.findUnique({
+					where: { id: data.itemId },
+				});
+
+				if (cartItem && cartItem.quantity <= 1) {
+					await tx.cartItem.delete({
+						where: {
+							id: data.itemId,
+							cartId: data.cartId,
+						},
+					});
+				} else if (cartItem && cartItem.quantity >= 2) {
+					await tx.cartItem.update({
+						where: {
+							id: data.itemId,
+							cartId: data.cartId,
+						},
+						data: {
+							quantity: { decrement: 1 },
+						},
+					});
+				} else {
+					throw new Error('Cartitem not found');
+				}
+			});
+
+			return { userId: data.userId };
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.log('Error: ', error);
+			} else {
+				console.log('Error: ', error);
+			}
+		}
+	});
+
+export const useDeleteCartItem = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: deleteCartItemFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['cart', data?.userId] });
 		},
 	});
 };

@@ -1,9 +1,13 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import type { CartItems, UserCartType } from '@/types';
-import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
+import {
+	getOrCreateCartQueryOptions,
+	useDeleteCartItem,
+} from '@/utils/servers/cart';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 export const Route = createFileRoute('/_cartLayout/cart')({
 	component: Cart,
@@ -21,50 +25,88 @@ export const Route = createFileRoute('/_cartLayout/cart')({
 });
 
 function Cart() {
+	const router = useRouter();
 	const { userId } = Route.useRouteContext();
 	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
-	const [cartItems, setCartItems] = useState<Array<CartItems>>(
-		userCart.items.map((item) => {
-			switch (item.itemType) {
-				case 'BOOK':
-					return {
-						...item.book,
-						price: Number(item.book?.price) || 0,
-						quantity: item.quantity || 0,
-						isChecked: false,
-					};
-				case 'MANGA':
-					// In development
-					break;
-				case 'NOVEL':
-					//  in development
-					break;
-			}
-		})
+	const { mutateAsync: deleteItem } = useDeleteCartItem();
+	const [selectedItem, setSelectedItem] = useState<CartItems | undefined>(
+		undefined
 	);
-
-	const toggleItemCheck = (itemId: string | undefined) => {
-		setCartItems((prevItems) =>
-			prevItems.map((item) => {
-				if (item && item.id === itemId) {
-					return { ...item, isChecked: !item.isChecked };
-				}
-
-				return item;
-			})
-		);
-	};
-
-	const cartTotal = cartItems
-		.filter((item) => item?.isChecked)
-		.map((item) => (item?.price ?? 0) * (item?.quantity ?? 0))
-		.reduce((sum, itemTotal) => sum + itemTotal, 0)
-		.toFixed(2);
+	const [showModal, setShowModal] = useState(false);
+	const [checkedItems, setCheckedItems] = useState(new Set());
+	const cartItems = userCart.items.map((item) => {
+		switch (item.itemType) {
+			case 'BOOK':
+				return {
+					...item.book,
+					cartItemId: item.id,
+					price: Number(item.book?.price) || 0,
+					quantity: item.quantity || 0,
+					isChecked: checkedItems.has(item.id),
+				};
+			case 'MANGA':
+				// In development
+				break;
+			case 'NOVEL':
+				//  in development
+				break;
+		}
+	});
 
 	if (typeof window !== 'undefined') {
 		window.userCart = userCart as UserCartType;
 		window.cartItems = cartItems;
 	}
+
+	const cartTotal = cartItems
+		.filter((item) => item && checkedItems.has(item.cartItemId))
+		.map((item) => (item?.price ?? 0) * (item?.quantity ?? 0))
+		.reduce((sum, itemTotal) => sum + itemTotal, 0)
+		.toFixed(2);
+
+	const toggleItemCheck = (cartItemId: string | undefined) => {
+		setCheckedItems((prev) => {
+			const newSet = new Set(prev);
+			if (newSet.has(cartItemId)) {
+				newSet.delete(cartItemId);
+			} else {
+				newSet.add(cartItemId);
+			}
+			return newSet;
+		});
+	};
+
+	const handleShowModal = (item: CartItems | undefined) => {
+		setSelectedItem(item);
+		setShowModal(true);
+	};
+
+	const handleConfirmDelete = async () => {
+		if (selectedItem) {
+			const deleteItemObj = {
+				cartId: userCart.id,
+				itemId: selectedItem.cartItemId,
+				userId: userId,
+			};
+
+			await deleteItem({ data: deleteItemObj });
+
+			setCheckedItems((prev) => {
+				const newSet = new Set(prev);
+				newSet.delete(selectedItem.cartItemId);
+				return newSet;
+			});
+
+			router.invalidate();
+			setSelectedItem(undefined);
+			setShowModal(false);
+		}
+	};
+
+	const handleCancelDelete = () => {
+		setSelectedItem(undefined);
+		setShowModal(false);
+	};
 
 	return (
 		<>
@@ -85,7 +127,8 @@ function Cart() {
 									<input
 										type='checkbox'
 										className='h-4 w-4 cursor-pointer accent-black'
-										onClick={() => toggleItemCheck(item?.id)}
+										checked={item?.isChecked}
+										onChange={() => toggleItemCheck(item?.cartItemId)}
 									/>
 								</div>
 
@@ -139,7 +182,10 @@ function Cart() {
 										<p className='text-sm text-gray-300 line-through'>$10.38</p>
 									</div>
 
-									<div className='flex h-6 w-6 items-center justify-center rounded-full border border-black p-1 text-black sm:h-7 sm:w-7'>
+									<div
+										onClick={() => handleShowModal(item)}
+										className='flex h-6 w-6 items-center justify-center rounded-full border border-black p-1 text-black transition-colors duration-300 hover:bg-black/10 sm:h-7 sm:w-7'
+									>
 										<FaRegTrashAlt className='h-3 w-3 sm:h-4 sm:w-4' />
 									</div>
 								</div>
@@ -188,7 +234,8 @@ function Cart() {
 									<input
 										type='checkbox'
 										className='h-4 w-4 cursor-pointer accent-black'
-										onClick={() => toggleItemCheck(item?.id)}
+										checked={item?.isChecked}
+										onChange={() => toggleItemCheck(item?.cartItemId)}
 									/>
 								</div>
 
@@ -216,7 +263,10 @@ function Cart() {
 								</div>
 
 								<div className='flex flex-col items-end justify-between'>
-									<div className='flex h-7 w-7 items-center justify-center rounded-full border border-black p-1 text-black'>
+									<div
+										onClick={() => handleShowModal(item)}
+										className='flex h-7 w-7 items-center justify-center rounded-full border border-black p-1 text-black transition-colors duration-300 hover:bg-black/10'
+									>
 										<FaRegTrashAlt className='h-4 w-4 cursor-pointer' />
 									</div>
 
@@ -249,6 +299,14 @@ function Cart() {
 							Your cart is currently empty. Start shopping to add items!
 						</p>
 					)}
+
+					{/* {showModal && (
+						<ConfirmationModal
+							message='Do you really want to delete this item?'
+							confirmFn={handleConfirmDelete}
+							cancelFn={handleCancelDelete}
+						/>
+					)} */}
 				</div>
 
 				{/* Order Summary */}
@@ -304,6 +362,14 @@ function Cart() {
 					</div>
 				</div>
 			</div>
+
+			{showModal && (
+				<ConfirmationModal
+					message='Do you really want to delete this item?'
+					confirmFn={handleConfirmDelete}
+					cancelFn={handleCancelDelete}
+				/>
+			)}
 		</>
 	);
 }

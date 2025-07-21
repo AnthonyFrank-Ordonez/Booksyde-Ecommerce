@@ -107,3 +107,9 @@ export const AddToCartSchema = z.object({
 	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
 	quantity: z.number(),
 });
+
+export const DeleteCartitemSchema = z.object({
+	cartId: z.string(),
+	itemId: z.string(),
+	userId: z.string(),
+});

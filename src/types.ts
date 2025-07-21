@@ -141,6 +141,7 @@ export interface CartItemDataType {
 
 export type CartItems =
 	| {
+			cartItemId: string;
 			price: number;
 			quantity: number;
 			isChecked: boolean;
@@ -155,5 +156,3 @@ export type CartItems =
 			slug?: string | undefined;
 	  }
 	| undefined;
-
-// export type CartItems = Array<CartItem | undefined>;
