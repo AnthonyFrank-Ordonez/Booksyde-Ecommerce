@@ -138,3 +138,22 @@ export interface CartItemDataType {
 	mangaId?: string;
 	novelId?: string;
 }
+
+export type CartItems =
+	| {
+			price: number;
+			quantity: number;
+			isChecked: boolean;
+			rating?: string | undefined;
+			id?: string | undefined;
+			title?: string | undefined;
+			description?: string | undefined;
+			author?: string | undefined;
+			genres?: Array<string> | undefined;
+			coverImg?: string | undefined;
+			language?: string | undefined;
+			slug?: string | undefined;
+	  }
+	| undefined;
+
+// export type CartItems = Array<CartItem | undefined>;

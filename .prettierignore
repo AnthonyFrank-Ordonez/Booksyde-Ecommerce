@@ -4,6 +4,7 @@ coverage/
 node_modules/
 dist/
 public/
+src/routeTree.gen.ts
 
 # Optional: Ignore configs only if you don't want Prettier to touch them
 .eslint.config.ts

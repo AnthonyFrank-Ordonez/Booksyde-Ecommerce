@@ -1,7 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import type { UserCartType } from '@/types';
+import type { CartItems, UserCartType } from '@/types';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 
 export const Route = createFileRoute('/_cartLayout/cart')({
@@ -22,32 +23,48 @@ export const Route = createFileRoute('/_cartLayout/cart')({
 function Cart() {
 	const { userId } = Route.useRouteContext();
 	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
+	const [cartItems, setCartItems] = useState<Array<CartItems>>(
+		userCart.items.map((item) => {
+			switch (item.itemType) {
+				case 'BOOK':
+					return {
+						...item.book,
+						price: Number(item.book?.price) || 0,
+						quantity: item.quantity || 0,
+						isChecked: false,
+					};
+				case 'MANGA':
+					// In development
+					break;
+				case 'NOVEL':
+					//  in development
+					break;
+			}
+		})
+	);
 
-	if (typeof window !== 'undefined') {
-		window.userCart = userCart as UserCartType;
-	}
+	const toggleItemCheck = (itemId: string | undefined) => {
+		setCartItems((prevItems) =>
+			prevItems.map((item) => {
+				if (item && item.id === itemId) {
+					return { ...item, isChecked: !item.isChecked };
+				}
 
-	const cartItems = userCart.items.map((item) => {
-		switch (item.itemType) {
-			case 'BOOK':
-				return {
-					...item.book,
-					price: Number(item.book?.price),
-					quantity: item.quantity,
-				};
-			case 'MANGA':
-				// In development
-				break;
-			case 'NOVEL':
-				//  in development
-				break;
-		}
-	});
+				return item;
+			})
+		);
+	};
 
 	const cartTotal = cartItems
+		.filter((item) => item?.isChecked)
 		.map((item) => (item?.price ?? 0) * (item?.quantity ?? 0))
 		.reduce((sum, itemTotal) => sum + itemTotal, 0)
 		.toFixed(2);
+
+	if (typeof window !== 'undefined') {
+		window.userCart = userCart as UserCartType;
+		window.cartItems = cartItems;
+	}
 
 	return (
 		<>
@@ -68,6 +85,7 @@ function Cart() {
 									<input
 										type='checkbox'
 										className='h-4 w-4 cursor-pointer accent-black'
+										onClick={() => toggleItemCheck(item?.id)}
 									/>
 								</div>
 
@@ -170,6 +188,7 @@ function Cart() {
 									<input
 										type='checkbox'
 										className='h-4 w-4 cursor-pointer accent-black'
+										onClick={() => toggleItemCheck(item?.id)}
 									/>
 								</div>
 
