@@ -19,6 +19,7 @@ const config: Array<Linter.Config> = [
 			'**/.next/**',
 			'**/.nuxt/**',
 			'**/.turbo/**',
+			'src/routeTree.gen.ts',
 		],
 	},
 	...tanstackConfig,
