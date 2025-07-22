@@ -12,10 +12,12 @@ import {
 	UserAddressSchema,
 } from '../zod';
 import prisma from '../prisma';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 import type { AddressType } from '@/types';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 
 export const addAddressFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => UserAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		const newUserAddress: AddressType = {
@@ -45,14 +47,12 @@ export const addAddressFn = createServerFn({ method: 'POST' })
 					data: newUserAddress,
 				});
 
-				console.log('🟢 User Addresss Created!');
 				return userAddress;
 			} else {
 				const userAddress = await prisma.address.create({
 					data: newUserAddress,
 				});
 
-				console.log('🟢 User Addresss Created!');
 				return userAddress;
 			}
 		} catch (error: unknown) {
@@ -84,6 +84,7 @@ export const useAddAddress = () => {
 };
 
 export const getUserAddresssesFn = createServerFn({ method: 'GET' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -116,10 +117,10 @@ export const getUserAddQueryOptions = (userId: string) =>
 	});
 
 export const getUserDefaultAddressFn = createServerFn({ method: 'GET' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => GetUserDefaultAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		const sessionId = data.sessionId;
-		console.log('🟢 Received session id ==>', sessionId);
 
 		try {
 			const defaultAddress = await prisma.address.findFirst({
@@ -152,6 +153,7 @@ export const getUserDefaultAddQueryOptions = (sessionId: string | undefined) =>
 	});
 
 export const updateDefaultAddressFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => UpdateAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -206,6 +208,7 @@ export const useUpdateDefaultAddress = () => {
 };
 
 export const deleteUserAddressFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => DeleteAddressSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -216,7 +219,6 @@ export const deleteUserAddressFn = createServerFn({ method: 'POST' })
 				},
 			});
 
-			console.log('🔴 Successfully deleted addresss');
 			return data;
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
