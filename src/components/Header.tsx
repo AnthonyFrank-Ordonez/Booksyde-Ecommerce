@@ -14,9 +14,10 @@ interface HeaderProps {
 		image: string | null | undefined;
 		email: string | undefined;
 	} | null;
+	totalCart: number | undefined;
 }
 
-export default function Header({ session }: HeaderProps) {
+export default function Header({ session, totalCart }: HeaderProps) {
 	const router = useRouter();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -155,7 +156,7 @@ export default function Header({ session }: HeaderProps) {
 								className='flex items-center space-x-1 text-black hover:text-gray-600'
 							>
 								<FaShoppingCart />
-								<span className='hidden md:inline'>Cart (0)</span>
+								<span className='hidden md:inline'>Cart ({totalCart})</span>
 							</Link>
 						</>
 					)}

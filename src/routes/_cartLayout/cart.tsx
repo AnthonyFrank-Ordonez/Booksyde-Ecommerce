@@ -53,6 +53,7 @@ function Cart() {
 		}
 	});
 
+	const disabledButton = !cartItems.some((item) => item?.isChecked);
 	if (typeof window !== 'undefined') {
 		window.userCart = userCart as UserCartType;
 		window.cartItems = cartItems;
@@ -215,7 +216,10 @@ function Cart() {
 						</p>
 					</div>
 
-					<button className='w-full rounded-full bg-gray-900 py-4 font-medium text-white transition-colors hover:bg-gray-800'>
+					<button
+						disabled={disabledButton}
+						className={`w-full rounded-full py-4 font-medium text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
+					>
 						Continue to Checkout
 					</button>
 				</div>
@@ -299,14 +303,6 @@ function Cart() {
 							Your cart is currently empty. Start shopping to add items!
 						</p>
 					)}
-
-					{/* {showModal && (
-						<ConfirmationModal
-							message='Do you really want to delete this item?'
-							confirmFn={handleConfirmDelete}
-							cancelFn={handleCancelDelete}
-						/>
-					)} */}
 				</div>
 
 				{/* Order Summary */}
@@ -338,7 +334,10 @@ function Cart() {
 
 						<div className='mb-3 border border-gray-400/50'></div>
 
-						<button className='mb-3.5 cursor-pointer rounded-xl border bg-black py-3 text-white transition-colors duration-300 hover:bg-black/80'>
+						<button
+							disabled={disabledButton}
+							className={`mb-3.5 rounded-xl border py-3 text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
+						>
 							Continue to Checkout
 						</button>
 
