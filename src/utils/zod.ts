@@ -29,6 +29,12 @@ export const UserCredentialsSchema = z.object({
 	password: z.string(),
 });
 
+export const UserRegisterSchema = z.object({
+	email: z.string().email(),
+	name: z.string().min(7, 'Must be valid username'),
+	password: z.string().min(8, 'Password must be atleast 8 or more'),
+});
+
 export const EmailSchema = z.object({
 	to: z.string(),
 	username: z.string(),
