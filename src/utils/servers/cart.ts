@@ -14,7 +14,8 @@ import prisma from '../prisma';
 import { loggingMiddleware } from '../middlewares/logging-middleware';
 import type { CartItemDataType } from '@/types';
 
-export const getOrCreateCartFn = createServerFn({ method: 'POST' })
+const getOrCreateCartFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
 		const currentUserId = data.userId;
@@ -65,7 +66,8 @@ export const getOrCreateCartQueryOptions = (userId: string) =>
 		queryFn: () => getOrCreateCartFn({ data: { userId } }),
 	});
 
-export const addToCartFn = createServerFn({ method: 'POST' })
+const addToCartFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => AddToCartSchema.parse(data))
 	.handler(async ({ data }) => {
 		const existingItem = await prisma.cartItem.findFirst({

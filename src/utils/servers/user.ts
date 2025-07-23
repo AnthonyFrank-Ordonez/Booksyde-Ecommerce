@@ -1,6 +1,5 @@
 import { createServerFn } from '@tanstack/react-start';
 import { redirect, useNavigate } from '@tanstack/react-router';
-import { getWebRequest } from '@tanstack/react-start/server';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { auth } from '../auth';
 
@@ -10,14 +9,14 @@ import {
 	UserCredentialsSchema,
 } from '../zod';
 import prisma from '../prisma';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 import type { ErrorSignInType, SignUpType } from '@/types';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 
-export const signInServer = createServerFn({ method: 'POST' })
+const signInServerFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((cred: unknown) => UserCredentialsSchema.parse(cred))
 	.handler(async ({ data }) => {
-		console.log('🟢 Credentials: ', data);
-
 		const response = await auth.api.signInEmail({
 			body: {
 				email: data.email,
@@ -28,13 +27,6 @@ export const signInServer = createServerFn({ method: 'POST' })
 
 		if (response.ok) {
 			return { success: true };
-			// return new Response(JSON.stringify({ success: true }), {
-			// 	status: 200,
-			// 	headers: {
-			// 		'set-cookie': response.headers.get('set-cookie') ?? '',
-			// 		'content-type': 'application/json',
-			// 	},
-			// });
 		} else {
 			const errorData: ErrorSignInType = await response.json();
 
@@ -51,7 +43,7 @@ export const useSignInUser = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: signInServer,
+		mutationFn: signInServerFn,
 		onSuccess: () => {
 			queryClient.resetQueries({ queryKey: ['user-id'] });
 			queryClient.resetQueries({ queryKey: ['user-session'] });
@@ -61,6 +53,7 @@ export const useSignInUser = () => {
 };
 
 export const signUpServer = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((input: unknown): SignUpType => {
 		if (typeof input !== 'object' || input === null) {
 			throw new Error('Invalid User Input');
@@ -101,32 +94,6 @@ export const signUpServer = createServerFn({ method: 'POST' })
 		}
 	});
 
-export const signOutUserFn = createServerFn({ method: 'POST' }).handler(
-	async () => {
-		const request = getWebRequest();
-
-		await auth.api.signOut({
-			headers: request.headers,
-		});
-
-		return { success: true };
-	}
-);
-
-export const useSignOutUser = () => {
-	const navigate = useNavigate();
-	const queryClient = useQueryClient();
-
-	return useMutation({
-		mutationFn: () => signOutUserFn(),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['user-id'] });
-			queryClient.invalidateQueries({ queryKey: ['user-session'] });
-			navigate({ to: '/' });
-		},
-	});
-};
-
 export const findUserBySession = createServerFn({ method: 'GET' })
 	.validator((data: unknown) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
@@ -149,7 +116,8 @@ export const findUserBySession = createServerFn({ method: 'GET' })
 		}
 	});
 
-export const updateUserInformationFn = createServerFn({ method: 'GET' })
+const updateUserInformationFn = createServerFn({ method: 'GET' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => UpdateUserInformationSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
@@ -177,12 +145,7 @@ export const updateUserInformationFn = createServerFn({ method: 'GET' })
 	});
 
 export const useUpdateUserInformation = () => {
-	// const queryClient = useQueryClient();
-
 	return useMutation({
 		mutationFn: updateUserInformationFn,
-		// onSuccess: (data) => {
-		// queryClient.invalidateQueries({queryKey: []})
-		// }
 	});
 };

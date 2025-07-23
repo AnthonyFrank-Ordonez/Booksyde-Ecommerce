@@ -2,23 +2,22 @@ import { createServerFn } from '@tanstack/react-start';
 import { queryOptions } from '@tanstack/react-query';
 import prisma from '../prisma';
 
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 import type { BookSlugType, BookType } from '@/types';
 
-export const fetchBooks = createServerFn({ method: 'GET' }).handler(
-	async () => {
-		console.log('Fetching books from the server...');
+const fetchBooks = createServerFn({ method: 'GET' }).handler(async () => {
+	console.log('Fetching books from the server...');
 
-		const books = await prisma.book.findMany();
+	const books = await prisma.book.findMany();
 
-		const serializedBooks: Array<BookType> = books.map((book) => ({
-			...book,
-			price: book.price.toNumber(),
-			rating: book.rating.toNumber(),
-		}));
+	const serializedBooks: Array<BookType> = books.map((book) => ({
+		...book,
+		price: book.price.toNumber(),
+		rating: book.rating.toNumber(),
+	}));
 
-		return serializedBooks;
-	}
-);
+	return serializedBooks;
+});
 
 export const bookQueryOptions = () =>
 	queryOptions({
@@ -26,10 +25,11 @@ export const bookQueryOptions = () =>
 		retry: 1,
 		refetchOnWindowFocus: false,
 		staleTime: Infinity,
-		queryFn: () => fetchBooks(),
+		queryFn: fetchBooks,
 	});
 
-export const fetchBookBySlugFn = createServerFn({ method: 'GET' })
+const fetchBookBySlugFn = createServerFn({ method: 'GET' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown): BookSlugType => {
 		if (typeof data !== 'object' || data === null) {
 			throw new Error('Data is required');
