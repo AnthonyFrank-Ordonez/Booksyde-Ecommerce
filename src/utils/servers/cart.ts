@@ -126,13 +126,14 @@ export const useAddToCart = () => {
 };
 
 const deleteCartItemFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => DeleteCartitemSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {
 			await prisma.$transaction(async (tx) => {
 				// Get Current Item
 				const cartItem = await tx.cartItem.findUnique({
-					where: { id: data.itemId },
+					where: { id: data.itemId, cartId: data.cartId },
 				});
 
 				if (cartItem && cartItem.quantity <= 1) {
