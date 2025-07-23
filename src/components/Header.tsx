@@ -143,7 +143,7 @@ export default function Header({ session, totalCart }: HeaderProps) {
 									<button
 										onClick={handleSignOut}
 										aria-label='signOut'
-										className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
+										className='block w-full cursor-pointer px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
 									>
 										Sign out
 									</button>
