@@ -4,8 +4,14 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
-import { AddToCartSchema, DeleteCartitemSchema, GetUserIdSchema } from '../zod';
+import {
+	AddToCartSchema,
+	DeleteCartitemSchema,
+	GetUserIdSchema,
+	UpdateItemQuantitySchema,
+} from '../zod';
 import prisma from '../prisma';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 import type { CartItemDataType } from '@/types';
 
 export const getOrCreateCartFn = createServerFn({ method: 'POST' })
@@ -168,6 +174,54 @@ export const useDeleteCartItem = () => {
 		mutationFn: deleteCartItemFn,
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ['cart', data?.userId] });
+		},
+	});
+};
+
+const updateItemQuantityFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
+	.validator((data: unknown) => UpdateItemQuantitySchema.parse(data))
+	.handler(async ({ data }) => {
+		await prisma.$transaction(async (tx) => {
+			// Get the cartItem based on itemId passed
+			const cartItem = await tx.cartItem.findUnique({
+				where: { id: data.itemId, cartId: data.cartId },
+			});
+
+			if (cartItem) {
+				if (data.type === 'Increase') {
+					await tx.cartItem.update({
+						where: { id: data.itemId, cartId: data.cartId },
+						data: {
+							quantity: { increment: 1 },
+						},
+					});
+				} else {
+					await tx.cartItem.update({
+						where: { id: data.itemId, cartId: data.cartId },
+						data: {
+							quantity: { decrement: 1 },
+						},
+					});
+				}
+			} else {
+				throw new Error(`Cart Item Not Found, with the id: '${data.itemId}' `);
+			}
+		});
+
+		return { userId: data.userId };
+	});
+
+export const useUpdateQuantity = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: updateItemQuantityFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['cart', data.userId] });
+		},
+		onError: (error) => {
+			throw error;
 		},
 	});
 };

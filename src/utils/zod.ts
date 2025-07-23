@@ -113,3 +113,10 @@ export const DeleteCartitemSchema = z.object({
 	itemId: z.string(),
 	userId: z.string(),
 });
+
+export const UpdateItemQuantitySchema = z.object({
+	type: z.enum(['Increase', 'Decrease']),
+	cartId: z.string(),
+	itemId: z.string(),
+	userId: z.string(),
+});

@@ -22,6 +22,8 @@ type AddressNameValues =
 
 export type ItemType = 'BOOK' | 'MANGA' | 'NOVEL';
 
+export type QuantityAction = 'Increase' | 'Decrease';
+
 export interface BookType {
 	id: string;
 	title: string;
@@ -156,3 +158,16 @@ export type CartItems =
 			slug?: string | undefined;
 	  }
 	| undefined;
+
+export interface DeleteItemObjType {
+	itemId: string;
+	cartId: string;
+	userId: string;
+}
+
+export interface UpdateItemObjType {
+	type: QuantityAction;
+	itemId: string;
+	cartId: string;
+	userId: string;
+}

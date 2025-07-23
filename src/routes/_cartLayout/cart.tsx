@@ -2,10 +2,17 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import type { CartItems, UserCartType } from '@/types';
+import type {
+	CartItems,
+	DeleteItemObjType,
+	QuantityAction,
+	UpdateItemObjType,
+	UserCartType,
+} from '@/types';
 import {
 	getOrCreateCartQueryOptions,
 	useDeleteCartItem,
+	useUpdateQuantity,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
 
@@ -29,6 +36,7 @@ function Cart() {
 	const { userId } = Route.useRouteContext();
 	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
 	const { mutateAsync: deleteItem } = useDeleteCartItem();
+	const { mutateAsync: updateQuantity } = useUpdateQuantity();
 	const [selectedItem, setSelectedItem] = useState<CartItems | undefined>(
 		undefined
 	);
@@ -88,7 +96,7 @@ function Cart() {
 				cartId: userCart.id,
 				itemId: selectedItem.cartItemId,
 				userId: userId,
-			};
+			} satisfies DeleteItemObjType;
 
 			await deleteItem({ data: deleteItemObj });
 
@@ -107,6 +115,28 @@ function Cart() {
 	const handleCancelDelete = () => {
 		setSelectedItem(undefined);
 		setShowModal(false);
+	};
+
+	const handleUpdateItemQuantity = async (
+		type: QuantityAction,
+		itemId: string
+	) => {
+		const updateItemObj = {
+			type: type,
+			cartId: userCart.id,
+			itemId: itemId,
+			userId: userId,
+		} satisfies UpdateItemObjType;
+
+		try {
+			await updateQuantity({ data: updateItemObj });
+
+			router.invalidate();
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(error);
+			}
+		}
 	};
 
 	return (
@@ -229,75 +259,84 @@ function Cart() {
 			<div className='hidden grid-cols-[2fr_1fr] gap-5 lg:grid xl:gap-8 2xl:grid-cols-[3fr_1.2fr]'>
 				<div className='rounded-lg border border-gray-300 px-5 py-6'>
 					{cartItems.length ? (
-						cartItems.map((item) => (
-							<div
-								key={item?.id}
-								className='mb-5 grid grid-cols-[10px_130px_290px_2fr] gap-5 rounded-lg border border-gray-300 px-4 py-3'
-							>
-								<div>
-									<input
-										type='checkbox'
-										className='h-4 w-4 cursor-pointer accent-black'
-										checked={item?.isChecked}
-										onChange={() => toggleItemCheck(item?.cartItemId)}
-									/>
-								</div>
-
-								<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
-									<img src={item?.coverImg} className='h-full w-full' />
-								</div>
-
-								<div className='flex flex-col justify-between'>
-									<div className='flex flex-col'>
-										<h2 className='text-[22px] font-bold'>{item?.title}</h2>
-										<p className='text-[15px] font-light text-gray-400/80'>
-											{item?.author}
-										</p>
-										<p className='text-[15px] font-light text-gray-400/80'>
-											{item?.language}
-										</p>
-									</div>
-
+						cartItems
+							.filter((item) => item !== undefined)
+							.map((item) => (
+								<div
+									key={item.id}
+									className='mb-5 grid grid-cols-[10px_130px_290px_2fr] gap-5 rounded-lg border border-gray-300 px-4 py-3'
+								>
 									<div>
-										<p className='text-[15px] text-gray-300 line-through'>
-											$10.38
-										</p>
-										<p className='text-2xl font-bold'>{`$${item?.price}`}</p>
-									</div>
-								</div>
-
-								<div className='flex flex-col items-end justify-between'>
-									<div
-										onClick={() => handleShowModal(item)}
-										className='flex h-7 w-7 items-center justify-center rounded-full border border-black p-1 text-black transition-colors duration-300 hover:bg-black/10'
-									>
-										<FaRegTrashAlt className='h-4 w-4 cursor-pointer' />
-									</div>
-
-									<div className='mt-2 flex items-center'>
-										<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'>
-											<span className='cursor-pointer text-sm font-bold'>
-												-
-											</span>
-										</button>
-
 										<input
-											type='text'
-											value={item?.quantity || 1}
-											className='h-6 w-7 rounded border-0 px-0 text-center focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none'
-											min='1'
-											readOnly
+											type='checkbox'
+											className='h-4 w-4 cursor-pointer accent-black'
+											checked={item.isChecked}
+											onChange={() => toggleItemCheck(item.cartItemId)}
 										/>
+									</div>
 
-										<button className='flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'>
-											<span className='cursor-pointer text-sm font-bold'>
-												+
-											</span>
-										</button>
+									<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
+										<img src={item.coverImg} className='h-full w-full' />
+									</div>
+
+									<div className='flex flex-col justify-between'>
+										<div className='flex flex-col'>
+											<h2 className='text-[22px] font-bold'>{item.title}</h2>
+											<p className='text-[15px] font-light text-gray-400/80'>
+												{item.author}
+											</p>
+											<p className='text-[15px] font-light text-gray-400/80'>
+												{item.language}
+											</p>
+										</div>
+
+										<div>
+											<p className='text-[15px] text-gray-300 line-through'>
+												$10.38
+											</p>
+											<p className='text-2xl font-bold'>${item.price}</p>
+										</div>
+									</div>
+
+									<div className='flex flex-col items-end justify-between'>
+										<div
+											onClick={() => handleShowModal(item)}
+											className='flex h-7 w-7 items-center justify-center rounded-full border border-black p-1 text-black transition-colors duration-300 hover:bg-black/10'
+										>
+											<FaRegTrashAlt className='h-4 w-4 cursor-pointer' />
+										</div>
+
+										<div className='mt-2 flex items-center'>
+											<button
+												disabled={item.quantity < 2}
+												onClick={() =>
+													handleUpdateItemQuantity('Decrease', item.cartItemId)
+												}
+												className={`flex h-6 w-6 items-center justify-center rounded border border-gray-300 transition-colors ${item.quantity < 2 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'}`}
+											>
+												<span className='text-sm font-bold'>-</span>
+											</button>
+
+											<input
+												type='text'
+												value={item.quantity}
+												className='h-6 w-7 rounded border-0 px-0 text-center focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none'
+												min='1'
+												readOnly
+											/>
+
+											<button
+												onClick={() =>
+													handleUpdateItemQuantity('Increase', item.cartItemId)
+												}
+												className='flex h-6 w-6 cursor-pointer items-center justify-center rounded border border-gray-300 transition-colors hover:bg-gray-100'
+											>
+												<span className='text-sm font-bold'>+</span>
+											</button>
+										</div>
 									</div>
 								</div>
-							</div>
-						))
+							))
 					) : (
 						<p className='rounded-lg border border-gray-500/50 px-2 py-2 text-center text-[1rem] font-bold text-gray-400'>
 							Your cart is currently empty. Start shopping to add items!
