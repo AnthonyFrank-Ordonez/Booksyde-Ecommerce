@@ -10,6 +10,7 @@ import {
 	MdOutlinePayment,
 	MdOutlineShoppingBag,
 } from 'react-icons/md';
+import { LuBookHeart } from 'react-icons/lu';
 
 export const Route = createFileRoute('/_settings')({
 	component: SettingsLayout,
@@ -25,7 +26,7 @@ function SettingsLayout() {
 				Account Settings
 			</h2>
 
-			<div className='mb-10 grid grid-cols-4 gap-3 bg-white px-5 py-3 md:hidden'>
+			<div className='mb-10 grid grid-cols-5 gap-1 bg-white px-5 py-3 md:hidden'>
 				<Link
 					to='/profile'
 					className='flex flex-col items-center rounded-md border py-2'
@@ -42,6 +43,15 @@ function SettingsLayout() {
 				>
 					<MdOutlineHome className='h-5 w-5' />
 					<span className='text-sm'>Address</span>
+				</Link>
+
+				<Link
+					to='/orders'
+					className='flex flex-col items-center rounded-md border py-2'
+					activeProps={{ className: 'bg-black text-white' }}
+				>
+					<LuBookHeart className='h-5 w-5' />
+					<span className='text-sm'>Wishlist</span>
 				</Link>
 
 				<Link
@@ -86,6 +96,17 @@ function SettingsLayout() {
 						>
 							<MdOutlineHome className='xl:h-5 xl:w-5' />
 							<span className=''>Address</span>
+						</Link>
+
+						<Link
+							to='/'
+							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
+							activeProps={{
+								className: 'bg-gray-300/30 rounded-full w-full',
+							}}
+						>
+							<LuBookHeart className='xl:h-5 xl:w-5' />
+							<span className=''>Wishlist</span>
 						</Link>
 
 						<Link
