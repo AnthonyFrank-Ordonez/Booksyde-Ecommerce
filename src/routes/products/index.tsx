@@ -10,7 +10,7 @@ import { bookQueryOptions } from '@/utils/servers/books';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
-	loader: async ({ context }) => {
+	beforeLoad: async ({ context }) => {
 		await context.queryClient.ensureQueryData(bookQueryOptions());
 	},
 });
@@ -22,7 +22,7 @@ function ProductsIndex() {
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-3_bgxjvn.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-1_y7wl8e.jpg',
 	];
-	const booksQueryData = useSuspenseQuery(bookQueryOptions());
+	const booksData = useSuspenseQuery(bookQueryOptions()).data;
 
 	return (
 		<div className='col-span-1 md:col-span-12 md:px-12 md:py-2'>
@@ -117,7 +117,7 @@ function ProductsIndex() {
 						</h2>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							{booksQueryData.data.map((book: BookType, idx) => {
+							{booksData.map((book: BookType, idx) => {
 								return (
 									<div
 										key={book.id}
@@ -378,7 +378,7 @@ function ProductsIndex() {
 						</div>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							{booksQueryData.data.map((book: BookType, idx) => {
+							{booksData.map((book: BookType, idx) => {
 								return (
 									<div
 										key={book.id}
@@ -515,7 +515,7 @@ function ProductsIndex() {
 						</div>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							{booksQueryData.data.map((book: BookType) => {
+							{booksData.map((book: BookType) => {
 								return (
 									<div
 										key={book.id}
