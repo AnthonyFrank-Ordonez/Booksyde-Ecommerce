@@ -46,7 +46,7 @@ function SettingsLayout() {
 				</Link>
 
 				<Link
-					to='/orders'
+					to='/wishlist'
 					className='flex flex-col items-center rounded-md border py-2'
 					activeProps={{ className: 'bg-black text-white' }}
 				>
@@ -99,7 +99,7 @@ function SettingsLayout() {
 						</Link>
 
 						<Link
-							to='/'
+							to='/wishlist'
 							className='flex items-center rounded-full px-2 py-2 transition-colors duration-300 hover:bg-gray-300/30 xl:gap-2'
 							activeProps={{
 								className: 'bg-gray-300/30 rounded-full w-full',

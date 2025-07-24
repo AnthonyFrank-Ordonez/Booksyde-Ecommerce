@@ -19,6 +19,7 @@ import { Route as SettingsRouteImport } from './routes/_settings'
 import { Route as CartLayoutRouteImport } from './routes/_cartLayout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as SettingsWishlistRouteImport } from './routes/_settings/wishlist'
 import { Route as SettingsProfileRouteImport } from './routes/_settings/profile'
 import { Route as SettingsOrdersRouteImport } from './routes/_settings/orders'
 import { Route as SettingsBillingRouteImport } from './routes/_settings/billing'
@@ -69,6 +70,11 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsWishlistRoute = SettingsWishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => SettingsRoute,
 } as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
   id: '/profile',
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
   '/profile': typeof SettingsProfileRoute
+  '/wishlist': typeof SettingsWishlistRoute
   '/products': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books': typeof ProductsBooksIndexRoute
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
   '/profile': typeof SettingsProfileRoute
+  '/wishlist': typeof SettingsWishlistRoute
   '/products': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books': typeof ProductsBooksIndexRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/_settings/billing': typeof SettingsBillingRoute
   '/_settings/orders': typeof SettingsOrdersRoute
   '/_settings/profile': typeof SettingsProfileRoute
+  '/_settings/wishlist': typeof SettingsWishlistRoute
   '/products/': typeof ProductsIndexRoute
   '/products/books/$slug': typeof ProductsBooksSlugRoute
   '/products/books/': typeof ProductsBooksIndexRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/orders'
     | '/profile'
+    | '/wishlist'
     | '/products'
     | '/products/books/$slug'
     | '/products/books'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/orders'
     | '/profile'
+    | '/wishlist'
     | '/products'
     | '/products/books/$slug'
     | '/products/books'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/_settings/billing'
     | '/_settings/orders'
     | '/_settings/profile'
+    | '/_settings/wishlist'
     | '/products/'
     | '/products/books/$slug'
     | '/products/books/'
@@ -325,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_settings/wishlist': {
+      id: '/_settings/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof SettingsWishlistRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/_settings/profile': {
       id: '/_settings/profile'
       path: '/profile'
@@ -419,6 +438,7 @@ interface SettingsRouteChildren {
   SettingsBillingRoute: typeof SettingsBillingRoute
   SettingsOrdersRoute: typeof SettingsOrdersRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsWishlistRoute: typeof SettingsWishlistRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
@@ -426,6 +446,7 @@ const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsBillingRoute: SettingsBillingRoute,
   SettingsOrdersRoute: SettingsOrdersRoute,
   SettingsProfileRoute: SettingsProfileRoute,
+  SettingsWishlistRoute: SettingsWishlistRoute,
 }
 
 const SettingsRouteWithChildren = SettingsRoute._addFileChildren(

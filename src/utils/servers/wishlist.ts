@@ -2,8 +2,10 @@ import { createServerFn } from '@tanstack/react-start';
 import { queryOptions } from '@tanstack/react-query';
 import { GetUserIdSchema } from '../zod';
 import prisma from '../prisma';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 
 const getOrCreateWishlistFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
 		const currentUserId = data.userId;
@@ -50,11 +52,11 @@ const getOrCreateWishlistFn = createServerFn({ method: 'POST' })
 		};
 	});
 
-export const useGetOrCreateWishlist = (userId: string) =>
+export const useGetOrCreateWishlist = (userId: string | null) =>
 	queryOptions({
 		queryKey: ['wishlist', userId],
 		enabled: !!userId,
-		queryFn: getOrCreateWishlistFn,
+		queryFn: () => getOrCreateWishlistFn({ data: { userId } }),
 		staleTime: Infinity,
 		retry: 1,
 		refetchOnWindowFocus: false,
