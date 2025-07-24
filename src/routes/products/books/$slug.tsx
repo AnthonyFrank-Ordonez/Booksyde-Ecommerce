@@ -11,12 +11,17 @@ import { RiCoupon3Line } from 'react-icons/ri';
 
 import { useState } from 'react';
 import type { ItemType } from '@/generated/prisma';
+import type { WishlistItemObjectType } from '@/types';
 import { bookslugQueryOptions } from '@/utils/servers/books';
 import {
 	getOrCreateCartQueryOptions,
 	useAddToCart,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
+import {
+	useAddToWishlist,
+	useGetOrCreateWishlist,
+} from '@/utils/servers/wishlist';
 
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
@@ -35,9 +40,13 @@ export const Route = createFileRoute('/products/books/$slug')({
 		const slug = params.slug;
 		const userId = context.userID!;
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
-		await context.queryClient.ensureQueryData(
-			getOrCreateCartQueryOptions(userId)
-		);
+
+		await Promise.all([
+			await context.queryClient.ensureQueryData(
+				getOrCreateCartQueryOptions(userId)
+			),
+			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
+		]);
 
 		return { userId };
 	},
@@ -49,12 +58,14 @@ function BookSlugComponent() {
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
+	const { mutateAsync: addToWishlist } = useAddToWishlist();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
 	// React Query Data
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
 	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
+	const userWishlist = useSuspenseQuery(useGetOrCreateWishlist(userId)).data;
 
 	// Server Actions
 	const { mutateAsync: addToCart } = useAddToCart();
@@ -75,6 +86,21 @@ function BookSlugComponent() {
 		await addToCart({ data: cartItemObj });
 		setShowModal(true);
 		// successMsg('Item successfully added to cart!');
+	};
+
+	const handleAddToWishlist = async (itemId: string, itemType: ItemType) => {
+		const wishlistItemObj = {
+			userId,
+			wishlistId: userWishlist.id,
+			itemId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await addToWishlist({ data: wishlistItemObj });
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleConfirm = () => {
@@ -199,7 +225,10 @@ function BookSlugComponent() {
 							Add to Cart
 						</button>
 
-						<button className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'>
+						<button
+							onClick={() => handleAddToWishlist(book.id, 'BOOK')}
+							className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'
+						>
 							Add to Wishlist
 						</button>
 					</div>

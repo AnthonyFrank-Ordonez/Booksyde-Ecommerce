@@ -171,3 +171,21 @@ export interface UpdateItemObjType {
 	cartId: string;
 	userId: string;
 }
+
+export interface WishlistItemDataType {
+	wishlistId: string;
+	itemId: string;
+	itemType: ItemType;
+
+	// Optionals
+	bookId?: string | null;
+	mangaId?: string | null;
+	novelId?: string | null;
+}
+
+export interface WishlistItemObjectType {
+	userId: string;
+	wishlistId: string;
+	itemId: string;
+	itemType: ItemType;
+}

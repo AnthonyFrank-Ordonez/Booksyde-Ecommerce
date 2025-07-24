@@ -79,7 +79,6 @@ const addToCartFn = createServerFn({ method: 'POST' })
 		});
 
 		if (existingItem) {
-			console.log(`✅ Updated the cartitem: ${existingItem.id} successfully`);
 			await prisma.cartItem.update({
 				where: { id: existingItem.id },
 				data: {
@@ -88,7 +87,6 @@ const addToCartFn = createServerFn({ method: 'POST' })
 				},
 			});
 		} else {
-			console.log('✅ Added to cart successfully');
 			const cartItemData: CartItemDataType = {
 				cartId: data.cartId,
 				itemType: data.itemType,

@@ -126,3 +126,10 @@ export const UpdateItemQuantitySchema = z.object({
 	itemId: z.string(),
 	userId: z.string(),
 });
+
+export const AddToWishlistSchema = z.object({
+	userId: z.string(),
+	wishlistId: z.string(),
+	itemId: z.string(),
+	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
+});
