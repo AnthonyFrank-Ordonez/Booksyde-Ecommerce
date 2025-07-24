@@ -378,7 +378,7 @@ function Cart() {
 							<p className='font-semibold'>$14.00</p>
 						</div>
 
-						<div className='mb-3 flex items-center justify-between font-mono text-gray-500'>
+						<div className='mb-3 flex items-center justify-between font-mono text-red-500/80'>
 							<p className=''>Discount</p>
 							<p className='font-semibold'>$14.00</p>
 						</div>
