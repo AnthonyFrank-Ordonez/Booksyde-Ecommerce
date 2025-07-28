@@ -133,3 +133,10 @@ export const AddToWishlistSchema = z.object({
 	itemId: z.string(),
 	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
 });
+
+export const RemoveToWishlistSchema = z.object({
+	wishlistId: z.string(),
+	userId: z.string(),
+	itemId: z.string(),
+	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
+});

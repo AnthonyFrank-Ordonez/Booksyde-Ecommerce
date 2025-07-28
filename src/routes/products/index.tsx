@@ -1,6 +1,12 @@
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
-import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
+import {
+	Link,
+	createFileRoute,
+	useNavigate,
+	useRouter,
+} from '@tanstack/react-router';
+import { FaHeart, FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import type { BookType, WishlistItemObjectType } from '@/types';
 import type { ItemType } from '@/generated/prisma';
@@ -8,8 +14,12 @@ import Carousel from '@/components/Carousel';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import HoverContainer from '@/components/HoverContainer';
 import { bookQueryOptions } from '@/utils/servers/books';
-import { useAddToWishlist } from '@/utils/servers/wishlist';
+import {
+	useAddToWishlist,
+	useRemoveFromWishlist,
+} from '@/utils/servers/wishlist';
 import { errorMsg, isAuthError } from '@/utils/utilities';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
@@ -18,11 +28,16 @@ export const Route = createFileRoute('/products/')({
 		const userWishlist = context.userWishlist ?? null;
 		await context.queryClient.ensureQueryData(bookQueryOptions());
 
-		return { userId, userWishlist };
+		return {
+			userId,
+			userWishlist,
+		};
 	},
 });
 
 function ProductsIndex() {
+	// Hooks
+	const router = useRouter();
 	const navigate = useNavigate();
 	const { userId, userWishlist } = Route.useRouteContext();
 	const images = [
@@ -33,12 +48,17 @@ function ProductsIndex() {
 	];
 	const { data: booksData } = useSuspenseQuery(bookQueryOptions());
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
+	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
+	const [showModal, setShowModal] = useState(false);
+	const [selectedBookId, setSelectedBookId] = useState<string>('');
 
 	// Variables
-	// const wishlistItemIds =
-	// 	userWishlist?.wishlists.flatMap((wishlist) => wishlist.itemId) ?? [];
+	const itemType: ItemType = 'BOOK';
+	const wishlistItemIds =
+		userWishlist?.wishlists.flatMap((wishlist) => wishlist.itemId) ?? [];
 
-	const handleAddToWishlist = async (itemId: string, itemType: ItemType) => {
+	// Functions
+	const handleAddToWishlist = async (itemId: string) => {
 		const wishlistItemObj = {
 			wishlistId: userWishlist?.id,
 			userId,
@@ -48,6 +68,8 @@ function ProductsIndex() {
 
 		try {
 			await addToWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error('Error: ', error.message);
@@ -56,6 +78,37 @@ function ProductsIndex() {
 				navigate({ to: '/signin' });
 			}
 		}
+	};
+
+	const handleRemoveToWishlist = async () => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist?.id,
+			itemId: selectedBookId,
+			userId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await removeFromWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
+			setShowModal(false);
+			setSelectedBookId('');
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('Error: ', error.message);
+			}
+		}
+	};
+
+	const handleShowModal = (bookId: string) => {
+		setShowModal(true);
+		setSelectedBookId(bookId);
+	};
+
+	const handleCancelFn = () => {
+		setShowModal(false);
+		setSelectedBookId('');
 	};
 
 	return (
@@ -218,12 +271,21 @@ function ProductsIndex() {
 													View Product
 												</Link>
 
-												<div
-													onClick={() => handleAddToWishlist(book.id, 'BOOK')}
-													className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
-												>
-													<FaRegHeart size={24} />
-												</div>
+												{wishlistItemIds.includes(book.id) ? (
+													<div
+														onClick={() => handleShowModal(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaHeart size={24} className='text-red-500' />
+													</div>
+												) : (
+													<div
+														onClick={() => handleAddToWishlist(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaRegHeart size={24} />
+													</div>
+												)}
 											</div>
 										</div>
 									</div>
@@ -708,6 +770,14 @@ function ProductsIndex() {
 						</div>
 					</div>
 				</ScrollFadeSection>
+
+				{showModal && (
+					<ConfirmationModal
+						message='Do you want to remove this from your wishlist?'
+						confirmFn={handleRemoveToWishlist}
+						cancelFn={handleCancelFn}
+					/>
+				)}
 			</section>
 		</div>
 	);

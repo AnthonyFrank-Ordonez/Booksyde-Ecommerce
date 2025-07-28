@@ -4,7 +4,11 @@ import {
 	useMutation,
 	useQueryClient,
 } from '@tanstack/react-query';
-import { AddToWishlistSchema, GetUserIdSchema } from '../zod';
+import {
+	AddToWishlistSchema,
+	GetUserIdSchema,
+	RemoveToWishlistSchema,
+} from '../zod';
 import prisma from '../prisma';
 import { loggingMiddleware } from '../middlewares/logging-middleware';
 import { isAuthenticated } from '../middlewares/auth-middleware';
@@ -124,7 +128,55 @@ export const useAddToWishlist = () => {
 	return useMutation({
 		mutationFn: addToWishlistFn,
 		onSuccess: (data) => {
-			queryClient.invalidateQueries({ queryKey: ['wishlist', data?.userId] });
+			queryClient.resetQueries({
+				queryKey: ['wishlist', data?.userId],
+				exact: true,
+			});
+		},
+	});
+};
+
+export const removeFromWishlistFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
+	.validator((data: unknown) => RemoveToWishlistSchema.parse(data))
+	.handler(async ({ data }) => {
+		try {
+			await prisma.wishlistItems.delete({
+				where: {
+					wishlistId_itemType_itemId: {
+						wishlistId: data.wishlistId,
+						itemType: data.itemType,
+						itemId: data.itemId,
+					},
+				},
+			});
+
+			return { userId: data.userId };
+		} catch (error) {
+			if (error instanceof PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') {
+					throw new Error('Item not found in wishlist');
+				} else {
+					throw new Error('Database error: ' + error.message);
+				}
+			} else if (error instanceof Error) {
+				throw new Error('Error: ', error);
+			} else {
+				console.error('Unkown Error', error);
+			}
+		}
+	});
+
+export const useRemoveFromWishlist = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: removeFromWishlistFn,
+		onSuccess: (data) => {
+			queryClient.resetQueries({
+				queryKey: ['wishlist', data?.userId],
+				exact: true,
+			});
 		},
 	});
 };
