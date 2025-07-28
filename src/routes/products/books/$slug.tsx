@@ -63,7 +63,6 @@ function BookSlugComponent() {
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
-	const { mutateAsync: addToWishlist } = useAddToWishlist();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState('');
@@ -74,6 +73,7 @@ function BookSlugComponent() {
 	);
 	const { mutateAsync: addToCart } = useAddToCart();
 	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
+	const { mutateAsync: addToWishlist } = useAddToWishlist();
 
 	// Variables
 	const itemType: ItemType = 'BOOK';
@@ -145,10 +145,18 @@ function BookSlugComponent() {
 		navigate({ to: '/cart' });
 	};
 
-	const handleCancel = () => {
+	const handleCancelRemoveWishlist = () => {
 		setSelectedBookId('');
 		setModalType('');
 		setShowModal(false);
+	};
+
+	const handleBrowseMore = () => {
+		setSelectedBookId('');
+		setModalType('');
+		setShowModal(false);
+
+		navigate({ to: '/products/books' });
 	};
 
 	// const form = useForm({
@@ -332,7 +340,7 @@ function BookSlugComponent() {
 					modalTitle='Added to Cart'
 					message={`"${book.title}" has been added to cart`}
 					confirmFn={handleNavigateToCart}
-					cancelFn={handleCancel}
+					cancelFn={handleBrowseMore}
 					confirmBtn='Proceed to Cart'
 					cancelBtn='Browse More'
 				/>
@@ -342,7 +350,7 @@ function BookSlugComponent() {
 				<ConfirmationModal
 					message='Do you want to remove this item from your wishlist?'
 					confirmFn={handleRemoveToWishlist}
-					cancelFn={handleCancel}
+					cancelFn={handleCancelRemoveWishlist}
 				/>
 			)}
 
