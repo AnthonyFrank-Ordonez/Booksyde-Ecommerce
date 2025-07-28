@@ -42,24 +42,22 @@ export const Route = createFileRoute('/products/books/$slug')({
 		}
 
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
-		const userWishlist = await context.queryClient.ensureQueryData(
-			useGetOrCreateWishlist(userId)
-		);
 
-		await Promise.all([
+		const [userCart, userWishlist] = await Promise.all([
 			await context.queryClient.ensureQueryData(
 				getOrCreateCartQueryOptions(userId)
 			),
+			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
 		]);
 
-		return { userId, userWishlist };
+		return { userId, userWishlist, userCart };
 	},
 });
 
 function BookSlugComponent() {
 	// Hooks
 	const router = useRouter();
-	const { userId, userWishlist } = Route.useRouteContext();
+	const { userId, userWishlist, userCart } = Route.useRouteContext();
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
@@ -68,9 +66,6 @@ function BookSlugComponent() {
 	const [modalType, setModalType] = useState('');
 	const [selectedBookId, setSelectedBookId] = useState('');
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
-	const { data: userCart } = useSuspenseQuery(
-		getOrCreateCartQueryOptions(userId)
-	);
 	const { mutateAsync: addToCart } = useAddToCart();
 	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
@@ -91,6 +86,8 @@ function BookSlugComponent() {
 		};
 
 		await addToCart({ data: cartItemObj });
+
+		router.invalidate();
 		setModalType('cart');
 		setShowModal(true);
 	};
@@ -155,8 +152,6 @@ function BookSlugComponent() {
 		setSelectedBookId('');
 		setModalType('');
 		setShowModal(false);
-
-		navigate({ to: '/products/books' });
 	};
 
 	// const form = useForm({
