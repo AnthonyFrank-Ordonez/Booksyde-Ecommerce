@@ -17,7 +17,6 @@ import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
 import { getUserID, getUserSession } from '@/utils/servers/auth-server';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
-import { useGetOrCreateWishlist } from '@/utils/servers/wishlist';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -34,17 +33,10 @@ export const Route = createRootRouteWithContext<{
 				)
 			: null;
 
-		const userWishlist = userID
-			? await context.queryClient.ensureQueryData(
-					useGetOrCreateWishlist(userID)
-				)
-			: null;
-
 		return {
 			userID,
 			session,
 			userCart,
-			userWishlist,
 		};
 	},
 	head: () => ({

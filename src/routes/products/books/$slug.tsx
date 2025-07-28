@@ -18,7 +18,10 @@ import {
 	useAddToCart,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
-import { useAddToWishlist } from '@/utils/servers/wishlist';
+import {
+	useAddToWishlist,
+	useGetOrCreateWishlist,
+} from '@/utils/servers/wishlist';
 
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
@@ -36,34 +39,35 @@ export const Route = createFileRoute('/products/books/$slug')({
 	loader: async ({ context, params }) => {
 		const slug = params.slug;
 		const userId = context.userID!;
-		const userWishlist = context.userWishlist!;
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
 
 		await Promise.all([
 			await context.queryClient.ensureQueryData(
 				getOrCreateCartQueryOptions(userId)
 			),
+			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
 		]);
 
-		return { userId, userWishlist };
+		return { userId };
 	},
 });
 
 function BookSlugComponent() {
-	// React Tanstack Start Hooks
-	const { userId, userWishlist } = Route.useLoaderData();
+	// Hooks
+	const { userId } = Route.useLoaderData();
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-
-	// React Query Data
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
-	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
-
-	// Server Actions
+	const { data: userCart } = useSuspenseQuery(
+		getOrCreateCartQueryOptions(userId)
+	);
+	const { data: userWishlist } = useSuspenseQuery(
+		useGetOrCreateWishlist(userId)
+	);
 	const { mutateAsync: addToCart } = useAddToCart();
 
 	const handleAddToCart = async (

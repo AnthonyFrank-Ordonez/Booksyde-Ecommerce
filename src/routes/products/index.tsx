@@ -16,6 +16,7 @@ import HoverContainer from '@/components/HoverContainer';
 import { bookQueryOptions } from '@/utils/servers/books';
 import {
 	useAddToWishlist,
+	useGetOrCreateWishlist,
 	useRemoveFromWishlist,
 } from '@/utils/servers/wishlist';
 import { errorMsg, isAuthError } from '@/utils/utilities';
@@ -25,8 +26,13 @@ export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
 	beforeLoad: async ({ context }) => {
 		const userId = context.userID;
-		const userWishlist = context.userWishlist ?? null;
 		await context.queryClient.ensureQueryData(bookQueryOptions());
+
+		const userWishlist = userId
+			? await context.queryClient.ensureQueryData(
+					useGetOrCreateWishlist(userId)
+				)
+			: null;
 
 		return {
 			userId,
