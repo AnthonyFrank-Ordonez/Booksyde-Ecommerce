@@ -779,7 +779,7 @@ function ProductsIndex() {
 
 				{showModal && (
 					<ConfirmationModal
-						message='Do you want to remove this from your wishlist?'
+						message='Do you want to remove this item from your wishlist?'
 						confirmFn={handleRemoveToWishlist}
 						cancelFn={handleCancelFn}
 					/>

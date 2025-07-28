@@ -4,6 +4,7 @@ import {
 	createFileRoute,
 	redirect,
 	useNavigate,
+	useRouter,
 } from '@tanstack/react-router';
 import { FaRegStar, FaStar, FaUserCircle } from 'react-icons/fa';
 import { MdArrowBackIos, MdArrowRight } from 'react-icons/md';
@@ -21,6 +22,7 @@ import ConfirmationModal from '@/components/ConfirmationModal';
 import {
 	useAddToWishlist,
 	useGetOrCreateWishlist,
+	useRemoveFromWishlist,
 } from '@/utils/servers/wishlist';
 
 // import { useForm } from '@tanstack/react-form';
@@ -31,50 +33,55 @@ import {
 
 export const Route = createFileRoute('/products/books/$slug')({
 	component: BookSlugComponent,
-	beforeLoad: ({ context }) => {
-		if (!context.userID) {
+	beforeLoad: async ({ context, params }) => {
+		const userId = context.userID;
+		const slug = params.slug;
+
+		if (!userId) {
 			throw redirect({ to: '/signin' });
 		}
-	},
-	loader: async ({ context, params }) => {
-		const slug = params.slug;
-		const userId = context.userID!;
+
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
+		const userWishlist = await context.queryClient.ensureQueryData(
+			useGetOrCreateWishlist(userId)
+		);
 
 		await Promise.all([
 			await context.queryClient.ensureQueryData(
 				getOrCreateCartQueryOptions(userId)
 			),
-			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
 		]);
 
-		return { userId };
+		return { userId, userWishlist };
 	},
 });
 
 function BookSlugComponent() {
 	// Hooks
-	const { userId } = Route.useLoaderData();
+	const router = useRouter();
+	const { userId, userWishlist } = Route.useRouteContext();
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+	const [modalType, setModalType] = useState('');
+	const [selectedBookId, setSelectedBookId] = useState('');
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
 	const { data: userCart } = useSuspenseQuery(
 		getOrCreateCartQueryOptions(userId)
 	);
-	const { data: userWishlist } = useSuspenseQuery(
-		useGetOrCreateWishlist(userId)
-	);
 	const { mutateAsync: addToCart } = useAddToCart();
+	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
 
-	const handleAddToCart = async (
-		itemId: string,
-		itemType: ItemType,
-		quantity: number = 1
-	) => {
+	// Variables
+	const itemType: ItemType = 'BOOK';
+	const wishlistItemIds = userWishlist.wishlists.flatMap(
+		(wishlist) => wishlist.itemId
+	);
+
+	const handleAddToCart = async (itemId: string, quantity: number = 1) => {
 		const cartItemObj = {
 			cartId: userCart.id,
 			userId,
@@ -84,10 +91,11 @@ function BookSlugComponent() {
 		};
 
 		await addToCart({ data: cartItemObj });
+		setModalType('cart');
 		setShowModal(true);
 	};
 
-	const handleAddToWishlist = async (itemId: string, itemType: ItemType) => {
+	const handleAddToWishlist = async (itemId: string) => {
 		const wishlistItemObj = {
 			wishlistId: userWishlist.id,
 			userId,
@@ -97,18 +105,50 @@ function BookSlugComponent() {
 
 		try {
 			await addToWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	const handleConfirm = () => {
+	const handleRemoveToWishlist = async () => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist.id,
+			itemId: selectedBookId,
+			userId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await removeFromWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
+
+			setSelectedBookId('');
+			setModalType('');
+			setShowModal(false);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('Error: ', error.message);
+			}
+		}
+	};
+
+	const handleShowRemoveWishlistModal = (bookId: string) => {
+		setSelectedBookId(bookId);
+		setModalType('wishlist');
+		setShowModal(true);
+	};
+
+	const handleNavigateToCart = () => {
 		navigate({ to: '/cart' });
 	};
 
 	const handleCancel = () => {
+		setSelectedBookId('');
+		setModalType('');
 		setShowModal(false);
-		navigate({ to: '/products/books' });
 	};
 
 	// const form = useForm({
@@ -218,18 +258,27 @@ function BookSlugComponent() {
 					{/* Add to Cart/Wishlist Buttons */}
 					<div className='flex flex-col gap-3'>
 						<button
-							onClick={() => handleAddToCart(book.id, 'BOOK')}
+							onClick={() => handleAddToCart(book.id)}
 							className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'
 						>
 							Add to Cart
 						</button>
 
-						<button
-							onClick={() => handleAddToWishlist(book.id, 'BOOK')}
-							className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'
-						>
-							Add to Wishlist
-						</button>
+						{wishlistItemIds.includes(book.id) ? (
+							<button
+								onClick={() => handleShowRemoveWishlistModal(book.id)}
+								className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black opacity-50 transition-colors duration-300 hover:bg-gray-400/20'
+							>
+								Added to your wishlist
+							</button>
+						) : (
+							<button
+								onClick={() => handleAddToWishlist(book.id)}
+								className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'
+							>
+								Add to Wishlist
+							</button>
+						)}
 					</div>
 				</div>
 			</div>
@@ -278,14 +327,22 @@ function BookSlugComponent() {
 				</div>
 			</div>
 
-			{showModal && (
+			{showModal && modalType === 'cart' && (
 				<ConfirmationModal
 					modalTitle='Added to Cart'
 					message={`"${book.title}" has been added to cart`}
-					confirmFn={handleConfirm}
+					confirmFn={handleNavigateToCart}
 					cancelFn={handleCancel}
 					confirmBtn='Proceed to Cart'
 					cancelBtn='Browse More'
+				/>
+			)}
+
+			{showModal && modalType === 'wishlist' && (
+				<ConfirmationModal
+					message='Do you want to remove this item from your wishlist?'
+					confirmFn={handleRemoveToWishlist}
+					cancelFn={handleCancel}
 				/>
 			)}
 
