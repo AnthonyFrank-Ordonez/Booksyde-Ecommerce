@@ -5,7 +5,7 @@ import { useGetOrCreateWishlist } from '@/utils/servers/wishlist';
 export const Route = createFileRoute('/_settings/wishlist')({
 	component: RouteComponent,
 	beforeLoad: async ({ context }) => {
-		const userId = context.userID;
+		const userId = context.userID!;
 
 		await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId));
 

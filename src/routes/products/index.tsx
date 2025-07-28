@@ -35,8 +35,8 @@ function ProductsIndex() {
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
 
 	// Variables
-	const wishlistItemIds =
-		userWishlist?.wishlists.flatMap((wishlist) => wishlist.itemId) ?? [];
+	// const wishlistItemIds =
+	// 	userWishlist?.wishlists.flatMap((wishlist) => wishlist.itemId) ?? [];
 
 	const handleAddToWishlist = async (itemId: string, itemType: ItemType) => {
 		const wishlistItemObj = {
