@@ -7,6 +7,7 @@ import {
 import { AddToWishlistSchema, GetUserIdSchema } from '../zod';
 import prisma from '../prisma';
 import { loggingMiddleware } from '../middlewares/logging-middleware';
+import { isAuthenticated } from '../middlewares/auth-middleware';
 import type { WishlistItemDataType } from '@/types';
 import { PrismaClientKnownRequestError } from '@/generated/prisma/internal/prismaNamespace';
 
@@ -58,10 +59,10 @@ const getOrCreateWishlistFn = createServerFn({ method: 'POST' })
 		};
 	});
 
-export const useGetOrCreateWishlist = (userId: string | null) =>
+export const useGetOrCreateWishlist = (userId: string) =>
 	queryOptions({
-		queryKey: ['wishlist', userId],
 		enabled: !!userId,
+		queryKey: ['wishlist', userId],
 		queryFn: () => getOrCreateWishlistFn({ data: { userId } }),
 		staleTime: Infinity,
 		retry: 1,
@@ -69,40 +70,48 @@ export const useGetOrCreateWishlist = (userId: string | null) =>
 	});
 
 const addToWishlistFn = createServerFn({ method: 'POST' })
-	.middleware([loggingMiddleware])
+	.middleware([loggingMiddleware, isAuthenticated])
 	.validator((data: unknown) => AddToWishlistSchema.parse(data))
 	.handler(async ({ data }) => {
-		const wishlistItemData = {
-			wishlistId: data.wishlistId,
-			itemId: data.itemId,
-			itemType: data.itemType,
-
-			bookId: '',
-			mangaId: '',
-			novelId: '',
-		} satisfies WishlistItemDataType;
-
-		switch (data.itemType) {
-			case 'BOOK':
-				wishlistItemData.bookId = data.itemId;
-				break;
-			case 'MANGA':
-				wishlistItemData.mangaId = data.itemId;
-				break;
-			case 'NOVEL':
-				wishlistItemData.novelId = data.itemId;
-				break;
-		}
+		const userId = data.userId;
 
 		try {
-			await prisma.wishlistItems.create({
-				data: wishlistItemData,
+			await prisma.$transaction(async (tx) => {
+				const wishlistItemData = {
+					wishlistId: data.wishlistId,
+					itemId: data.itemId,
+					itemType: data.itemType,
+
+					bookId: '',
+					mangaId: '',
+					novelId: '',
+				} satisfies WishlistItemDataType;
+
+				switch (data.itemType) {
+					case 'BOOK':
+						wishlistItemData.bookId = data.itemId;
+						break;
+					case 'MANGA':
+						wishlistItemData.mangaId = data.itemId;
+						break;
+					case 'NOVEL':
+						wishlistItemData.novelId = data.itemId;
+						break;
+				}
+
+				await tx.wishlistItems.create({
+					data: wishlistItemData,
+				});
 			});
 
-			return { userId: data.userId };
+			return { userId: userId };
 		} catch (error: unknown) {
 			if (error instanceof PrismaClientKnownRequestError) {
-				throw new Error('Error: ', error);
+				if (error.code === 'P2002') {
+					throw new Error('Item already exists in wishlist');
+				} else {
+					throw new Error('Database error: ' + error.message);
+				}
 			} else if (error instanceof Error) {
 				throw new Error('Error: ', error);
 			}

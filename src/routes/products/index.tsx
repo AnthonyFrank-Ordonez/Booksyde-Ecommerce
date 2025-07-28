@@ -1,28 +1,62 @@
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import type { BookType } from '@/types';
+import type { BookType, WishlistItemObjectType } from '@/types';
+import type { ItemType } from '@/generated/prisma';
 import Carousel from '@/components/Carousel';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import HoverContainer from '@/components/HoverContainer';
 import { bookQueryOptions } from '@/utils/servers/books';
+import { useAddToWishlist } from '@/utils/servers/wishlist';
+import { errorMsg, isAuthError } from '@/utils/utilities';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
 	beforeLoad: async ({ context }) => {
+		const userId = context.userID;
+		const userWishlist = context.userWishlist ?? null;
 		await context.queryClient.ensureQueryData(bookQueryOptions());
+
+		return { userId, userWishlist };
 	},
 });
 
 function ProductsIndex() {
+	const navigate = useNavigate();
+	const { userId, userWishlist } = Route.useRouteContext();
 	const images = [
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-2_cy7xoq.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-4_vpmzid.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-3_bgxjvn.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-1_y7wl8e.jpg',
 	];
-	const booksData = useSuspenseQuery(bookQueryOptions()).data;
+	const { data: booksData } = useSuspenseQuery(bookQueryOptions());
+	const { mutateAsync: addToWishlist } = useAddToWishlist();
+
+	// Variables
+	const wishlistItemIds =
+		userWishlist?.wishlists.flatMap((wishlist) => wishlist.itemId) ?? [];
+
+	const handleAddToWishlist = async (itemId: string, itemType: ItemType) => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist?.id,
+			userId,
+			itemId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await addToWishlist({ data: wishlistItemObj });
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error('Error: ', error.message);
+			} else if (isAuthError(error)) {
+				errorMsg('You must login first.');
+				navigate({ to: '/signin' });
+			}
+		}
+	};
 
 	return (
 		<div className='col-span-1 md:col-span-12 md:px-12 md:py-2'>
@@ -184,7 +218,10 @@ function ProductsIndex() {
 													View Product
 												</Link>
 
-												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
+												<div
+													onClick={() => handleAddToWishlist(book.id, 'BOOK')}
+													className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+												>
 													<FaRegHeart size={24} />
 												</div>
 											</div>

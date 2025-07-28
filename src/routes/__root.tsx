@@ -17,6 +17,7 @@ import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
 import { getUserID, getUserSession } from '@/utils/servers/auth-server';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
+import { useGetOrCreateWishlist } from '@/utils/servers/wishlist';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -27,16 +28,23 @@ export const Route = createRootRouteWithContext<{
 			getUserSession(),
 		]);
 
-		const userCart =
-			userID &&
-			(await context.queryClient.ensureQueryData(
-				getOrCreateCartQueryOptions(userID)
-			));
+		const userCart = userID
+			? await context.queryClient.ensureQueryData(
+					getOrCreateCartQueryOptions(userID)
+				)
+			: null;
+
+		const userWishlist = userID
+			? await context.queryClient.ensureQueryData(
+					useGetOrCreateWishlist(userID)
+				)
+			: null;
 
 		return {
-			userCart,
 			userID,
 			session,
+			userCart,
+			userWishlist,
 		};
 	},
 	head: () => ({
@@ -77,13 +85,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 	const location = useLocation();
 	const hideFooterPaths = ['/cart', 'checkout', '/payment'];
 	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
-	let totalCart: number | undefined;
-
-	if (typeof userCart === 'object' && userCart) {
-		totalCart = userCart.items
+	const totalCart =
+		userCart?.items
 			.map((item) => item.quantity)
-			.reduce((prev, sum) => sum + prev, 0);
-	}
+			.reduce((prev, sum) => sum + prev, 0) ?? 0;
 
 	return (
 		<html lang='en'>

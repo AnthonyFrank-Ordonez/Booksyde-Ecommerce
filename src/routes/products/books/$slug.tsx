@@ -18,10 +18,7 @@ import {
 	useAddToCart,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
-import {
-	useAddToWishlist,
-	useGetOrCreateWishlist,
-} from '@/utils/servers/wishlist';
+import { useAddToWishlist } from '@/utils/servers/wishlist';
 
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
@@ -39,22 +36,22 @@ export const Route = createFileRoute('/products/books/$slug')({
 	loader: async ({ context, params }) => {
 		const slug = params.slug;
 		const userId = context.userID!;
+		const userWishlist = context.userWishlist!;
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
 
 		await Promise.all([
 			await context.queryClient.ensureQueryData(
 				getOrCreateCartQueryOptions(userId)
 			),
-			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
 		]);
 
-		return { userId };
+		return { userId, userWishlist };
 	},
 });
 
 function BookSlugComponent() {
 	// React Tanstack Start Hooks
-	const { userId } = Route.useLoaderData();
+	const { userId, userWishlist } = Route.useLoaderData();
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
@@ -65,7 +62,6 @@ function BookSlugComponent() {
 	// React Query Data
 	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
 	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
-	const userWishlist = useSuspenseQuery(useGetOrCreateWishlist(userId)).data;
 
 	// Server Actions
 	const { mutateAsync: addToCart } = useAddToCart();
@@ -85,13 +81,12 @@ function BookSlugComponent() {
 
 		await addToCart({ data: cartItemObj });
 		setShowModal(true);
-		// successMsg('Item successfully added to cart!');
 	};
 
 	const handleAddToWishlist = async (itemId: string, itemType: ItemType) => {
 		const wishlistItemObj = {
-			userId,
 			wishlistId: userWishlist.id,
+			userId,
 			itemId,
 			itemType,
 		} satisfies WishlistItemObjectType;

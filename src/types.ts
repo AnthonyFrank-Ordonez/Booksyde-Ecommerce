@@ -184,8 +184,13 @@ export interface WishlistItemDataType {
 }
 
 export interface WishlistItemObjectType {
-	userId: string;
-	wishlistId: string;
+	wishlistId: string | undefined;
+	userId: string | null;
 	itemId: string;
 	itemType: ItemType;
+}
+
+export interface AuthError {
+	status: number;
+	message: string;
 }
