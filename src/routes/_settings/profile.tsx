@@ -7,14 +7,13 @@ import { FaUser } from 'react-icons/fa';
 import type { UpdateUserInformationType } from '@/types';
 import { UserInformationSchema } from '@/utils/zod';
 import { useUpdateUserInformation } from '@/utils/servers/user';
-import { getUserSession } from '@/utils/servers/auth-server';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
 import FieldInfo from '@/components/FieldInfo';
 
 export const Route = createFileRoute('/_settings/profile')({
 	component: Profile,
 	loader: async ({ context }) => {
-		const session = await getUserSession();
+		const session = context.session;
 
 		if (!session) {
 			throw new Error('User session not found');
@@ -33,9 +32,9 @@ export const Route = createFileRoute('/_settings/profile')({
 function Profile() {
 	const router = useRouter();
 	const { session } = Route.useLoaderData();
-	const userDefaultAddress = useSuspenseQuery(
+	const { data: userDefaultAddress } = useSuspenseQuery(
 		getUserDefaultAddQueryOptions(session.id)
-	).data;
+	);
 	const { mutateAsync: updateUserInformation } = useUpdateUserInformation();
 	const [isEdit, setIsEdit] = useState(false);
 	const [editType, setEditType] = useState('');

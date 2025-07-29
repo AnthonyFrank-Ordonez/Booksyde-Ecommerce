@@ -1,6 +1,7 @@
 import type {
 	AddresFormObjType,
 	AddressType,
+	CartItems,
 	UserAddressType,
 	UserCartType,
 	UserSessionType,
@@ -10,5 +11,6 @@ declare global {
 	interface Window {
 		userSession: UserSessionType | null;
 		userCart: UserCartType;
+		cartItems: Array<CartItems>;
 	}
 }

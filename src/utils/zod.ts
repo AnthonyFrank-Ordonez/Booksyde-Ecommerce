@@ -29,6 +29,12 @@ export const UserCredentialsSchema = z.object({
 	password: z.string(),
 });
 
+export const UserRegisterSchema = z.object({
+	email: z.string().email(),
+	name: z.string().min(7, 'Must be valid username'),
+	password: z.string().min(8, 'Password must be atleast 8 or more'),
+});
+
 export const EmailSchema = z.object({
 	to: z.string(),
 	username: z.string(),
@@ -106,4 +112,31 @@ export const AddToCartSchema = z.object({
 	itemId: z.string(),
 	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
 	quantity: z.number(),
+});
+
+export const DeleteCartitemSchema = z.object({
+	cartId: z.string(),
+	itemId: z.string(),
+	userId: z.string(),
+});
+
+export const UpdateItemQuantitySchema = z.object({
+	type: z.enum(['Increase', 'Decrease']),
+	cartId: z.string(),
+	itemId: z.string(),
+	userId: z.string(),
+});
+
+export const AddToWishlistSchema = z.object({
+	wishlistId: z.string(),
+	userId: z.string(),
+	itemId: z.string(),
+	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
+});
+
+export const RemoveToWishlistSchema = z.object({
+	wishlistId: z.string(),
+	userId: z.string(),
+	itemId: z.string(),
+	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
 });

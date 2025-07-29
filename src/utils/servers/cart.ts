@@ -4,11 +4,18 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
-import { AddToCartSchema, GetUserIdSchema } from '../zod';
+import {
+	AddToCartSchema,
+	DeleteCartitemSchema,
+	GetUserIdSchema,
+	UpdateItemQuantitySchema,
+} from '../zod';
 import prisma from '../prisma';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 import type { CartItemDataType } from '@/types';
 
-export const getOrCreateCartFn = createServerFn({ method: 'POST' })
+const getOrCreateCartFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => GetUserIdSchema.parse(data))
 	.handler(async ({ data }) => {
 		const currentUserId = data.userId;
@@ -59,7 +66,8 @@ export const getOrCreateCartQueryOptions = (userId: string) =>
 		queryFn: () => getOrCreateCartFn({ data: { userId } }),
 	});
 
-export const addToCartFn = createServerFn({ method: 'POST' })
+const addToCartFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => AddToCartSchema.parse(data))
 	.handler(async ({ data }) => {
 		const existingItem = await prisma.cartItem.findFirst({
@@ -71,7 +79,6 @@ export const addToCartFn = createServerFn({ method: 'POST' })
 		});
 
 		if (existingItem) {
-			console.log(`✅ Updated the cartitem: ${existingItem.id} successfully`);
 			await prisma.cartItem.update({
 				where: { id: existingItem.id },
 				data: {
@@ -80,7 +87,6 @@ export const addToCartFn = createServerFn({ method: 'POST' })
 				},
 			});
 		} else {
-			console.log('✅ Added to cart successfully');
 			const cartItemData: CartItemDataType = {
 				cartId: data.cartId,
 				itemType: data.itemType,
@@ -115,6 +121,108 @@ export const useAddToCart = () => {
 		mutationFn: addToCartFn,
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ['cart', data.userId] });
+		},
+	});
+};
+
+const deleteCartItemFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
+	.validator((data: unknown) => DeleteCartitemSchema.parse(data))
+	.handler(async ({ data }) => {
+		try {
+			await prisma.$transaction(async (tx) => {
+				// Get Current Item
+				const cartItem = await tx.cartItem.findUnique({
+					where: { id: data.itemId, cartId: data.cartId },
+				});
+
+				if (cartItem && cartItem.quantity <= 1) {
+					await tx.cartItem.delete({
+						where: {
+							id: data.itemId,
+							cartId: data.cartId,
+						},
+					});
+				} else if (cartItem && cartItem.quantity >= 2) {
+					await tx.cartItem.update({
+						where: {
+							id: data.itemId,
+							cartId: data.cartId,
+						},
+						data: {
+							quantity: { decrement: 1 },
+						},
+					});
+				} else {
+					throw new Error('Cartitem not found');
+				}
+			});
+
+			return { userId: data.userId };
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.log('Error: ', error);
+			} else {
+				console.log('Error: ', error);
+			}
+		}
+	});
+
+export const useDeleteCartItem = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: deleteCartItemFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['cart', data?.userId] });
+		},
+	});
+};
+
+const updateItemQuantityFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
+	.validator((data: unknown) => UpdateItemQuantitySchema.parse(data))
+	.handler(async ({ data }) => {
+		await prisma.$transaction(async (tx) => {
+			// Get the cartItem based on itemId passed
+			const cartItem = await tx.cartItem.findUnique({
+				where: { id: data.itemId, cartId: data.cartId },
+			});
+
+			if (cartItem) {
+				if (data.type === 'Increase') {
+					await tx.cartItem.update({
+						where: { id: data.itemId, cartId: data.cartId },
+						data: {
+							quantity: { increment: 1 },
+						},
+					});
+				} else {
+					await tx.cartItem.update({
+						where: { id: data.itemId, cartId: data.cartId },
+						data: {
+							quantity: { decrement: 1 },
+						},
+					});
+				}
+			} else {
+				throw new Error(`Cart Item Not Found, with the id: '${data.itemId}' `);
+			}
+		});
+
+		return { userId: data.userId };
+	});
+
+export const useUpdateQuantity = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: updateItemQuantityFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['cart', data.userId] });
+		},
+		onError: (error) => {
+			throw error;
 		},
 	});
 };

@@ -2,8 +2,10 @@ import { createServerFn } from '@tanstack/react-start';
 import { useMutation } from '@tanstack/react-query';
 import { AddReviewSchema } from '../zod';
 import prisma from '../prisma';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 
-export const addReviewFn = createServerFn({ method: 'GET' })
+const addReviewFn = createServerFn({ method: 'GET' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => AddReviewSchema.parse(data))
 	.handler(async ({ data }) => {
 		try {

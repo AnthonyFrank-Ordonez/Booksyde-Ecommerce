@@ -4,6 +4,7 @@ import {
 	createFileRoute,
 	redirect,
 	useNavigate,
+	useRouter,
 } from '@tanstack/react-router';
 import { FaRegStar, FaStar, FaUserCircle } from 'react-icons/fa';
 import { MdArrowBackIos, MdArrowRight } from 'react-icons/md';
@@ -11,12 +12,18 @@ import { RiCoupon3Line } from 'react-icons/ri';
 
 import { useState } from 'react';
 import type { ItemType } from '@/generated/prisma';
+import type { WishlistItemObjectType } from '@/types';
 import { bookslugQueryOptions } from '@/utils/servers/books';
 import {
 	getOrCreateCartQueryOptions,
 	useAddToCart,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
+import {
+	useAddToWishlist,
+	useGetOrCreateWishlist,
+	useRemoveFromWishlist,
+} from '@/utils/servers/wishlist';
 
 // import { useForm } from '@tanstack/react-form';
 // import { ReviewSchema } from '@/utils/zod';
@@ -26,44 +33,56 @@ import ConfirmationModal from '@/components/ConfirmationModal';
 
 export const Route = createFileRoute('/products/books/$slug')({
 	component: BookSlugComponent,
-	beforeLoad: ({ context }) => {
-		if (!context.userID) {
+	beforeLoad: async ({ context, params }) => {
+		const userId = context.userID;
+		const slug = params.slug;
+
+		if (!userId) {
 			throw redirect({ to: '/signin' });
 		}
-	},
-	loader: async ({ context, params }) => {
-		const slug = params.slug;
-		const userId = context.userID!;
+
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
-		await context.queryClient.ensureQueryData(
-			getOrCreateCartQueryOptions(userId)
-		);
+
+		await Promise.all([
+			await context.queryClient.ensureQueryData(
+				getOrCreateCartQueryOptions(userId)
+			),
+			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
+		]);
 
 		return { userId };
 	},
 });
 
 function BookSlugComponent() {
-	// React Tanstack Start Hooks
-	const { userId } = Route.useLoaderData();
+	// Hooks
+	const router = useRouter();
+	const { userId } = Route.useRouteContext();
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
 	const [descExpanded, setDescExpanded] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-
-	// React Query Data
-	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
-	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
-
-	// Server Actions
+	const [modalType, setModalType] = useState('');
+	const [selectedBookId, setSelectedBookId] = useState('');
+	const { data: bookData } = useSuspenseQuery(bookslugQueryOptions(slug));
+	const { data: userCart } = useSuspenseQuery(
+		getOrCreateCartQueryOptions(userId)
+	);
+	const { data: userWishlist } = useSuspenseQuery(
+		useGetOrCreateWishlist(userId)
+	);
 	const { mutateAsync: addToCart } = useAddToCart();
+	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
+	const { mutateAsync: addToWishlist } = useAddToWishlist();
 
-	const handleAddToCart = async (
-		itemId: string,
-		itemType: ItemType,
-		quantity: number = 1
-	) => {
+	// Variables
+	const itemType: ItemType = 'BOOK';
+	const wishlistItemIds = userWishlist.wishlists.flatMap(
+		(wishlist) => wishlist.itemId
+	);
+
+	const handleAddToCart = async (itemId: string, quantity: number = 1) => {
 		const cartItemObj = {
 			cartId: userCart.id,
 			userId,
@@ -73,17 +92,72 @@ function BookSlugComponent() {
 		};
 
 		await addToCart({ data: cartItemObj });
+
+		router.invalidate();
+		setModalType('cart');
 		setShowModal(true);
-		// successMsg('Item successfully added to cart!');
 	};
 
-	const handleConfirm = () => {
+	const handleAddToWishlist = async (itemId: string) => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist.id,
+			userId,
+			itemId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await addToWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleRemoveToWishlist = async () => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist.id,
+			itemId: selectedBookId,
+			userId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await removeFromWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
+
+			setSelectedBookId('');
+			setModalType('');
+			setShowModal(false);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('Error: ', error.message);
+			}
+		}
+	};
+
+	const handleShowRemoveWishlistModal = (bookId: string) => {
+		setSelectedBookId(bookId);
+		setModalType('wishlist');
+		setShowModal(true);
+	};
+
+	const handleNavigateToCart = () => {
 		navigate({ to: '/cart' });
 	};
 
-	const handleCancel = () => {
+	const handleCancelRemoveWishlist = () => {
+		setSelectedBookId('');
+		setModalType('');
 		setShowModal(false);
-		navigate({ to: '/products/books' });
+	};
+
+	const handleBrowseMore = () => {
+		setSelectedBookId('');
+		setModalType('');
+		setShowModal(false);
 	};
 
 	// const form = useForm({
@@ -96,7 +170,7 @@ function BookSlugComponent() {
 	// 	onSubmit: async ({ value }) => {
 	// 		const userReviewObj: UserReviewType = {
 	// 			userId: userId,
-	// 			bookId: book.id,
+	// 			bookId: bookData.id,
 	// 			reviewContent: value.reviewContent,
 	// 			rating: 5,
 	// 		};
@@ -124,15 +198,15 @@ function BookSlugComponent() {
 						Books
 					</Link>
 					<MdArrowRight />
-					<p>{book.title}</p>
+					<p>{bookData.title}</p>
 				</div>
 			</div>
 
 			<div className='grid grid-cols-1 px-6 py-3 sm:mx-auto sm:max-w-2xl md:max-w-4xl md:grid-cols-2 md:gap-10 lg:max-w-5xl lg:grid-cols-[380px_3fr] xl:max-w-[78rem] 2xl:max-w-[90rem]'>
 				<div className='relative mb-3 flex h-auto w-auto overflow-hidden rounded-sm bg-gray-200/90 px-5 py-5 sm:px-8 sm:py-8 md:max-h-[35rem] md:min-h-[35rem]'>
 					<img
-						src={book.coverImg}
-						alt={`${book.title} image`}
+						src={bookData.coverImg}
+						alt={`${bookData.title} image`}
 						className='object-fit mx-auto h-auto'
 					/>
 				</div>
@@ -140,10 +214,10 @@ function BookSlugComponent() {
 				{/* Book Info */}
 				<div className='px-2'>
 					<h2 className='mb-1 text-2xl font-bold sm:mb-1.5 sm:text-3xl xl:text-4xl 2xl:text-5xl'>
-						{book.title}
+						{bookData.title}
 					</h2>
 					<p className='mb-1 text-sm text-gray-500 sm:mb-1.5 xl:text-lg 2xl:text-xl'>
-						{book.author}
+						{bookData.author}
 					</p>
 
 					<div className='mb-2 flex items-center gap-1 sm:mb-3'>
@@ -153,13 +227,13 @@ function BookSlugComponent() {
 						<FaStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5 md:h-4 md:w-4 xl:w-5' />
 						<FaRegStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5 md:h-4 md:w-4 xl:w-5' />
 						<p className='text-sm sm:text-lg md:text-sm xl:text-lg'>
-							({book.rating})
+							({bookData.rating})
 						</p>
 					</div>
 
 					<div className='mb-5 flex items-center gap-2 xl:mb-8'>
 						<p className='text-2xl font-bold sm:text-3xl xl:text-4xl 2xl:text-5xl'>
-							${book.price}
+							${bookData.price}
 						</p>
 						<p className='text-2xl font-light text-gray-300 line-through sm:text-3xl xl:text-4xl 2xl:text-5xl'>
 							$10.38
@@ -177,9 +251,9 @@ function BookSlugComponent() {
 							<p
 								className={`text-sm font-light text-gray-500 sm:text-[16px] md:text-[15px] ${!descExpanded ? 'line-clamp-4 md:line-clamp-7 xl:line-clamp-0' : ''}`}
 							>
-								{book.description}
+								{bookData.description}
 							</p>
-							{book.description && book.description.length > 350 && (
+							{bookData.description && bookData.description.length > 350 && (
 								<button
 									onClick={() => setDescExpanded(!descExpanded)}
 									className='mt-1 cursor-pointer text-xs font-medium text-black hover:text-black/70 focus:outline-none sm:text-sm xl:hidden'
@@ -193,15 +267,27 @@ function BookSlugComponent() {
 					{/* Add to Cart/Wishlist Buttons */}
 					<div className='flex flex-col gap-3'>
 						<button
-							onClick={() => handleAddToCart(book.id, 'BOOK')}
+							onClick={() => handleAddToCart(bookData.id)}
 							className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'
 						>
 							Add to Cart
 						</button>
 
-						<button className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'>
-							Add to Wishlist
-						</button>
+						{wishlistItemIds.includes(bookData.id) ? (
+							<button
+								onClick={() => handleShowRemoveWishlistModal(bookData.id)}
+								className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black opacity-50 transition-colors duration-300 hover:bg-gray-400/20'
+							>
+								Added to your wishlist
+							</button>
+						) : (
+							<button
+								onClick={() => handleAddToWishlist(bookData.id)}
+								className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'
+							>
+								Add to Wishlist
+							</button>
+						)}
 					</div>
 				</div>
 			</div>
@@ -250,14 +336,22 @@ function BookSlugComponent() {
 				</div>
 			</div>
 
-			{showModal && (
+			{showModal && modalType === 'cart' && (
 				<ConfirmationModal
 					modalTitle='Added to Cart'
-					message={`"${book.title}" has been added to cart`}
-					confirmFn={handleConfirm}
-					cancelFn={handleCancel}
+					message={`"${bookData.title}" has been added to cart`}
+					confirmFn={handleNavigateToCart}
+					cancelFn={handleBrowseMore}
 					confirmBtn='Proceed to Cart'
 					cancelBtn='Browse More'
+				/>
+			)}
+
+			{showModal && modalType === 'wishlist' && (
+				<ConfirmationModal
+					message='Do you want to remove this item from your wishlist?'
+					confirmFn={handleRemoveToWishlist}
+					cancelFn={handleCancelRemoveWishlist}
 				/>
 			)}
 

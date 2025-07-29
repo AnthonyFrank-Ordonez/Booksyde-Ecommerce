@@ -15,20 +15,28 @@ import type { QueryClient } from '@tanstack/react-query';
 import { seo } from '@/utils/seo';
 import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
-import { getUserID, getUserSession } from '@/utils/servers/auth-server';
+import { useGetUserID, useGetUserSession } from '@/utils/servers/auth-server';
+import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
 }>()({
-	beforeLoad: async () => {
+	beforeLoad: async ({ context }) => {
 		const [userID, session] = await Promise.all([
-			getUserID(),
-			getUserSession(),
+			context.queryClient.ensureQueryData(useGetUserID()),
+			context.queryClient.ensureQueryData(useGetUserSession()),
 		]);
+
+		const userCart = userID
+			? await context.queryClient.ensureQueryData(
+					getOrCreateCartQueryOptions(userID)
+				)
+			: null;
 
 		return {
 			userID,
 			session,
+			userCart,
 		};
 	},
 	head: () => ({
@@ -65,10 +73,14 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { session } = Route.useRouteContext();
+	const { session, userCart } = Route.useRouteContext();
 	const location = useLocation();
 	const hideFooterPaths = ['/cart', 'checkout', '/payment'];
 	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
+	const totalCart =
+		userCart?.items
+			.map((item) => item.quantity)
+			.reduce((prev, sum) => sum + prev, 0) ?? 0;
 
 	return (
 		<html lang='en'>
@@ -76,7 +88,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body>
-				<Header session={session} />
+				<Header session={session} totalCart={totalCart} />
 				<main className='grid grid-cols-1 md:grid-cols-12'>{children}</main>
 				{!shouldHideFooter && <Footer />}
 				<Scripts />
