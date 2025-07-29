@@ -63,10 +63,10 @@ const getOrCreateWishlistFn = createServerFn({ method: 'POST' })
 		};
 	});
 
-export const useGetOrCreateWishlist = (userId: string) =>
+export const useGetOrCreateWishlist = (userId: string | null) =>
 	queryOptions({
 		enabled: !!userId,
-		queryKey: ['wishlist', userId],
+		queryKey: ['wishlist', userId ?? 'unauthenticated'],
 		queryFn: () => getOrCreateWishlistFn({ data: { userId } }),
 		staleTime: Infinity,
 		retry: 1,
@@ -128,7 +128,7 @@ export const useAddToWishlist = () => {
 	return useMutation({
 		mutationFn: addToWishlistFn,
 		onSuccess: (data) => {
-			queryClient.resetQueries({
+			queryClient.invalidateQueries({
 				queryKey: ['wishlist', data?.userId],
 				exact: true,
 			});
@@ -173,7 +173,7 @@ export const useRemoveFromWishlist = () => {
 	return useMutation({
 		mutationFn: removeFromWishlistFn,
 		onSuccess: (data) => {
-			queryClient.resetQueries({
+			queryClient.invalidateQueries({
 				queryKey: ['wishlist', data?.userId],
 				exact: true,
 			});

@@ -12,10 +12,7 @@ import type { CredentialsType } from '@/types';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
-import {
-	errorMsg,
-	// successMsg
-} from '@/utils/utilities';
+import { errorMsg } from '@/utils/utilities';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,

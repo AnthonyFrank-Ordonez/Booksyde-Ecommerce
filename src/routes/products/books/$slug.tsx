@@ -43,21 +43,21 @@ export const Route = createFileRoute('/products/books/$slug')({
 
 		await context.queryClient.ensureQueryData(bookslugQueryOptions(slug));
 
-		const [userCart, userWishlist] = await Promise.all([
+		await Promise.all([
 			await context.queryClient.ensureQueryData(
 				getOrCreateCartQueryOptions(userId)
 			),
 			await context.queryClient.ensureQueryData(useGetOrCreateWishlist(userId)),
 		]);
 
-		return { userId, userWishlist, userCart };
+		return { userId };
 	},
 });
 
 function BookSlugComponent() {
 	// Hooks
 	const router = useRouter();
-	const { userId, userWishlist, userCart } = Route.useRouteContext();
+	const { userId } = Route.useRouteContext();
 	const { slug } = Route.useParams();
 	const navigate = useNavigate();
 	// const { mutateAsync: addReview } = useAddReview();
@@ -65,7 +65,13 @@ function BookSlugComponent() {
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState('');
 	const [selectedBookId, setSelectedBookId] = useState('');
-	const book = useSuspenseQuery(bookslugQueryOptions(slug)).data;
+	const { data: bookData } = useSuspenseQuery(bookslugQueryOptions(slug));
+	const { data: userCart } = useSuspenseQuery(
+		getOrCreateCartQueryOptions(userId)
+	);
+	const { data: userWishlist } = useSuspenseQuery(
+		useGetOrCreateWishlist(userId)
+	);
 	const { mutateAsync: addToCart } = useAddToCart();
 	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
@@ -164,7 +170,7 @@ function BookSlugComponent() {
 	// 	onSubmit: async ({ value }) => {
 	// 		const userReviewObj: UserReviewType = {
 	// 			userId: userId,
-	// 			bookId: book.id,
+	// 			bookId: bookData.id,
 	// 			reviewContent: value.reviewContent,
 	// 			rating: 5,
 	// 		};
@@ -192,15 +198,15 @@ function BookSlugComponent() {
 						Books
 					</Link>
 					<MdArrowRight />
-					<p>{book.title}</p>
+					<p>{bookData.title}</p>
 				</div>
 			</div>
 
 			<div className='grid grid-cols-1 px-6 py-3 sm:mx-auto sm:max-w-2xl md:max-w-4xl md:grid-cols-2 md:gap-10 lg:max-w-5xl lg:grid-cols-[380px_3fr] xl:max-w-[78rem] 2xl:max-w-[90rem]'>
 				<div className='relative mb-3 flex h-auto w-auto overflow-hidden rounded-sm bg-gray-200/90 px-5 py-5 sm:px-8 sm:py-8 md:max-h-[35rem] md:min-h-[35rem]'>
 					<img
-						src={book.coverImg}
-						alt={`${book.title} image`}
+						src={bookData.coverImg}
+						alt={`${bookData.title} image`}
 						className='object-fit mx-auto h-auto'
 					/>
 				</div>
@@ -208,10 +214,10 @@ function BookSlugComponent() {
 				{/* Book Info */}
 				<div className='px-2'>
 					<h2 className='mb-1 text-2xl font-bold sm:mb-1.5 sm:text-3xl xl:text-4xl 2xl:text-5xl'>
-						{book.title}
+						{bookData.title}
 					</h2>
 					<p className='mb-1 text-sm text-gray-500 sm:mb-1.5 xl:text-lg 2xl:text-xl'>
-						{book.author}
+						{bookData.author}
 					</p>
 
 					<div className='mb-2 flex items-center gap-1 sm:mb-3'>
@@ -221,13 +227,13 @@ function BookSlugComponent() {
 						<FaStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5 md:h-4 md:w-4 xl:w-5' />
 						<FaRegStar className='h-4 w-4 text-yellow-400 sm:h-5 sm:w-5 md:h-4 md:w-4 xl:w-5' />
 						<p className='text-sm sm:text-lg md:text-sm xl:text-lg'>
-							({book.rating})
+							({bookData.rating})
 						</p>
 					</div>
 
 					<div className='mb-5 flex items-center gap-2 xl:mb-8'>
 						<p className='text-2xl font-bold sm:text-3xl xl:text-4xl 2xl:text-5xl'>
-							${book.price}
+							${bookData.price}
 						</p>
 						<p className='text-2xl font-light text-gray-300 line-through sm:text-3xl xl:text-4xl 2xl:text-5xl'>
 							$10.38
@@ -245,9 +251,9 @@ function BookSlugComponent() {
 							<p
 								className={`text-sm font-light text-gray-500 sm:text-[16px] md:text-[15px] ${!descExpanded ? 'line-clamp-4 md:line-clamp-7 xl:line-clamp-0' : ''}`}
 							>
-								{book.description}
+								{bookData.description}
 							</p>
-							{book.description && book.description.length > 350 && (
+							{bookData.description && bookData.description.length > 350 && (
 								<button
 									onClick={() => setDescExpanded(!descExpanded)}
 									className='mt-1 cursor-pointer text-xs font-medium text-black hover:text-black/70 focus:outline-none sm:text-sm xl:hidden'
@@ -261,22 +267,22 @@ function BookSlugComponent() {
 					{/* Add to Cart/Wishlist Buttons */}
 					<div className='flex flex-col gap-3'>
 						<button
-							onClick={() => handleAddToCart(book.id)}
+							onClick={() => handleAddToCart(bookData.id)}
 							className='w-full cursor-pointer rounded-lg bg-black py-3 font-bold text-white transition-colors duration-300 hover:bg-black/80'
 						>
 							Add to Cart
 						</button>
 
-						{wishlistItemIds.includes(book.id) ? (
+						{wishlistItemIds.includes(bookData.id) ? (
 							<button
-								onClick={() => handleShowRemoveWishlistModal(book.id)}
+								onClick={() => handleShowRemoveWishlistModal(bookData.id)}
 								className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black opacity-50 transition-colors duration-300 hover:bg-gray-400/20'
 							>
 								Added to your wishlist
 							</button>
 						) : (
 							<button
-								onClick={() => handleAddToWishlist(book.id)}
+								onClick={() => handleAddToWishlist(bookData.id)}
 								className='w-full cursor-pointer rounded-lg border border-black bg-white py-3 font-bold text-black transition-colors duration-300 hover:bg-gray-400/20'
 							>
 								Add to Wishlist
@@ -333,7 +339,7 @@ function BookSlugComponent() {
 			{showModal && modalType === 'cart' && (
 				<ConfirmationModal
 					modalTitle='Added to Cart'
-					message={`"${book.title}" has been added to cart`}
+					message={`"${bookData.title}" has been added to cart`}
 					confirmFn={handleNavigateToCart}
 					cancelFn={handleBrowseMore}
 					confirmBtn='Proceed to Cart'

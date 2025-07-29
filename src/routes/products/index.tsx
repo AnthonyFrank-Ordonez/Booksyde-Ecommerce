@@ -5,7 +5,7 @@ import {
 	useRouter,
 } from '@tanstack/react-router';
 import { FaHeart, FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import type { BookType, WishlistItemObjectType } from '@/types';
@@ -28,15 +28,13 @@ export const Route = createFileRoute('/products/')({
 		const userId = context.userID;
 		await context.queryClient.ensureQueryData(bookQueryOptions());
 
-		const userWishlist = userId
-			? await context.queryClient.ensureQueryData(
-					useGetOrCreateWishlist(userId)
-				)
-			: null;
+		userId &&
+			(await context.queryClient.ensureQueryData(
+				useGetOrCreateWishlist(userId)
+			));
 
 		return {
 			userId,
-			userWishlist,
 		};
 	},
 });
@@ -45,7 +43,7 @@ function ProductsIndex() {
 	// Hooks
 	const router = useRouter();
 	const navigate = useNavigate();
-	const { userId, userWishlist } = Route.useRouteContext();
+	const { userId } = Route.useRouteContext();
 	const images = [
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-2_cy7xoq.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-4_vpmzid.jpg',
@@ -53,6 +51,8 @@ function ProductsIndex() {
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-1_y7wl8e.jpg',
 	];
 	const { data: booksData } = useSuspenseQuery(bookQueryOptions());
+	const { data: userWishlist } = useQuery(useGetOrCreateWishlist(userId));
+
 	const { mutateAsync: addToWishlist } = useAddToWishlist();
 	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
 	const [showModal, setShowModal] = useState(false);

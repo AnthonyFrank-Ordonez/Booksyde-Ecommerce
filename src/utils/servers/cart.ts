@@ -120,7 +120,7 @@ export const useAddToCart = () => {
 	return useMutation({
 		mutationFn: addToCartFn,
 		onSuccess: (data) => {
-			queryClient.resetQueries({ queryKey: ['cart', data.userId] });
+			queryClient.invalidateQueries({ queryKey: ['cart', data.userId] });
 		},
 	});
 };
