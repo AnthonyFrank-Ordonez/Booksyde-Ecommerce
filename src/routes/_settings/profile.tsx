@@ -7,14 +7,13 @@ import { FaUser } from 'react-icons/fa';
 import type { UpdateUserInformationType } from '@/types';
 import { UserInformationSchema } from '@/utils/zod';
 import { useUpdateUserInformation } from '@/utils/servers/user';
-import { getUserSession } from '@/utils/servers/auth-server';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
 import FieldInfo from '@/components/FieldInfo';
 
 export const Route = createFileRoute('/_settings/profile')({
 	component: Profile,
 	loader: async ({ context }) => {
-		const session = await getUserSession();
+		const session = context.session;
 
 		if (!session) {
 			throw new Error('User session not found');
