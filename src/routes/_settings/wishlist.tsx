@@ -15,7 +15,9 @@ export const Route = createFileRoute('/_settings/wishlist')({
 
 function RouteComponent() {
 	const { userId } = Route.useRouteContext();
-	const userWishlist = useSuspenseQuery(useGetOrCreateWishlist(userId)).data;
+	const { data: userWishlist } = useSuspenseQuery(
+		useGetOrCreateWishlist(userId)
+	);
 	console.log('🚀 ~ RouteComponent ~ userWishlist:', userWishlist);
 	return <div>Hello "/_settings/wishlist"!</div>;
 }

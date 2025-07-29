@@ -32,9 +32,9 @@ export const Route = createFileRoute('/_settings/profile')({
 function Profile() {
 	const router = useRouter();
 	const { session } = Route.useLoaderData();
-	const userDefaultAddress = useSuspenseQuery(
+	const { data: userDefaultAddress } = useSuspenseQuery(
 		getUserDefaultAddQueryOptions(session.id)
-	).data;
+	);
 	const { mutateAsync: updateUserInformation } = useUpdateUserInformation();
 	const [isEdit, setIsEdit] = useState(false);
 	const [editType, setEditType] = useState('');

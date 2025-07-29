@@ -34,7 +34,9 @@ export const Route = createFileRoute('/_cartLayout/cart')({
 function Cart() {
 	const router = useRouter();
 	const { userId } = Route.useRouteContext();
-	const userCart = useSuspenseQuery(getOrCreateCartQueryOptions(userId)).data;
+	const { data: userCart } = useSuspenseQuery(
+		getOrCreateCartQueryOptions(userId)
+	);
 	const { mutateAsync: deleteItem } = useDeleteCartItem();
 	const { mutateAsync: updateQuantity } = useUpdateQuantity();
 	const [selectedItem, setSelectedItem] = useState<CartItems | undefined>(

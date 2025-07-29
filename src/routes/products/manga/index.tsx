@@ -25,13 +25,13 @@ export const Route = createFileRoute('/products/manga/')({
 });
 
 function MangaIndex() {
-	const booksQueryData = useSuspenseQuery(bookQueryOptions());
+	const { data: booksQueryData } = useSuspenseQuery(bookQueryOptions());
 	const newArrivalBook: NewArrrivalBookType = {
-		title: booksQueryData.data[0].title,
-		coverImg: booksQueryData.data[0].coverImg,
-		price: booksQueryData.data[0].price,
-		imageAlt: booksQueryData.data[0].title,
-		description: booksQueryData.data[0].description,
+		title: booksQueryData[0].title,
+		coverImg: booksQueryData[0].coverImg,
+		price: booksQueryData[0].price,
+		imageAlt: booksQueryData[0].title,
+		description: booksQueryData[0].description,
 	};
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -50,7 +50,7 @@ function MangaIndex() {
 					{/* Products List */}
 					<ScrollFadeSection className='col-span-1 border-gray-200 md:col-span-10 lg:col-span-10 xl:col-span-10'>
 						<div className='grid grid-cols-2 gap-3 border-gray-200 px-1 md:grid-cols-3 md:gap-4 md:border-r-2 md:px-3 lg:grid-cols-4 xl:grid-cols-4 2xl:gap-5 2xl:px-7'>
-							{booksQueryData.data.map((book: BookType) => {
+							{booksQueryData.map((book: BookType) => {
 								return (
 									<div
 										key={book.id}
