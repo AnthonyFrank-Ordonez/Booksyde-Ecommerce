@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
-import { authMiddleware } from '../middlewares/auth-middleware';
 import { queryOptions } from '@tanstack/react-query';
+import { authMiddleware } from '../middlewares/auth-middleware';
 
 export const getUserID = createServerFn({ method: 'GET' })
 	.middleware([authMiddleware])
