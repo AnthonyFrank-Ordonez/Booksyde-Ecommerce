@@ -3,6 +3,7 @@ import { FaBars, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { SessionType } from '@/types';
 
 import { signOut } from '@/utils/auth-client';
@@ -19,6 +20,7 @@ interface HeaderProps {
 
 export default function Header({ session, totalCart }: HeaderProps) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const isEmpty = (userSession: SessionType) => {
@@ -30,6 +32,9 @@ export default function Header({ session, totalCart }: HeaderProps) {
 	const handleSignOut = async () => {
 		// await signOutUser();
 		await signOut();
+
+		queryClient.resetQueries({ queryKey: ['userID'] });
+		queryClient.resetQueries({ queryKey: ['userSession'] });
 		router.invalidate();
 	};
 
