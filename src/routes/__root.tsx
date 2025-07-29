@@ -15,12 +15,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { seo } from '@/utils/seo';
 import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
-import {
-	getUserID,
-	getUserSession,
-	useGetUserID,
-	useGetUserSession,
-} from '@/utils/servers/auth-server';
+import { useGetUserID, useGetUserSession } from '@/utils/servers/auth-server';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 
 export const Route = createRootRouteWithContext<{
