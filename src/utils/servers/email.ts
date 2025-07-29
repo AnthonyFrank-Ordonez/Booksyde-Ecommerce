@@ -6,8 +6,10 @@ import { createServerFn } from '@tanstack/react-start';
 import { EmailSchema } from '../zod';
 
 import { transporter } from '../nodemailer';
+import { loggingMiddleware } from '../middlewares/logging-middleware';
 
 export const sendEmailFn = createServerFn({ method: 'POST' })
+	.middleware([loggingMiddleware])
 	.validator((data: unknown) => {
 		return EmailSchema.parse(data);
 	})

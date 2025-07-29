@@ -1,6 +1,6 @@
-import { createMiddleware } from '@tanstack/react-start';
+import { createMiddleware, json } from '@tanstack/react-start';
 import { getWebRequest } from '@tanstack/react-start/server';
-import { auth } from './auth';
+import { auth } from '../auth';
 
 export const authMiddleware = createMiddleware({ type: 'function' }).server(
 	async ({ next }) => {
@@ -46,3 +46,18 @@ export const authMiddleware = createMiddleware({ type: 'function' }).server(
 		// });
 	}
 );
+
+export const isAuthenticated = createMiddleware({
+	type: 'function',
+})
+	.middleware([authMiddleware])
+	.server(async ({ next, context }) => {
+		if (!context.user) {
+			throw json(
+				{ message: 'You must login first', status: 401 },
+				{ status: 401 }
+			);
+		}
+
+		return next();
+	});

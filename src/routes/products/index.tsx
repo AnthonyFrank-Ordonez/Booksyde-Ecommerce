@@ -1,28 +1,121 @@
-import { Link, createFileRoute } from '@tanstack/react-router';
-import { FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import {
+	Link,
+	createFileRoute,
+	useNavigate,
+	useRouter,
+} from '@tanstack/react-router';
+import { FaHeart, FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
-import type { BookType } from '@/types';
+import type { BookType, WishlistItemObjectType } from '@/types';
+import type { ItemType } from '@/generated/prisma';
 import Carousel from '@/components/Carousel';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 import HoverContainer from '@/components/HoverContainer';
 import { bookQueryOptions } from '@/utils/servers/books';
+import {
+	useAddToWishlist,
+	useGetOrCreateWishlist,
+	useRemoveFromWishlist,
+} from '@/utils/servers/wishlist';
+import { errorMsg, isAuthError } from '@/utils/utilities';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 export const Route = createFileRoute('/products/')({
 	component: ProductsIndex,
-	loader: async ({ context }) => {
+	beforeLoad: async ({ context }) => {
+		const userId = context.userID;
 		await context.queryClient.ensureQueryData(bookQueryOptions());
+
+		userId &&
+			(await context.queryClient.ensureQueryData(
+				useGetOrCreateWishlist(userId)
+			));
+
+		return {
+			userId,
+		};
 	},
 });
 
 function ProductsIndex() {
+	// Hooks
+	const router = useRouter();
+	const navigate = useNavigate();
+	const { userId } = Route.useRouteContext();
 	const images = [
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-2_cy7xoq.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-4_vpmzid.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-3_bgxjvn.jpg',
 		'https://res.cloudinary.com/dcurf3qko/image/upload/w_1800,h_500,c_fill,q_auto,f_auto/product-banner-1_y7wl8e.jpg',
 	];
-	const booksQueryData = useSuspenseQuery(bookQueryOptions());
+	const { data: booksData } = useSuspenseQuery(bookQueryOptions());
+	const { data: userWishlist } = useQuery(useGetOrCreateWishlist(userId));
+
+	const { mutateAsync: addToWishlist } = useAddToWishlist();
+	const { mutateAsync: removeFromWishlist } = useRemoveFromWishlist();
+	const [showModal, setShowModal] = useState(false);
+	const [selectedBookId, setSelectedBookId] = useState<string>('');
+
+	// Variables
+	const itemType: ItemType = 'BOOK';
+	const wishlistItemIds =
+		userWishlist?.wishlists.flatMap((wishlist) => wishlist.itemId) ?? [];
+
+	// Functions
+	const handleAddToWishlist = async (itemId: string) => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist?.id,
+			userId,
+			itemId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await addToWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error('Error: ', error.message);
+			} else if (isAuthError(error)) {
+				errorMsg('You must login first.');
+				navigate({ to: '/signin' });
+			}
+		}
+	};
+
+	const handleRemoveToWishlist = async () => {
+		const wishlistItemObj = {
+			wishlistId: userWishlist?.id,
+			itemId: selectedBookId,
+			userId,
+			itemType,
+		} satisfies WishlistItemObjectType;
+
+		try {
+			await removeFromWishlist({ data: wishlistItemObj });
+
+			router.invalidate();
+			setShowModal(false);
+			setSelectedBookId('');
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('Error: ', error.message);
+			}
+		}
+	};
+
+	const handleShowModal = (bookId: string) => {
+		setShowModal(true);
+		setSelectedBookId(bookId);
+	};
+
+	const handleCancelFn = () => {
+		setShowModal(false);
+		setSelectedBookId('');
+	};
 
 	return (
 		<div className='col-span-1 md:col-span-12 md:px-12 md:py-2'>
@@ -117,7 +210,7 @@ function ProductsIndex() {
 						</h2>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							{booksQueryData.data.map((book: BookType, idx) => {
+							{booksData.map((book: BookType, idx) => {
 								return (
 									<div
 										key={book.id}
@@ -184,9 +277,21 @@ function ProductsIndex() {
 													View Product
 												</Link>
 
-												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-													<FaRegHeart size={24} />
-												</div>
+												{wishlistItemIds.includes(book.id) ? (
+													<div
+														onClick={() => handleShowModal(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaHeart size={24} className='text-red-500' />
+													</div>
+												) : (
+													<div
+														onClick={() => handleAddToWishlist(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaRegHeart size={24} />
+													</div>
+												)}
 											</div>
 										</div>
 									</div>
@@ -378,7 +483,7 @@ function ProductsIndex() {
 						</div>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							{booksQueryData.data.map((book: BookType, idx) => {
+							{booksData.map((book: BookType, idx) => {
 								return (
 									<div
 										key={book.id}
@@ -515,7 +620,7 @@ function ProductsIndex() {
 						</div>
 
 						<div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 xl:gap-8 2xl:grid-cols-5'>
-							{booksQueryData.data.map((book: BookType) => {
+							{booksData.map((book: BookType) => {
 								return (
 									<div
 										key={book.id}
@@ -671,6 +776,14 @@ function ProductsIndex() {
 						</div>
 					</div>
 				</ScrollFadeSection>
+
+				{showModal && (
+					<ConfirmationModal
+						message='Do you want to remove this item from your wishlist?'
+						confirmFn={handleRemoveToWishlist}
+						cancelFn={handleCancelFn}
+					/>
+				)}
 			</section>
 		</div>
 	);

@@ -22,6 +22,8 @@ type AddressNameValues =
 
 export type ItemType = 'BOOK' | 'MANGA' | 'NOVEL';
 
+export type QuantityAction = 'Increase' | 'Decrease';
+
 export interface BookType {
 	id: string;
 	title: string;
@@ -137,4 +139,58 @@ export interface CartItemDataType {
 	bookId?: string;
 	mangaId?: string;
 	novelId?: string;
+}
+
+export type CartItems =
+	| {
+			cartItemId: string;
+			price: number;
+			quantity: number;
+			isChecked: boolean;
+			rating?: string | undefined;
+			id?: string | undefined;
+			title?: string | undefined;
+			description?: string | undefined;
+			author?: string | undefined;
+			genres?: Array<string> | undefined;
+			coverImg?: string | undefined;
+			language?: string | undefined;
+			slug?: string | undefined;
+	  }
+	| undefined;
+
+export interface DeleteItemObjType {
+	itemId: string;
+	cartId: string;
+	userId: string;
+}
+
+export interface UpdateItemObjType {
+	type: QuantityAction;
+	itemId: string;
+	cartId: string;
+	userId: string;
+}
+
+export interface WishlistItemDataType {
+	wishlistId: string;
+	itemId: string;
+	itemType: ItemType;
+
+	// Optionals
+	bookId?: string | null;
+	mangaId?: string | null;
+	novelId?: string | null;
+}
+
+export interface WishlistItemObjectType {
+	wishlistId: string | undefined;
+	userId: string | null;
+	itemId: string;
+	itemType: ItemType;
+}
+
+export interface AuthError {
+	status: number;
+	message: string;
 }

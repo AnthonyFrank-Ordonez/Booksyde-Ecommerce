@@ -34,7 +34,9 @@ export const Route = createFileRoute('/_settings/address')({
 
 function Address() {
 	const { userId } = Route.useLoaderData();
-	const userAddress = useSuspenseQuery(getUserAddQueryOptions(userId)).data;
+	const { data: userAddress } = useSuspenseQuery(
+		getUserAddQueryOptions(userId)
+	);
 	const { mutateAsync: addAddress } = useAddAddress();
 	const { mutateAsync: updateAddress } = useUpdateDefaultAddress();
 	const { mutateAsync: deleteAddress } = useDeleteAddress();

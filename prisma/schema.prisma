@@ -9,6 +9,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ItemType {
+  BOOK
+  MANGA
+  NOVEL
+}
+
 model Review {
   id        String    @id @default(cuid())
   content   String
@@ -58,6 +64,7 @@ model User {
   sessions      Session[]
   address       Address[]
   cart          Cart?
+  wishlist      Wishlist?
 
   @@map("users")
 }
@@ -109,19 +116,20 @@ model Verification {
 }
 
 model Book {
-  id          String      @id @default(cuid())
-  title       String
-  author      String
-  genres      String[]
-  price       Decimal     @db.Decimal(10, 2)
-  description String
-  rating      Decimal     @db.Decimal(10, 2)
-  coverImg    String
-  language    String
-  slug        String @unique 
+  id           String      @id @default(cuid())
+  title        String
+  author       String
+  genres       String[]
+  price        Decimal     @db.Decimal(10, 2)
+  description  String
+  rating       Decimal     @db.Decimal(10, 2)
+  coverImg     String
+  language     String
+  slug         String @unique 
 
-  comments    Review[]
-  cartItem    CartItem[]
+  comments     Review[]
+  cartItem     CartItem[]
+  wishlistItem WishlistItems[]
 
   @@map("books")
 }
@@ -151,9 +159,10 @@ model Cart {
 
 model CartItem {
   id        String  @id @default(cuid())
-  cartId    String
 
+  cartId    String
   cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
   quantity  Int     @default(1)
 
   itemType  ItemType
@@ -181,8 +190,46 @@ model CartItem {
   @@map("cart_items")
 }
 
-enum ItemType {
-  BOOK
-  MANGA
-  NOVEL
+model Wishlist {
+  id        String @id @default(cuid())
+
+  userId    String @unique
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wishlists WishlistItems[]
+
+  @@map("wishlists")
+}
+
+model WishlistItems {
+  id         String @id @default(cuid())
+
+  wishlistId String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+
+  itemType   ItemType
+  itemId     String
+
+  // Direct Relations
+  bookId     String?
+  mangaId    String?
+  novelId    String?
+
+  book       Book?   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+  updateAt   DateTime  @updatedAt
+
+    // For Perfomance
+  @@index([wishlistId])                    // For cart queries
+  @@index([wishlistId, itemType, itemId]) // For duplicate checking
+  @@index([itemType, itemId])             // For item-specific queries
+
+  // Prevent duplicate items in the same cart
+  @@unique([wishlistId, itemType, itemId])
+
+  @@map("wishlist_items")
 }

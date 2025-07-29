@@ -3,6 +3,7 @@ import { FaBars, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { SessionType } from '@/types';
 
 import { signOut } from '@/utils/auth-client';
@@ -14,10 +15,12 @@ interface HeaderProps {
 		image: string | null | undefined;
 		email: string | undefined;
 	} | null;
+	totalCart: number | undefined;
 }
 
-export default function Header({ session }: HeaderProps) {
+export default function Header({ session, totalCart }: HeaderProps) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const isEmpty = (userSession: SessionType) => {
@@ -29,6 +32,9 @@ export default function Header({ session }: HeaderProps) {
 	const handleSignOut = async () => {
 		// await signOutUser();
 		await signOut();
+
+		queryClient.resetQueries({ queryKey: ['userID'] });
+		queryClient.resetQueries({ queryKey: ['userSession'] });
 		router.invalidate();
 	};
 
@@ -142,7 +148,7 @@ export default function Header({ session }: HeaderProps) {
 									<button
 										onClick={handleSignOut}
 										aria-label='signOut'
-										className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
+										className='block w-full cursor-pointer px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
 									>
 										Sign out
 									</button>
@@ -155,7 +161,7 @@ export default function Header({ session }: HeaderProps) {
 								className='flex items-center space-x-1 text-black hover:text-gray-600'
 							>
 								<FaShoppingCart />
-								<span className='hidden md:inline'>Cart (0)</span>
+								<span className='hidden md:inline'>Cart ({totalCart})</span>
 							</Link>
 						</>
 					)}

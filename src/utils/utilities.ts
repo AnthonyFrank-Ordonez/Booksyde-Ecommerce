@@ -1,4 +1,5 @@
 import { Bounce, toast } from 'react-toastify';
+import type { AuthError } from '@/types';
 
 export const successMsg = (msg: string, ms: number = 5000) => {
 	toast.success(msg, {
@@ -41,4 +42,15 @@ export const infoMsg = (msg: string, ms: number = 5000) => {
 		theme: 'light',
 		transition: Bounce,
 	});
+};
+
+export const isAuthError = (error: unknown): error is AuthError => {
+	return (
+		typeof error === 'object' &&
+		error !== null &&
+		'message' in error &&
+		'status' in error &&
+		typeof error.status === 'number' &&
+		error.status === 401
+	);
 };

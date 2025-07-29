@@ -8,14 +8,12 @@ import { FaFacebook, FaGithub, FaGoogle } from 'react-icons/fa';
 import { useForm } from '@tanstack/react-form';
 import { useRateLimiter } from '@tanstack/react-pacer';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { CredentialsType } from '@/types';
 import { signIn } from '@/utils/auth-client';
 import { ScrollFadeSection } from '@/components/ScrollFadeSection';
 
-import {
-	errorMsg,
-	// successMsg
-} from '@/utils/utilities';
+import { errorMsg } from '@/utils/utilities';
 
 export const Route = createFileRoute('/signin')({
 	component: Login,
@@ -27,6 +25,7 @@ export const Route = createFileRoute('/signin')({
 function Login() {
 	const [showLoading, setShowLoading] = useState(false);
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	// Sign In user with Rate Limit
 	const signInUser = useRateLimiter(
@@ -41,6 +40,9 @@ function Login() {
 					onSuccess: () => {
 						setShowLoading(false);
 						router.navigate({ to: '/products' });
+
+						queryClient.resetQueries({ queryKey: ['userID'] });
+						queryClient.resetQueries({ queryKey: ['userSession'] });
 						router.invalidate();
 					},
 					onError: (ctx) => {
