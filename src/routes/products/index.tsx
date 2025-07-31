@@ -546,9 +546,21 @@ function ProductsIndex() {
 													View Product
 												</button>
 
-												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-													<FaRegHeart size={24} />
-												</div>
+												{wishlistItemIds.includes(book.id) ? (
+													<div
+														onClick={() => handleShowModal(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaHeart size={24} className='text-red-500' />
+													</div>
+												) : (
+													<div
+														onClick={() => handleAddToWishlist(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaRegHeart size={24} />
+													</div>
+												)}
 											</div>
 										</div>
 									</div>
@@ -683,9 +695,21 @@ function ProductsIndex() {
 													View Product
 												</button>
 
-												<div className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'>
-													<FaRegHeart size={24} />
-												</div>
+												{wishlistItemIds.includes(book.id) ? (
+													<div
+														onClick={() => handleShowModal(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaHeart size={24} className='text-red-500' />
+													</div>
+												) : (
+													<div
+														onClick={() => handleAddToWishlist(book.id)}
+														className='hidden h-10 w-11 cursor-pointer items-center justify-center rounded-md border text-center transition-colors duration-300 hover:bg-gray-400/10 md:flex 2xl:h-12 2xl:w-12'
+													>
+														<FaRegHeart size={24} />
+													</div>
+												)}
 											</div>
 										</div>
 									</div>
