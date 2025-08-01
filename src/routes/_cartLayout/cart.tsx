@@ -20,6 +20,7 @@ import {
 	useUpdateQuantity,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
+import { useCartStore } from '@/store/cartStore';
 
 export const Route = createFileRoute('/_cartLayout/cart')({
 	component: Cart,
@@ -47,8 +48,8 @@ function Cart() {
 	const [selectedItem, setSelectedItem] = useState<CartItems | undefined>(
 		undefined
 	);
+	const { checkedItemIds, addItem, removeItem, isItemChecked } = useCartStore();
 	const [showModal, setShowModal] = useState(false);
-	const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
 	const cartItems = userCart.items.map((item) => {
 		switch (item.itemType) {
 			case 'BOOK':
@@ -57,7 +58,7 @@ function Cart() {
 					cartItemId: item.id,
 					price: Number(item.book?.price) || 0,
 					quantity: item.quantity || 0,
-					isChecked: checkedItems.has(item.id),
+					isChecked: isItemChecked(item.id),
 				};
 			case 'MANGA':
 				// In development
@@ -75,21 +76,13 @@ function Cart() {
 	}
 
 	const cartTotal = cartItems
-		.filter((item) => item && checkedItems.has(item.cartItemId))
+		.filter((item) => item && checkedItemIds.has(item.cartItemId))
 		.map((item) => (item?.price ?? 0) * (item?.quantity ?? 0))
 		.reduce((sum, itemTotal) => sum + itemTotal, 0)
 		.toFixed(2);
 
 	const toggleItemCheck = (cartItemId: string) => {
-		setCheckedItems((prev) => {
-			const newSet = new Set(prev);
-			if (newSet.has(cartItemId)) {
-				newSet.delete(cartItemId);
-			} else {
-				newSet.add(cartItemId);
-			}
-			return newSet;
-		});
+		addItem(cartItemId);
 	};
 
 	const handleShowModal = (item: CartItems | undefined) => {
@@ -107,11 +100,7 @@ function Cart() {
 
 			await deleteItem({ data: deleteItemObj });
 
-			setCheckedItems((prev) => {
-				const newSet = new Set(prev);
-				newSet.delete(selectedItem.cartItemId);
-				return newSet;
-			});
+			removeItem(selectedItem.cartItemId);
 
 			router.invalidate();
 			setSelectedItem(undefined);

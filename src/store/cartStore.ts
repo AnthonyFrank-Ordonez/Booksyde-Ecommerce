@@ -1,34 +1,43 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 interface CartStore {
 	checkedItemIds: Set<string>;
 
 	// Setters
+	addItem: (id: string) => void;
+	removeItem: (id: string) => void;
 	clearItemIds: () => void;
 
 	// Getters
 	isItemChecked: (id: string) => boolean;
 }
 
-export const useCartStore = create<CartStore>()(
-	persist(
-		(set, get) => ({
-			checkedItemIds: new Set(),
+export const useCartStore = create<CartStore>((set, get) => ({
+	checkedItemIds: new Set(),
 
-			// Setters
-			clearItemIds: () => set({ checkedItemIds: new Set() }),
+	// Setters
+	addItem: (id) =>
+		set((state) => {
+			const newSet = new Set(state.checkedItemIds);
 
-			// Getters
-			isItemChecked: (id: string) => {
-				return get().checkedItemIds.has(id);
-			},
+			if (newSet.has(id)) {
+				newSet.delete(id);
+			} else {
+				newSet.add(id);
+			}
+
+			return { checkedItemIds: newSet };
 		}),
-		{
-			name: 'cart-store',
-			partialize: (state) => ({
-				checkedItemIds: state.checkedItemIds,
-			}),
-		}
-	)
-);
+	removeItem: (id: string) =>
+		set((state) => {
+			const newSet = new Set(state.checkedItemIds);
+			newSet.delete(id);
+			return { checkedItemIds: newSet };
+		}),
+	clearItemIds: () => set({ checkedItemIds: new Set() }),
+
+	// Getters
+	isItemChecked: (id: string) => {
+		return get().checkedItemIds.has(id);
+	},
+}));

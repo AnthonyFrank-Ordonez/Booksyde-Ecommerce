@@ -1,47 +1,69 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { MdOutlineLocationOn } from 'react-icons/md';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
+import { useCartStore } from '@/store/cartStore';
+import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
 
 export const Route = createFileRoute('/_cartLayout/checkout')({
 	component: RouteComponent,
 	beforeLoad: async ({ context }) => {
 		const userId = context.userID;
+		const session = context.session!;
+		const { checkedItemIds } = useCartStore.getState();
 
 		if (!userId) throw redirect({ to: '/signin' });
+
+		if (!checkedItemIds.size) throw redirect({ to: '/cart' });
 
 		await context.queryClient.ensureQueryData(
 			getOrCreateCartQueryOptions(userId)
 		);
+		await context.queryClient.ensureQueryData(
+			getUserDefaultAddQueryOptions(session.id)
+		);
 
-		return { userId };
+		return { userId, session };
 	},
 });
 
 function RouteComponent() {
-	const { userId } = Route.useRouteContext();
+	const { userId, session } = Route.useRouteContext();
+	const { checkedItemIds } = useCartStore();
 	const { data: userCart } = useSuspenseQuery(
 		getOrCreateCartQueryOptions(userId)
 	);
+	const { data: userDefaultAddress } = useSuspenseQuery(
+		getUserDefaultAddQueryOptions(session.id)
+	);
 
-	const cartItems = userCart.items.map((item) => {
-		switch (item.itemType) {
-			case 'BOOK':
-				return {
-					...item.book,
-					cartItemId: item.id,
-					price: Number(item.book?.price) || 0,
-					quantity: item.quantity || 0,
-					isChecked: false,
-				};
-			case 'MANGA':
-				// In development
-				break;
-			case 'NOVEL':
-				//  in development
-				break;
-		}
-	});
+	const cartItems = userCart.items
+		.map((item) => {
+			switch (item.itemType) {
+				case 'BOOK':
+					return {
+						...item.book,
+						cartItemId: item.id,
+						price: Number(item.book?.price) || 0,
+						quantity: item.quantity || 0,
+						isChecked: false,
+					};
+				case 'MANGA':
+					// In development
+					break;
+				case 'NOVEL':
+					//  in development
+					break;
+			}
+		})
+		.filter((item) => !!item);
+
+	const checkoutItems = cartItems.filter((item) =>
+		checkedItemIds.has(item.cartItemId)
+	);
+
+	const checkOutTotal = checkoutItems
+		.map((item) => item.price * item.quantity)
+		.reduce((sum, total) => sum + total, 0);
 
 	return (
 		<>
@@ -49,58 +71,54 @@ function RouteComponent() {
 			<div className='pb-50 lg:hidden'>
 				<div className='grid grid-cols-1 gap-5'>
 					<div className='grid grid-cols-1 gap-3 rounded-lg border border-gray-300 px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-6'>
-						{cartItems
-							.filter((item) => item !== undefined)
-							.map((item) => (
-								<div
-									key={item.id}
-									className='grid grid-cols-[100px_2fr_50px] gap-5 rounded-lg border border-gray-300 px-3 py-4 sm:gap-6 sm:px-6 sm:py-6 md:gap-7 md:px-7 md:py-5'
-								>
-									<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
-										<img src={item.coverImg} className='h-full w-full' />
+						{checkoutItems.map((item) => (
+							<div
+								key={item.id}
+								className='grid grid-cols-[100px_2fr_50px] gap-5 rounded-lg border border-gray-300 px-3 py-4 sm:gap-6 sm:px-6 sm:py-6 md:gap-7 md:px-7 md:py-5'
+							>
+								<div className='h-auto w-auto overflow-hidden bg-gray-200 p-2'>
+									<img src={item.coverImg} className='h-full w-full' />
+								</div>
+
+								<div className='flex flex-col justify-between'>
+									<div className='flex flex-col'>
+										<h2 className='line-clamp-2 text-[14px] font-medium sm:text-[17px] md:text-[19px]'>
+											{item.title}
+										</h2>
+										<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
+											{item.author}
+										</p>
+										<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
+											{item.language}
+										</p>
 									</div>
 
-									<div className='flex flex-col justify-between'>
-										<div className='flex flex-col'>
-											<h2 className='line-clamp-2 text-[14px] font-medium sm:text-[17px] md:text-[19px]'>
-												{item.title}
-											</h2>
+									<div>
+										<div className='mt-2 flex items-center'>
 											<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
-												{item.author}
+												Quantity:
 											</p>
-											<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
-												{item.language}
-											</p>
-										</div>
-
-										<div>
-											<div className='mt-2 flex items-center'>
-												<p className='text-[14px] font-light text-gray-500 sm:text-[16px] md:text-[15px]'>
-													Quantity:
-												</p>
-												<input
-													type='input'
-													value={item.quantity || 1}
-													className='h-6 w-4 rounded text-center text-[14px] text-gray-500 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none sm:h-7 sm:w-7 sm:text-[16px] md:text-[15px]'
-													min='1'
-													readOnly
-												/>
-											</div>
-										</div>
-									</div>
-
-									<div className='flex flex-col items-end justify-between'>
-										<div className='flex flex-col items-end'>
-											<p className='text-[15px] font-extrabold sm:text-[17px] md:text-[19px]'>
-												${item.price}
-											</p>
-											<p className='text-sm text-gray-300 line-through'>
-												$10.38
-											</p>
+											<input
+												type='input'
+												value={item.quantity || 1}
+												className='h-6 w-4 rounded text-center text-[14px] text-gray-500 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none sm:h-7 sm:w-7 sm:text-[16px] md:text-[15px]'
+												min='1'
+												readOnly
+											/>
 										</div>
 									</div>
 								</div>
-							))}
+
+								<div className='flex flex-col items-end justify-between'>
+									<div className='flex flex-col items-end'>
+										<p className='text-[15px] font-extrabold sm:text-[17px] md:text-[19px]'>
+											${item.price}
+										</p>
+										<p className='text-sm text-gray-300 line-through'>$10.38</p>
+									</div>
+								</div>
+							</div>
+						))}
 					</div>
 
 					<div className='grid grid-cols-1 rounded-lg border border-gray-300 px-3 py-4 sm:px-4 sm:py-4 md:px-6 md:py-6'>
@@ -110,9 +128,11 @@ function RouteComponent() {
 							</p>
 
 							<div className='flex flex-col gap-1 rounded-lg border border-gray-300 p-3 text-sm'>
-								<p className='font-bold text-gray-500'>First Name, Last Name</p>
-								<p className='text-gray-500'>example@example.com</p>
-								<p className='text-gray-500'>+123-456-7890</p>
+								<p className='font-bold text-gray-500'>
+									{session.firstName}, {session.lastName}
+								</p>
+								<p className='text-gray-500'>{session.email}</p>
+								<p className='text-gray-500'>+{session.phone}</p>
 							</div>
 						</div>
 
@@ -122,8 +142,11 @@ function RouteComponent() {
 							</p>
 
 							<div className='flex items-center justify-between rounded-lg border border-gray-300 p-3 text-sm'>
-								<p className='font-bold text-gray-500'>user default address</p>
-								<MdOutlineLocationOn className='h-5 w-5 text-gray-500 opacity-90' />
+								<p className='text-gray-500/90'>
+									{userDefaultAddress?.houseNo} {userDefaultAddress?.street},{' '}
+									{userDefaultAddress?.city}, {userDefaultAddress?.province},{' '}
+									{userDefaultAddress?.country}, {userDefaultAddress?.postal}
+								</p>
 							</div>
 						</div>
 
@@ -209,7 +232,9 @@ function RouteComponent() {
 							<span className='text-lg font-medium text-gray-900'>
 								Subtotal
 							</span>
-							<span className='text-lg font-bold text-gray-900'>{`$0.00`}</span>
+							<span className='text-lg font-bold text-gray-900'>
+								${checkOutTotal.toFixed(2)}
+							</span>
 						</div>
 
 						<p className='text-sm font-light text-gray-400'>
@@ -233,9 +258,11 @@ function RouteComponent() {
 						<p className='mb-2 font-bold'>Personal Information:</p>
 
 						<div className='flex flex-col gap-1 rounded-lg border border-gray-300 p-3'>
-							<p className='font-bold text-gray-500'>First Name, Last Name</p>
-							<p className='text-gray-500'>example@example.com</p>
-							<p className='text-gray-500'>+123-456-7890</p>
+							<p className='font-bold text-gray-500'>
+								{session.firstName}, {session.lastName}
+							</p>
+							<p className='text-gray-500'>{session.email}</p>
+							<p className='text-gray-500'>+{session.phone}</p>
 						</div>
 					</div>
 
@@ -243,8 +270,11 @@ function RouteComponent() {
 						<p className='mb-2 font-bold'>Shipping Address:</p>
 
 						<div className='flex items-center justify-between rounded-lg border border-gray-300 p-3 text-sm'>
-							<p className='font-bold text-gray-500'>user default address</p>
-							<MdOutlineLocationOn className='h-5 w-5 text-gray-500 opacity-90' />
+							<p className='text-gray-500/90'>
+								{userDefaultAddress?.houseNo} {userDefaultAddress?.street},{' '}
+								{userDefaultAddress?.city}, {userDefaultAddress?.province},{' '}
+								{userDefaultAddress?.country}, {userDefaultAddress?.postal}
+							</p>
 						</div>
 					</div>
 
@@ -333,26 +363,23 @@ function RouteComponent() {
 					<h2 className='mb-3 text-xl font-medium'>Order Summary</h2>
 
 					<div className='mb-3 flex flex-col gap-1 font-mono text-sm text-gray-500'>
-						<div className='flex justify-between'>
-							<p>x1 harry Potter Book</p>
-							<p className='font-semibold'>$0.00</p>
-						</div>
-
-						<div className='flex justify-between'>
-							<p>x1 harry Potter Book</p>
-							<p className='font-semibold'>$0.00</p>
-						</div>
-
-						<div className='flex justify-between'>
-							<p>x1 harry Potter Book</p>
-							<p className='font-semibold'>$0.00</p>
-						</div>
+						{checkoutItems.map((item) => (
+							<div key={item.id} className='flex justify-between'>
+								<p className='maw-w-sm'>
+									x{item.quantity}{' '}
+									{item.title && item.title.length > 25
+										? `${item.title.substring(0, 25)}...`
+										: item.title}
+								</p>
+								<p className='font-semibold'>${item.price}</p>
+							</div>
+						))}
 					</div>
 
 					<div className='flex flex-col text-sm'>
 						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
 							<p className=''>Subtotal</p>
-							<p className='font-semibold'>{`$0.00`}</p>
+							<p className='font-semibold'>${checkOutTotal.toFixed(2)}</p>
 						</div>
 
 						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
@@ -369,7 +396,7 @@ function RouteComponent() {
 
 						<div className='mb-2.5 flex justify-between text-[17px] font-bold'>
 							<p>Order Total</p>
-							<p>{`$0.00`}</p>
+							<p>${checkOutTotal}</p>
 						</div>
 
 						<div className='mb-5 border border-gray-400/30'></div>
