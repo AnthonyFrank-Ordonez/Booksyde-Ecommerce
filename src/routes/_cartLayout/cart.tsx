@@ -1,5 +1,10 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useRouter,
+} from '@tanstack/react-router';
 import { useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import type {
@@ -267,12 +272,13 @@ function Cart() {
 						</p>
 					</div>
 
-					<button
+					<Link
+						to='/checkout'
 						disabled={disabledButton}
-						className={`w-full rounded-full py-4 font-medium text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
+						className={`flex w-full items-center justify-center rounded-full py-4 text-center font-medium text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
 					>
 						Continue to Checkout
-					</button>
+					</Link>
 				</div>
 			</div>
 
@@ -394,12 +400,13 @@ function Cart() {
 
 						<div className='mb-3 border border-gray-400/50'></div>
 
-						<button
+						<Link
+							to='/checkout'
 							disabled={disabledButton}
-							className={`mb-3.5 rounded-xl border py-3 text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
+							className={`mb-3.5 rounded-xl border py-3 text-center text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
 						>
 							Continue to Checkout
-						</button>
+						</Link>
 
 						<div className='mb-5'>
 							<p className='mb-1 text-[15px] font-semibold'>Promo Code</p>
