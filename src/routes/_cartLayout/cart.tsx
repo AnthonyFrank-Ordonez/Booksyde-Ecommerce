@@ -1,5 +1,10 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
+import {
+	Link,
+	createFileRoute,
+	redirect,
+	useRouter,
+} from '@tanstack/react-router';
 import { useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import type {
@@ -15,6 +20,7 @@ import {
 	useUpdateQuantity,
 } from '@/utils/servers/cart';
 import ConfirmationModal from '@/components/ConfirmationModal';
+import { useCartStore } from '@/store/cartStore';
 
 export const Route = createFileRoute('/_cartLayout/cart')({
 	component: Cart,
@@ -42,8 +48,9 @@ function Cart() {
 	const [selectedItem, setSelectedItem] = useState<CartItems | undefined>(
 		undefined
 	);
+	const { checkedItemIds, addItem, removeItem, isItemChecked, setCartPage } =
+		useCartStore();
 	const [showModal, setShowModal] = useState(false);
-	const [checkedItems, setCheckedItems] = useState(new Set());
 	const cartItems = userCart.items.map((item) => {
 		switch (item.itemType) {
 			case 'BOOK':
@@ -52,7 +59,7 @@ function Cart() {
 					cartItemId: item.id,
 					price: Number(item.book?.price) || 0,
 					quantity: item.quantity || 0,
-					isChecked: checkedItems.has(item.id),
+					isChecked: isItemChecked(item.id),
 				};
 			case 'MANGA':
 				// In development
@@ -70,21 +77,13 @@ function Cart() {
 	}
 
 	const cartTotal = cartItems
-		.filter((item) => item && checkedItems.has(item.cartItemId))
+		.filter((item) => item && checkedItemIds.has(item.cartItemId))
 		.map((item) => (item?.price ?? 0) * (item?.quantity ?? 0))
 		.reduce((sum, itemTotal) => sum + itemTotal, 0)
 		.toFixed(2);
 
-	const toggleItemCheck = (cartItemId: string | undefined) => {
-		setCheckedItems((prev) => {
-			const newSet = new Set(prev);
-			if (newSet.has(cartItemId)) {
-				newSet.delete(cartItemId);
-			} else {
-				newSet.add(cartItemId);
-			}
-			return newSet;
-		});
+	const toggleItemCheck = (cartItemId: string) => {
+		addItem(cartItemId);
 	};
 
 	const handleShowModal = (item: CartItems | undefined) => {
@@ -102,11 +101,7 @@ function Cart() {
 
 			await deleteItem({ data: deleteItemObj });
 
-			setCheckedItems((prev) => {
-				const newSet = new Set(prev);
-				newSet.delete(selectedItem.cartItemId);
-				return newSet;
-			});
+			removeItem(selectedItem.cartItemId);
 
 			router.invalidate();
 			setSelectedItem(undefined);
@@ -139,6 +134,10 @@ function Cart() {
 				console.error(error);
 			}
 		}
+	};
+
+	const handleProceedToCheckout = () => {
+		setCartPage('checkout');
 	};
 
 	return (
@@ -267,12 +266,14 @@ function Cart() {
 						</p>
 					</div>
 
-					<button
+					<Link
+						to='/checkout'
 						disabled={disabledButton}
-						className={`w-full rounded-full py-4 font-medium text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
+						onClick={handleProceedToCheckout}
+						className={`flex w-full items-center justify-center rounded-full py-4 text-center font-medium text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
 					>
 						Continue to Checkout
-					</button>
+					</Link>
 				</div>
 			</div>
 
@@ -366,8 +367,8 @@ function Cart() {
 				</div>
 
 				{/* Order Summary */}
-				<div className='h-auto max-h-90 rounded-lg bg-gray-300 px-5 py-5'>
-					<h2 className='mb-5 text-2xl font-medium'>Order Summary</h2>
+				<div className='h-auto self-start rounded-lg bg-gray-300 px-5 py-5'>
+					<h2 className='mb-5 text-xl font-medium'>Order Summary</h2>
 
 					<div className='flex flex-col'>
 						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
@@ -394,26 +395,25 @@ function Cart() {
 
 						<div className='mb-3 border border-gray-400/50'></div>
 
-						<button
+						<Link
+							to='/checkout'
+							onClick={handleProceedToCheckout}
 							disabled={disabledButton}
-							className={`mb-3.5 rounded-xl border py-3 text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
+							className={`mb-3.5 rounded-xl border py-3 text-center text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
 						>
 							Continue to Checkout
-						</button>
+						</Link>
 
-						<div className='mb-5'>
-							<p className='mb-1 text-[15px] font-semibold'>Promo Code</p>
-
-							<div className='flex flex-row gap-1'>
+						<div className='mb-1'>
+							<div className='flex flex-row gap-3'>
 								<input
 									aria-label='promo code input'
 									type='text'
-									value=''
-									className='w-full rounded-lg border border-gray-500/50 px-2 py-1 focus:ring-1 focus:ring-black focus:ring-offset-0 focus:outline-none'
+									className='w-full rounded-md border border-gray-500/50 px-2 py-2 focus:ring-1 focus:ring-black focus:ring-offset-0 focus:outline-none'
 									placeholder='Enter you promo code'
 									readOnly
 								/>
-								<button className='cursor-pointer rounded-lg border bg-black px-5 py-1 text-sm text-white transition-colors duration-300 hover:bg-black/80'>
+								<button className='cursor-pointer rounded-md border bg-black px-5 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80'>
 									Apply
 								</button>
 							</div>
