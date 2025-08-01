@@ -26,6 +26,9 @@ const getOrCreateCartFn = createServerFn({ method: 'POST' })
 					include: {
 						book: true,
 					},
+					orderBy: {
+						createdAt: 'asc',
+					},
 				},
 			},
 		});
@@ -37,6 +40,9 @@ const getOrCreateCartFn = createServerFn({ method: 'POST' })
 					items: {
 						include: {
 							book: true,
+						},
+						orderBy: {
+							createdAt: 'asc',
 						},
 					},
 				},
