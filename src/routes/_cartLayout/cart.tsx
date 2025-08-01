@@ -48,7 +48,8 @@ function Cart() {
 	const [selectedItem, setSelectedItem] = useState<CartItems | undefined>(
 		undefined
 	);
-	const { checkedItemIds, addItem, removeItem, isItemChecked } = useCartStore();
+	const { checkedItemIds, addItem, removeItem, isItemChecked, setCartPage } =
+		useCartStore();
 	const [showModal, setShowModal] = useState(false);
 	const cartItems = userCart.items.map((item) => {
 		switch (item.itemType) {
@@ -133,6 +134,10 @@ function Cart() {
 				console.error(error);
 			}
 		}
+	};
+
+	const handleProceedToCheckout = () => {
+		setCartPage('checkout');
 	};
 
 	return (
@@ -264,6 +269,7 @@ function Cart() {
 					<Link
 						to='/checkout'
 						disabled={disabledButton}
+						onClick={handleProceedToCheckout}
 						className={`flex w-full items-center justify-center rounded-full py-4 text-center font-medium text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
 					>
 						Continue to Checkout
@@ -391,6 +397,7 @@ function Cart() {
 
 						<Link
 							to='/checkout'
+							onClick={handleProceedToCheckout}
 							disabled={disabledButton}
 							className={`mb-3.5 rounded-xl border py-3 text-center text-white transition-colors duration-300 ${disabledButton ? 'cursor-not-allowed bg-black/50' : 'cursor-pointer bg-black hover:bg-black/80'}`}
 						>
