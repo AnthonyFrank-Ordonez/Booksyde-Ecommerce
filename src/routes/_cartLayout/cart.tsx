@@ -141,6 +141,7 @@ function Cart() {
 	};
 
 	const handleProceedToCheckout = () => {
+		if (disabledButton) return;
 		setCartPage('checkout');
 	};
 
