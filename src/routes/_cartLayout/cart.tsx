@@ -372,8 +372,8 @@ function Cart() {
 				</div>
 
 				{/* Order Summary */}
-				<div className='h-auto max-h-90 rounded-lg bg-gray-300 px-5 py-5'>
-					<h2 className='mb-5 text-2xl font-medium'>Order Summary</h2>
+				<div className='h-auto self-start rounded-lg bg-gray-300 px-5 py-5'>
+					<h2 className='mb-5 text-xl font-medium'>Order Summary</h2>
 
 					<div className='flex flex-col'>
 						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
@@ -408,19 +408,16 @@ function Cart() {
 							Continue to Checkout
 						</Link>
 
-						<div className='mb-5'>
-							<p className='mb-1 text-[15px] font-semibold'>Promo Code</p>
-
-							<div className='flex flex-row gap-1'>
+						<div className='mb-1'>
+							<div className='flex flex-row gap-3'>
 								<input
 									aria-label='promo code input'
 									type='text'
-									value=''
-									className='w-full rounded-lg border border-gray-500/50 px-2 py-1 focus:ring-1 focus:ring-black focus:ring-offset-0 focus:outline-none'
+									className='w-full rounded-md border border-gray-500/50 px-2 py-2 focus:ring-1 focus:ring-black focus:ring-offset-0 focus:outline-none'
 									placeholder='Enter you promo code'
 									readOnly
 								/>
-								<button className='cursor-pointer rounded-lg border bg-black px-5 py-1 text-sm text-white transition-colors duration-300 hover:bg-black/80'>
+								<button className='cursor-pointer rounded-md border bg-black px-5 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80'>
 									Apply
 								</button>
 							</div>
