@@ -225,6 +225,172 @@ function RouteComponent() {
 					</Link>
 				</div>
 			</div>
+
+			{/* Big Screens */}
+			<div className='hidden grid-cols-[2fr_1fr] gap-5 lg:grid xl:gap-8 2xl:grid-cols-[3fr_1.2fr]'>
+				<div className='rounded-lg border border-gray-300 px-5 py-6'>
+					<div className='mb-5 flex flex-col'>
+						<p className='mb-2 font-bold'>Personal Information:</p>
+
+						<div className='flex flex-col gap-1 rounded-lg border border-gray-300 p-3'>
+							<p className='font-bold text-gray-500'>First Name, Last Name</p>
+							<p className='text-gray-500'>example@example.com</p>
+							<p className='text-gray-500'>+123-456-7890</p>
+						</div>
+					</div>
+
+					<div className='mb-5 flex flex-col'>
+						<p className='mb-2 font-bold'>Shipping Address:</p>
+
+						<div className='flex items-center justify-between rounded-lg border border-gray-300 p-3 text-sm'>
+							<p className='font-bold text-gray-500'>user default address</p>
+							<MdOutlineLocationOn className='h-5 w-5 text-gray-500 opacity-90' />
+						</div>
+					</div>
+
+					<div className='mb-10 flex max-w-xl flex-col gap-3'>
+						<p className='font-bold'>Payment Information:</p>
+
+						<div className='mb-2 flex items-center gap-3'>
+							<div className='rounde-lg rounded-lg border border-gray-400'>
+								<img
+									src='/img/mastercard.png'
+									alt='mastercard'
+									className='h-12 w-full'
+								/>
+							</div>
+
+							<div className='rounde-lg rounded-lg border border-gray-400'>
+								<img
+									src='/img/paypal.png'
+									alt='mastercard'
+									className='h-12 w-full'
+								/>
+							</div>
+
+							<div className='rounde-lg rounded-lg border border-gray-400'>
+								<img
+									src='/img/gcash-2.png'
+									alt='mastercard'
+									className='h-12 w-17'
+								/>
+							</div>
+						</div>
+
+						<div className='flex flex-col gap-2'>
+							<p className='text-sm font-bold text-gray-500 sm:text-[14px] md:text-[15px]'>
+								Name on Card:
+							</p>
+							<input
+								type='text'
+								className='w-full rounded-md border border-gray-300 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
+							/>
+						</div>
+
+						<div className='flex gap-3'>
+							<div className='flex flex-1 flex-col gap-2'>
+								<p className='text-sm font-bold text-gray-500 sm:text-[14px] md:text-[15px]'>
+									Expiration:
+								</p>
+								<input
+									type='text'
+									placeholder='MM/DD'
+									className='w-full rounded-md border border-gray-300 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
+								/>
+							</div>
+
+							<div className='flex flex-1 flex-col gap-2'>
+								<p className='text-sm font-bold text-gray-500 sm:text-[14px] md:text-[15px]'>
+									CVV:
+								</p>
+								<input
+									type='text'
+									className='w-full rounded-md border border-gray-300 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className='flex max-w-md gap-3'>
+						<Link
+							to='/cart'
+							className='w-full rounded-md border border-black bg-white py-3 text-center font-medium text-black transition-colors duration-300 hover:bg-black/10'
+						>
+							Back to Cart
+						</Link>
+
+						<Link
+							to='/cart'
+							className='w-full rounded-md bg-black px-5 py-3 text-center font-medium text-white transition-colors duration-300 hover:bg-black/80'
+						>
+							Confirm Payment $0.00
+						</Link>
+					</div>
+				</div>
+
+				{/* Order Summary */}
+				<div className='self-start rounded-lg bg-gray-300 px-5 py-5'>
+					<h2 className='mb-3 text-xl font-medium'>Order Summary</h2>
+
+					<div className='mb-3 flex flex-col gap-1 font-mono text-sm text-gray-500'>
+						<div className='flex justify-between'>
+							<p>x1 harry Potter Book</p>
+							<p className='font-semibold'>$0.00</p>
+						</div>
+
+						<div className='flex justify-between'>
+							<p>x1 harry Potter Book</p>
+							<p className='font-semibold'>$0.00</p>
+						</div>
+
+						<div className='flex justify-between'>
+							<p>x1 harry Potter Book</p>
+							<p className='font-semibold'>$0.00</p>
+						</div>
+					</div>
+
+					<div className='flex flex-col text-sm'>
+						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
+							<p className=''>Subtotal</p>
+							<p className='font-semibold'>{`$0.00`}</p>
+						</div>
+
+						<div className='mb-1 flex items-center justify-between font-mono text-gray-500'>
+							<p className=''>Delivery</p>
+							<p className='font-semibold'>$14.00</p>
+						</div>
+
+						<div className='mb-3 flex items-center justify-between font-mono text-red-500/80'>
+							<p className=''>Discount</p>
+							<p className='font-semibold'>$14.00</p>
+						</div>
+
+						<div className='mb-2.5 border border-gray-400/30'></div>
+
+						<div className='mb-2.5 flex justify-between text-[17px] font-bold'>
+							<p>Order Total</p>
+							<p>{`$0.00`}</p>
+						</div>
+
+						<div className='mb-5 border border-gray-400/30'></div>
+
+						<div className='mb-1'>
+							<div className='flex flex-row gap-3'>
+								<input
+									aria-label='promo code input'
+									type='text'
+									className='w-full rounded-md border border-gray-500/50 px-2 py-2 focus:ring-1 focus:ring-black focus:ring-offset-0 focus:outline-none'
+									placeholder='Enter you promo code'
+									readOnly
+								/>
+								<button className='cursor-pointer rounded-md border bg-black px-5 py-2 text-sm text-white transition-colors duration-300 hover:bg-black/80'>
+									Apply
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</>
 	);
 }
