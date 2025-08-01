@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
-	createFileRoute,
 	Link,
+	createFileRoute,
 	redirect,
 	useRouter,
 } from '@tanstack/react-router';
@@ -48,7 +48,7 @@ function Cart() {
 		undefined
 	);
 	const [showModal, setShowModal] = useState(false);
-	const [checkedItems, setCheckedItems] = useState(new Set());
+	const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
 	const cartItems = userCart.items.map((item) => {
 		switch (item.itemType) {
 			case 'BOOK':
@@ -80,7 +80,7 @@ function Cart() {
 		.reduce((sum, itemTotal) => sum + itemTotal, 0)
 		.toFixed(2);
 
-	const toggleItemCheck = (cartItemId: string | undefined) => {
+	const toggleItemCheck = (cartItemId: string) => {
 		setCheckedItems((prev) => {
 			const newSet = new Set(prev);
 			if (newSet.has(cartItemId)) {
