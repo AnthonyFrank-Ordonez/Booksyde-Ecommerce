@@ -28,6 +28,7 @@ export const Route = createFileRoute('/_cartLayout/checkout')({
 
 function RouteComponent() {
 	const { userId, session } = Route.useRouteContext();
+	const { setCartPage } = useCartStore();
 	const { checkedItemIds } = useCartStore();
 	const { data: userCart } = useSuspenseQuery(
 		getOrCreateCartQueryOptions(userId)
@@ -64,6 +65,14 @@ function RouteComponent() {
 	const checkOutTotal = checkoutItems
 		.map((item) => item.price * item.quantity)
 		.reduce((sum, total) => sum + total, 0);
+
+	const handleBackToCart = () => {
+		setCartPage('cart');
+	};
+
+	const handleProceedToPayment = () => {
+		setCartPage('payment');
+	};
 
 	return (
 		<>
@@ -217,6 +226,7 @@ function RouteComponent() {
 
 						<Link
 							to='/cart'
+							onClick={handleBackToCart}
 							className='w-full rounded-md bg-black py-3 text-center font-medium text-white transition-colors duration-300 hover:bg-black/80'
 						>
 							Back to Cart
@@ -244,9 +254,10 @@ function RouteComponent() {
 
 					<Link
 						to='/checkout'
+						onClick={handleProceedToPayment}
 						className={`flex w-full items-center justify-center rounded-full bg-black py-4 text-center font-medium text-white transition-colors duration-300`}
 					>
-						Continue to Checkout
+						Confirm Payment ${checkOutTotal.toFixed(2)}
 					</Link>
 				</div>
 			</div>
@@ -344,6 +355,7 @@ function RouteComponent() {
 					<div className='flex max-w-md gap-3'>
 						<Link
 							to='/cart'
+							onClick={handleBackToCart}
 							className='w-full rounded-md border border-black bg-white py-3 text-center font-medium text-black transition-colors duration-300 hover:bg-black/10'
 						>
 							Back to Cart
@@ -351,9 +363,10 @@ function RouteComponent() {
 
 						<Link
 							to='/cart'
+							onClick={handleProceedToPayment}
 							className='w-full rounded-md bg-black px-5 py-3 text-center font-medium text-white transition-colors duration-300 hover:bg-black/80'
 						>
-							Confirm Payment $0.00
+							Confirm Payment ${checkOutTotal}
 						</Link>
 					</div>
 				</div>

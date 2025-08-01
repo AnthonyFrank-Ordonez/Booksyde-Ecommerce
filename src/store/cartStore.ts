@@ -2,11 +2,13 @@ import { create } from 'zustand';
 
 interface CartStore {
 	checkedItemIds: Set<string>;
+	cartPage: string;
 
 	// Setters
 	addItem: (id: string) => void;
 	removeItem: (id: string) => void;
 	clearItemIds: () => void;
+	setCartPage: (page: string) => void;
 
 	// Getters
 	isItemChecked: (id: string) => boolean;
@@ -14,6 +16,7 @@ interface CartStore {
 
 export const useCartStore = create<CartStore>((set, get) => ({
 	checkedItemIds: new Set(),
+	cartPage: 'cart',
 
 	// Setters
 	addItem: (id) =>
@@ -35,6 +38,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
 			return { checkedItemIds: newSet };
 		}),
 	clearItemIds: () => set({ checkedItemIds: new Set() }),
+	setCartPage: (page: string) => set({ cartPage: page }),
 
 	// Getters
 	isItemChecked: (id: string) => {
