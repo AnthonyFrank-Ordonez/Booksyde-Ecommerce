@@ -13,10 +13,7 @@
 		"lint": "eslint",
 		"format": "prettier --check .",
 		"format:write": "prettier --write .",
-		"prepare": "husky",
-		"release:patch": "pnpm version patch -m 'bump version %s'",
-		"release:minor": "pnpm version minor -m 'bump version %s'",
-		"release:major": "pnpm version major -m 'bump version %s'"
+		"prepare": "husky"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"

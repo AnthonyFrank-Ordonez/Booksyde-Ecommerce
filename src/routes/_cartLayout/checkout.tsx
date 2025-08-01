@@ -366,7 +366,7 @@ function RouteComponent() {
 							onClick={handleProceedToPayment}
 							className='w-full rounded-md bg-black px-5 py-3 text-center font-medium text-white transition-colors duration-300 hover:bg-black/80'
 						>
-							Confirm Payment ${checkOutTotal}
+							Confirm Payment ${checkOutTotal.toFixed(2)}
 						</Link>
 					</div>
 				</div>
@@ -409,7 +409,7 @@ function RouteComponent() {
 
 						<div className='mb-2.5 flex justify-between text-[17px] font-bold'>
 							<p>Order Total</p>
-							<p>${checkOutTotal}</p>
+							<p>${checkOutTotal.toFixed(2)}</p>
 						</div>
 
 						<div className='mb-5 border border-gray-400/30'></div>
