@@ -17,6 +17,7 @@ import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
 import { useGetUserID, useGetUserSession } from '@/utils/servers/auth-server';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
+import { DefaultCatchBoundary } from '@/components/defaultCatchBoundary';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -69,6 +70,7 @@ export const Route = createRootRouteWithContext<{
 			<ToastContainer newestOnTop />
 		</RootDocument>
 	),
+	errorComponent: DefaultCatchBoundary,
 	notFoundComponent: () => <NotFound />,
 });
 
