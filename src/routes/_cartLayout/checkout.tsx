@@ -1,6 +1,5 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { MdOutlineLocationOn } from 'react-icons/md';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 import { useCartStore } from '@/store/cartStore';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
