@@ -76,5 +76,5 @@
 		"vitest": "^3.2.4",
 		"web-vitals": "^4.2.4"
 	},
-	"version": "0.2.1"
+	"version": "0.3.0"
 }
