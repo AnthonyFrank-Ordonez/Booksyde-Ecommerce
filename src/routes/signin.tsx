@@ -117,7 +117,7 @@ function Login() {
 												value={field.state.value}
 												onChange={(e) => field.handleChange(e.target.value)}
 												required
-												className='focux:border-transparent w-full rounded-md border border-gray-700 px-3 py-1 focus:ring-1 focus:outline-none'
+												className='w-full rounded-md border border-gray-700 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
 											/>
 										</div>
 									)}

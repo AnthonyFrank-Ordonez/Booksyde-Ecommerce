@@ -75,7 +75,7 @@ export const Route = createRootRouteWithContext<{
 function RootDocument({ children }: { children: React.ReactNode }) {
 	const { session, userCart } = Route.useRouteContext();
 	const location = useLocation();
-	const hideFooterPaths = ['/cart', 'checkout', '/payment'];
+	const hideFooterPaths = ['/cart', '/checkout', '/payment'];
 	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
 	const totalCart =
 		userCart?.items

@@ -24,6 +24,7 @@ import { Route as SettingsProfileRouteImport } from './routes/_settings/profile'
 import { Route as SettingsOrdersRouteImport } from './routes/_settings/orders'
 import { Route as SettingsBillingRouteImport } from './routes/_settings/billing'
 import { Route as SettingsAddressRouteImport } from './routes/_settings/address'
+import { Route as CartLayoutCheckoutRouteImport } from './routes/_cartLayout/checkout'
 import { Route as CartLayoutCartRouteImport } from './routes/_cartLayout/cart'
 import { Route as ProductsNovelsIndexRouteImport } from './routes/products/novels/index'
 import { Route as ProductsMangaIndexRouteImport } from './routes/products/manga/index'
@@ -96,6 +97,11 @@ const SettingsAddressRoute = SettingsAddressRouteImport.update({
   path: '/address',
   getParentRoute: () => SettingsRoute,
 } as any)
+const CartLayoutCheckoutRoute = CartLayoutCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => CartLayoutRoute,
+} as any)
 const CartLayoutCartRoute = CartLayoutCartRouteImport.update({
   id: '/cart',
   path: '/cart',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/cart': typeof CartLayoutCartRoute
+  '/checkout': typeof CartLayoutCheckoutRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/cart': typeof CartLayoutCartRoute
+  '/checkout': typeof CartLayoutCheckoutRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/_cartLayout/cart': typeof CartLayoutCartRoute
+  '/_cartLayout/checkout': typeof CartLayoutCheckoutRoute
   '/_settings/address': typeof SettingsAddressRoute
   '/_settings/billing': typeof SettingsBillingRoute
   '/_settings/orders': typeof SettingsOrdersRoute
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/cart'
+    | '/checkout'
     | '/address'
     | '/billing'
     | '/orders'
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/cart'
+    | '/checkout'
     | '/address'
     | '/billing'
     | '/orders'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/_cartLayout/cart'
+    | '/_cartLayout/checkout'
     | '/_settings/address'
     | '/_settings/billing'
     | '/_settings/orders'
@@ -372,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAddressRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/_cartLayout/checkout': {
+      id: '/_cartLayout/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CartLayoutCheckoutRouteImport
+      parentRoute: typeof CartLayoutRoute
+    }
     '/_cartLayout/cart': {
       id: '/_cartLayout/cart'
       path: '/cart'
@@ -423,10 +442,12 @@ declare module '@tanstack/react-start/server' {
 
 interface CartLayoutRouteChildren {
   CartLayoutCartRoute: typeof CartLayoutCartRoute
+  CartLayoutCheckoutRoute: typeof CartLayoutCheckoutRoute
 }
 
 const CartLayoutRouteChildren: CartLayoutRouteChildren = {
   CartLayoutCartRoute: CartLayoutCartRoute,
+  CartLayoutCheckoutRoute: CartLayoutCheckoutRoute,
 }
 
 const CartLayoutRouteWithChildren = CartLayoutRoute._addFileChildren(
