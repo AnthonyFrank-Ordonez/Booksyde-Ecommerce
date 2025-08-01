@@ -17,7 +17,7 @@ import { NotFound } from '@/components/NotFound';
 import Footer from '@/components/Footer';
 import { useGetUserID, useGetUserSession } from '@/utils/servers/auth-server';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
-import { DefaultCatchBoundary } from '@/components/defaultCatchBoundary';
+import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
