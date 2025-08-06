@@ -1,9 +1,11 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 import { useCartStore } from '@/store/cartStore';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
+import CheckoutPage from '@/components/CheckoutPage';
 
 export const Route = createFileRoute('/_cartLayout/checkout')({
 	component: RouteComponent,
@@ -37,6 +39,7 @@ function RouteComponent() {
 	const { data: userDefaultAddress } = useSuspenseQuery(
 		getUserDefaultAddQueryOptions(session.id)
 	);
+	const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 	const cartItems = userCart.items
 		.map((item) => {
@@ -76,34 +79,34 @@ function RouteComponent() {
 	// 	setCartPage('payment');
 	// };
 
-	const handleConfirmPayment = async () => {
-		const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
+	// const handleConfirmPayment = async () => {
+	// 	const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
-		const body = {
-			products: checkoutItems,
-		};
+	// 	const body = {
+	// 		products: checkoutItems,
+	// 	};
 
-		const headers = {
-			'Content-Type': 'application/json',
-		};
+	// 	const headers = {
+	// 		'Content-Type': 'application/json',
+	// 	};
 
-		const response = await fetch(
-			'http://localhost:3000/api/create-checkout-session',
-			{
-				method: 'POST',
-				headers: headers,
-				body: JSON.stringify(body),
-			}
-		);
+	// 	const response = await fetch(
+	// 		'http://localhost:3000/api/create-checkout-session',
+	// 		{
+	// 			method: 'POST',
+	// 			headers: headers,
+	// 			body: JSON.stringify(body),
+	// 		}
+	// 	);
 
-		const stripeSession = await response.json();
-		console.log('🚀 ~ handleConfirmPayment ~ stripeSession:', stripeSession);
+	// 	const stripeSession = await response.json();
+	// 	console.log('🚀 ~ handleConfirmPayment ~ stripeSession:', stripeSession);
 
-		const result = stripe?.redirectToCheckout({
-			sessionId: stripeSession.id,
-		});
-		console.log('🚀 ~ handleConfirmPayment ~ result:', result);
-	};
+	// 	const result = stripe?.redirectToCheckout({
+	// 		sessionId: stripeSession.id,
+	// 	});
+	// 	console.log('🚀 ~ handleConfirmPayment ~ result:', result);
+	// };
 
 	return (
 		<>
@@ -283,12 +286,12 @@ function RouteComponent() {
 						</p>
 					</div>
 
-					<button
+					{/* <button
 						onClick={handleConfirmPayment}
 						className={`flex w-full items-center justify-center rounded-full bg-black py-4 text-center font-medium text-white transition-colors duration-300`}
 					>
 						Confirm Payment ${checkOutTotal.toFixed(2)}
-					</button>
+					</button> */}
 				</div>
 			</div>
 
@@ -319,84 +322,19 @@ function RouteComponent() {
 						</div>
 					</div>
 
-					<div className='mb-10 flex max-w-xl flex-col gap-3'>
+					<div className='mb-10 flex max-w-3xl flex-col gap-3'>
 						<p className='font-bold'>Payment Information:</p>
 
-						<div className='mb-2 flex items-center gap-3'>
-							<div className='rounde-lg rounded-lg border border-gray-400'>
-								<img
-									src='/img/mastercard.png'
-									alt='mastercard'
-									className='h-12 w-full'
-								/>
-							</div>
-
-							<div className='rounde-lg rounded-lg border border-gray-400'>
-								<img
-									src='/img/paypal.png'
-									alt='mastercard'
-									className='h-12 w-full'
-								/>
-							</div>
-
-							<div className='rounde-lg rounded-lg border border-gray-400'>
-								<img
-									src='/img/gcash-2.png'
-									alt='mastercard'
-									className='h-12 w-17'
-								/>
-							</div>
-						</div>
-
-						<div className='flex flex-col gap-2'>
-							<p className='text-sm font-bold text-gray-500 sm:text-[14px] md:text-[15px]'>
-								Name on Card:
-							</p>
-							<input
-								type='text'
-								className='w-full rounded-md border border-gray-300 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
-							/>
-						</div>
-
-						<div className='flex gap-3'>
-							<div className='flex flex-1 flex-col gap-2'>
-								<p className='text-sm font-bold text-gray-500 sm:text-[14px] md:text-[15px]'>
-									Expiration:
-								</p>
-								<input
-									type='text'
-									placeholder='MM/DD'
-									className='w-full rounded-md border border-gray-300 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
-								/>
-							</div>
-
-							<div className='flex flex-1 flex-col gap-2'>
-								<p className='text-sm font-bold text-gray-500 sm:text-[14px] md:text-[15px]'>
-									CVV:
-								</p>
-								<input
-									type='text'
-									className='w-full rounded-md border border-gray-300 px-3 py-1 focus:border-transparent focus:ring-1 focus:outline-none'
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div className='flex max-w-md gap-3'>
-						<Link
-							to='/cart'
-							onClick={handleBackToCart}
-							className='w-full rounded-md border border-black bg-white py-3 text-center font-medium text-black transition-colors duration-300 hover:bg-black/10'
+						<Elements
+							stripe={stripePromise}
+							options={{
+								mode: 'payment',
+								amount: Math.round(checkOutTotal * 100),
+								currency: 'usd',
+							}}
 						>
-							Back to Cart
-						</Link>
-
-						<button
-							onClick={handleConfirmPayment}
-							className='w-full rounded-md bg-black px-5 py-3 text-center font-medium text-white transition-colors duration-300 hover:bg-black/80'
-						>
-							Confirm Payment ${checkOutTotal.toFixed(2)}
-						</button>
+							<CheckoutPage amount={checkOutTotal} />
+						</Elements>
 					</div>
 				</div>
 

@@ -140,3 +140,7 @@ export const RemoveToWishlistSchema = z.object({
 	itemId: z.string(),
 	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
 });
+
+export const PaymentSearchSchema = z.object({
+	amount: z.number().optional(),
+});

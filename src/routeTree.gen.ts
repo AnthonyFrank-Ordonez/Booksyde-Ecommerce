@@ -24,12 +24,14 @@ import { Route as SettingsProfileRouteImport } from './routes/_settings/profile'
 import { Route as SettingsOrdersRouteImport } from './routes/_settings/orders'
 import { Route as SettingsBillingRouteImport } from './routes/_settings/billing'
 import { Route as SettingsAddressRouteImport } from './routes/_settings/address'
+import { Route as CartLayoutPaymentSuccessRouteImport } from './routes/_cartLayout/payment-success'
 import { Route as CartLayoutCheckoutRouteImport } from './routes/_cartLayout/checkout'
 import { Route as CartLayoutCartRouteImport } from './routes/_cartLayout/cart'
 import { Route as ProductsNovelsIndexRouteImport } from './routes/products/novels/index'
 import { Route as ProductsMangaIndexRouteImport } from './routes/products/manga/index'
 import { Route as ProductsBooksIndexRouteImport } from './routes/products/books/index'
 import { Route as ProductsBooksSlugRouteImport } from './routes/products/books/$slug'
+import { ServerRoute as ApiCreatePaymentIntentServerRouteImport } from './routes/api/create-payment-intent'
 import { ServerRoute as ApiCreateCheckoutSessionServerRouteImport } from './routes/api/create-checkout-session'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
@@ -98,6 +100,12 @@ const SettingsAddressRoute = SettingsAddressRouteImport.update({
   path: '/address',
   getParentRoute: () => SettingsRoute,
 } as any)
+const CartLayoutPaymentSuccessRoute =
+  CartLayoutPaymentSuccessRouteImport.update({
+    id: '/payment-success',
+    path: '/payment-success',
+    getParentRoute: () => CartLayoutRoute,
+  } as any)
 const CartLayoutCheckoutRoute = CartLayoutCheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
@@ -128,6 +136,12 @@ const ProductsBooksSlugRoute = ProductsBooksSlugRouteImport.update({
   path: '/products/books/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCreatePaymentIntentServerRoute =
+  ApiCreatePaymentIntentServerRouteImport.update({
+    id: '/api/create-payment-intent',
+    path: '/api/create-payment-intent',
+    getParentRoute: () => rootServerRouteImport,
+  } as any)
 const ApiCreateCheckoutSessionServerRoute =
   ApiCreateCheckoutSessionServerRouteImport.update({
     id: '/api/create-checkout-session',
@@ -148,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/cart': typeof CartLayoutCartRoute
   '/checkout': typeof CartLayoutCheckoutRoute
+  '/payment-success': typeof CartLayoutPaymentSuccessRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
@@ -167,6 +182,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/cart': typeof CartLayoutCartRoute
   '/checkout': typeof CartLayoutCheckoutRoute
+  '/payment-success': typeof CartLayoutPaymentSuccessRoute
   '/address': typeof SettingsAddressRoute
   '/billing': typeof SettingsBillingRoute
   '/orders': typeof SettingsOrdersRoute
@@ -189,6 +205,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_cartLayout/cart': typeof CartLayoutCartRoute
   '/_cartLayout/checkout': typeof CartLayoutCheckoutRoute
+  '/_cartLayout/payment-success': typeof CartLayoutPaymentSuccessRoute
   '/_settings/address': typeof SettingsAddressRoute
   '/_settings/billing': typeof SettingsBillingRoute
   '/_settings/orders': typeof SettingsOrdersRoute
@@ -210,6 +227,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/cart'
     | '/checkout'
+    | '/payment-success'
     | '/address'
     | '/billing'
     | '/orders'
@@ -229,6 +247,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/cart'
     | '/checkout'
+    | '/payment-success'
     | '/address'
     | '/billing'
     | '/orders'
@@ -250,6 +269,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_cartLayout/cart'
     | '/_cartLayout/checkout'
+    | '/_cartLayout/payment-success'
     | '/_settings/address'
     | '/_settings/billing'
     | '/_settings/orders'
@@ -278,27 +298,41 @@ export interface RootRouteChildren {
 }
 export interface FileServerRoutesByFullPath {
   '/api/create-checkout-session': typeof ApiCreateCheckoutSessionServerRoute
+  '/api/create-payment-intent': typeof ApiCreatePaymentIntentServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
 }
 export interface FileServerRoutesByTo {
   '/api/create-checkout-session': typeof ApiCreateCheckoutSessionServerRoute
+  '/api/create-payment-intent': typeof ApiCreatePaymentIntentServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
   '/api/create-checkout-session': typeof ApiCreateCheckoutSessionServerRoute
+  '/api/create-payment-intent': typeof ApiCreatePaymentIntentServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/create-checkout-session' | '/api/auth/$'
+  fullPaths:
+    | '/api/create-checkout-session'
+    | '/api/create-payment-intent'
+    | '/api/auth/$'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/create-checkout-session' | '/api/auth/$'
-  id: '__root__' | '/api/create-checkout-session' | '/api/auth/$'
+  to:
+    | '/api/create-checkout-session'
+    | '/api/create-payment-intent'
+    | '/api/auth/$'
+  id:
+    | '__root__'
+    | '/api/create-checkout-session'
+    | '/api/create-payment-intent'
+    | '/api/auth/$'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
   ApiCreateCheckoutSessionServerRoute: typeof ApiCreateCheckoutSessionServerRoute
+  ApiCreatePaymentIntentServerRoute: typeof ApiCreatePaymentIntentServerRoute
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
 }
 
@@ -395,6 +429,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAddressRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/_cartLayout/payment-success': {
+      id: '/_cartLayout/payment-success'
+      path: '/payment-success'
+      fullPath: '/payment-success'
+      preLoaderRoute: typeof CartLayoutPaymentSuccessRouteImport
+      parentRoute: typeof CartLayoutRoute
+    }
     '/_cartLayout/checkout': {
       id: '/_cartLayout/checkout'
       path: '/checkout'
@@ -441,6 +482,13 @@ declare module '@tanstack/react-router' {
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
+    '/api/create-payment-intent': {
+      id: '/api/create-payment-intent'
+      path: '/api/create-payment-intent'
+      fullPath: '/api/create-payment-intent'
+      preLoaderRoute: typeof ApiCreatePaymentIntentServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
     '/api/create-checkout-session': {
       id: '/api/create-checkout-session'
       path: '/api/create-checkout-session'
@@ -461,11 +509,13 @@ declare module '@tanstack/react-start/server' {
 interface CartLayoutRouteChildren {
   CartLayoutCartRoute: typeof CartLayoutCartRoute
   CartLayoutCheckoutRoute: typeof CartLayoutCheckoutRoute
+  CartLayoutPaymentSuccessRoute: typeof CartLayoutPaymentSuccessRoute
 }
 
 const CartLayoutRouteChildren: CartLayoutRouteChildren = {
   CartLayoutCartRoute: CartLayoutCartRoute,
   CartLayoutCheckoutRoute: CartLayoutCheckoutRoute,
+  CartLayoutPaymentSuccessRoute: CartLayoutPaymentSuccessRoute,
 }
 
 const CartLayoutRouteWithChildren = CartLayoutRoute._addFileChildren(
@@ -511,6 +561,7 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiCreateCheckoutSessionServerRoute: ApiCreateCheckoutSessionServerRoute,
+  ApiCreatePaymentIntentServerRoute: ApiCreatePaymentIntentServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport
