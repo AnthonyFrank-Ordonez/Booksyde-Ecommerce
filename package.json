@@ -23,6 +23,7 @@
 		"@cloudinary/url-gen": "^1.21.0",
 		"@prisma/client": "^6.12.0",
 		"@prisma/extension-accelerate": "^2.0.2",
+		"@stripe/stripe-js": "^7.8.0",
 		"@tailwindcss/vite": "^4.1.11",
 		"@tanstack/react-form": "^1.14.1",
 		"@tanstack/react-pacer": "^0.8.0",
@@ -41,6 +42,7 @@
 		"react-dom": "^19.1.0",
 		"react-icons": "^5.5.0",
 		"react-toastify": "^11.0.5",
+		"stripe": "^18.4.0",
 		"tailwindcss": "^4.1.11",
 		"zod": "^3.25.76",
 		"zustand": "^5.0.7"

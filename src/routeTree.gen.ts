@@ -30,6 +30,7 @@ import { Route as ProductsNovelsIndexRouteImport } from './routes/products/novel
 import { Route as ProductsMangaIndexRouteImport } from './routes/products/manga/index'
 import { Route as ProductsBooksIndexRouteImport } from './routes/products/books/index'
 import { Route as ProductsBooksSlugRouteImport } from './routes/products/books/$slug'
+import { ServerRoute as ApiCreateCheckoutSessionServerRouteImport } from './routes/api/create-checkout-session'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -127,6 +128,12 @@ const ProductsBooksSlugRoute = ProductsBooksSlugRouteImport.update({
   path: '/products/books/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCreateCheckoutSessionServerRoute =
+  ApiCreateCheckoutSessionServerRouteImport.update({
+    id: '/api/create-checkout-session',
+    path: '/api/create-checkout-session',
+    getParentRoute: () => rootServerRouteImport,
+  } as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -270,24 +277,28 @@ export interface RootRouteChildren {
   ProductsNovelsIndexRoute: typeof ProductsNovelsIndexRoute
 }
 export interface FileServerRoutesByFullPath {
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
 }
 export interface FileServerRoutesByTo {
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/auth/$'
+  fullPaths: '/api/create-checkout-session' | '/api/auth/$'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/auth/$'
-  id: '__root__' | '/api/auth/$'
+  to: '/api/create-checkout-session' | '/api/auth/$'
+  id: '__root__' | '/api/create-checkout-session' | '/api/auth/$'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
+  ApiCreateCheckoutSessionServerRoute: typeof ApiCreateCheckoutSessionServerRoute
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
 }
 
@@ -430,6 +441,13 @@ declare module '@tanstack/react-router' {
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
+    '/api/create-checkout-session': {
+      id: '/api/create-checkout-session'
+      path: '/api/create-checkout-session'
+      fullPath: '/api/create-checkout-session'
+      preLoaderRoute: typeof ApiCreateCheckoutSessionServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -492,6 +510,7 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiCreateCheckoutSessionServerRoute: ApiCreateCheckoutSessionServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport

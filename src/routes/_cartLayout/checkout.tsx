@@ -1,5 +1,6 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { loadStripe } from '@stripe/stripe-js';
 import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 import { useCartStore } from '@/store/cartStore';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
@@ -61,6 +62,7 @@ function RouteComponent() {
 	const checkoutItems = cartItems.filter((item) =>
 		checkedItemIds.has(item.cartItemId)
 	);
+	console.log('🚀 ~ RouteComponent ~ checkoutItems:', checkoutItems);
 
 	const checkOutTotal = checkoutItems
 		.map((item) => item.price * item.quantity)
@@ -72,6 +74,35 @@ function RouteComponent() {
 
 	const handleProceedToPayment = () => {
 		setCartPage('payment');
+	};
+
+	const handleConfirmPayment = async () => {
+		const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
+
+		const body = {
+			products: checkoutItems,
+		};
+
+		const headers = {
+			'Content-Type': 'application/json',
+		};
+
+		const response = await fetch(
+			'http://localhost:3000/api/create-checkout-session',
+			{
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify(body),
+			}
+		);
+
+		const stripeSession = await response.json();
+		console.log('🚀 ~ handleConfirmPayment ~ stripeSession:', stripeSession);
+
+		const result = stripe?.redirectToCheckout({
+			sessionId: stripeSession.id,
+		});
+		console.log('🚀 ~ handleConfirmPayment ~ result:', result);
 	};
 
 	return (
@@ -252,13 +283,12 @@ function RouteComponent() {
 						</p>
 					</div>
 
-					<Link
-						to='/checkout'
-						onClick={handleProceedToPayment}
+					<button
+						onClick={handleConfirmPayment}
 						className={`flex w-full items-center justify-center rounded-full bg-black py-4 text-center font-medium text-white transition-colors duration-300`}
 					>
 						Confirm Payment ${checkOutTotal.toFixed(2)}
-					</Link>
+					</button>
 				</div>
 			</div>
 
@@ -361,13 +391,12 @@ function RouteComponent() {
 							Back to Cart
 						</Link>
 
-						<Link
-							to='/cart'
-							onClick={handleProceedToPayment}
+						<button
+							onClick={handleConfirmPayment}
 							className='w-full rounded-md bg-black px-5 py-3 text-center font-medium text-white transition-colors duration-300 hover:bg-black/80'
 						>
 							Confirm Payment ${checkOutTotal.toFixed(2)}
-						</Link>
+						</button>
 					</div>
 				</div>
 
