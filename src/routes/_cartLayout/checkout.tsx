@@ -72,9 +72,9 @@ function RouteComponent() {
 		setCartPage('cart');
 	};
 
-	const handleProceedToPayment = () => {
-		setCartPage('payment');
-	};
+	// const handleProceedToPayment = () => {
+	// 	setCartPage('payment');
+	// };
 
 	const handleConfirmPayment = async () => {
 		const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);

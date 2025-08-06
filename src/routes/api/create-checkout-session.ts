@@ -9,17 +9,24 @@ export const ServerRoute = createServerFileRoute(
 		const body = await request.json();
 		const { products } = body;
 
-		const lineItems = products.map((product) => ({
-			price_data: {
-				currency: 'usd',
-				product_data: {
-					name: product.title,
-					images: [product.coverImg],
+		const lineItems = products.map(
+			(product: {
+				title: any;
+				coverImg: any;
+				price: number;
+				quantity: any;
+			}) => ({
+				price_data: {
+					currency: 'usd',
+					product_data: {
+						name: product.title,
+						images: [product.coverImg],
+					},
+					unit_amount: Math.round(product.price * 100),
 				},
-				unit_amount: Math.round(product.price * 100),
-			},
-			quantity: product.quantity,
-		}));
+				quantity: product.quantity,
+			})
+		);
 
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
