@@ -292,7 +292,12 @@ function RouteComponent() {
 								currency: 'usd',
 							}}
 						>
-							<CheckoutPage amount={checkOutTotal} />
+							<CheckoutPage
+								amount={checkOutTotal}
+								userName={session.name}
+								userEmail={session.email}
+								userPhone={session.phone}
+							/>
 						</Elements>
 					</div>
 				</div>

@@ -9,9 +9,17 @@ import { useMakePayment } from '@/utils/servers/checkout';
 
 interface CheckoutPageProps {
 	amount: number;
+	userName: string;
+	userEmail: string;
+	userPhone: string | null | undefined;
 }
 
-export default function CheckoutPage({ amount }: CheckoutPageProps) {
+export default function CheckoutPage({
+	amount,
+	userEmail,
+	userName,
+	userPhone,
+}: CheckoutPageProps) {
 	const stripe = useStripe();
 	const elements = useElements();
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -58,12 +66,24 @@ export default function CheckoutPage({ amount }: CheckoutPageProps) {
 			clientSecret,
 			confirmParams: {
 				return_url: `${window.location.origin}/payment-success?amount=${amount}`,
+				payment_method_data: {
+					billing_details: {
+						name: userName,
+						email: userEmail,
+						phone: userPhone,
+					},
+				},
 			},
 		});
 
 		if (error.message) {
 			setErrorMessage(error.message);
 		} else {
+			// ✅ ADD YOUR DATABASE UPDATE LOGIC HERE
+			// Example:
+			// await updateOrderStatus(orderId, 'paid');
+			// await createOrderInDatabase(orderData);
+			// await clearCartItems();
 		}
 
 		setLoading(false);
