@@ -1,4 +1,4 @@
-import { Link, createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -31,7 +31,6 @@ export const Route = createFileRoute('/_cartLayout/checkout')({
 
 function RouteComponent() {
 	const { userId, session } = Route.useRouteContext();
-	const { setCartPage } = useCartStore();
 	const { checkedItemIds } = useCartStore();
 	const { data: userCart } = useSuspenseQuery(
 		getOrCreateCartQueryOptions(userId)
