@@ -75,39 +75,6 @@ function RouteComponent() {
 		setCartPage('cart');
 	};
 
-	// const handleProceedToPayment = () => {
-	// 	setCartPage('payment');
-	// };
-
-	// const handleConfirmPayment = async () => {
-	// 	const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
-
-	// 	const body = {
-	// 		products: checkoutItems,
-	// 	};
-
-	// 	const headers = {
-	// 		'Content-Type': 'application/json',
-	// 	};
-
-	// 	const response = await fetch(
-	// 		'http://localhost:3000/api/create-checkout-session',
-	// 		{
-	// 			method: 'POST',
-	// 			headers: headers,
-	// 			body: JSON.stringify(body),
-	// 		}
-	// 	);
-
-	// 	const stripeSession = await response.json();
-	// 	console.log('🚀 ~ handleConfirmPayment ~ stripeSession:', stripeSession);
-
-	// 	const result = stripe?.redirectToCheckout({
-	// 		sessionId: stripeSession.id,
-	// 	});
-	// 	console.log('🚀 ~ handleConfirmPayment ~ result:', result);
-	// };
-
 	return (
 		<>
 			{/* Small Screens */}
@@ -285,13 +252,6 @@ function RouteComponent() {
 							Price includes all applicable taxes
 						</p>
 					</div>
-
-					{/* <button
-						onClick={handleConfirmPayment}
-						className={`flex w-full items-center justify-center rounded-full bg-black py-4 text-center font-medium text-white transition-colors duration-300`}
-					>
-						Confirm Payment ${checkOutTotal.toFixed(2)}
-					</button> */}
 				</div>
 			</div>
 
