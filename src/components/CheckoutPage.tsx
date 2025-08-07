@@ -5,6 +5,7 @@ import {
 	useStripe,
 } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 import { useMakePayment } from '@/utils/servers/checkout';
 
 interface CheckoutPageProps {
@@ -78,12 +79,6 @@ export default function CheckoutPage({
 
 		if (error.message) {
 			setErrorMessage(error.message);
-		} else {
-			// ✅ ADD YOUR DATABASE UPDATE LOGIC HERE
-			// Example:
-			// await updateOrderStatus(orderId, 'paid');
-			// await createOrderInDatabase(orderData);
-			// await clearCartItems();
 		}
 
 		setLoading(false);
@@ -103,12 +98,21 @@ export default function CheckoutPage({
 
 					{errorMessage && <div>{errorMessage}</div>}
 
-					<button
-						disabled={loading}
-						className='mt-5 w-full rounded-lg border bg-black py-3 text-center font-bold text-white disabled:animate-pulse disabled:opacity-50'
-					>
-						{!loading ? `Pay $${amount}` : 'Processing...'}
-					</button>
+					<div className='mt-5 flex flex-col items-center justify-center gap-3 lg:max-w-lg lg:flex-row 2xl:max-w-2xl'>
+						<button
+							disabled={loading}
+							className='w-full cursor-pointer rounded-lg border bg-black py-3 text-center font-bold text-white hover:bg-black/80 disabled:animate-pulse disabled:cursor-not-allowed disabled:opacity-50'
+						>
+							{!loading ? `Pay $${amount}` : 'Processing...'}
+						</button>
+
+						<Link
+							to='/cart'
+							className='w-full rounded-lg border border-black bg-white py-3 text-center font-medium text-black transition-colors duration-300 hover:bg-black/10'
+						>
+							Back to Cart
+						</Link>
+					</div>
 				</form>
 			)}
 		</>

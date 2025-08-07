@@ -1,5 +1,6 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router';
 import { MakePaymentSchema } from '@/utils/zod';
+import { useCartStore } from '@/store/cartStore';
 
 export const Route = createFileRoute('/_cartLayout/payment-success')({
 	component: RouteComponent,
@@ -13,9 +14,14 @@ export const Route = createFileRoute('/_cartLayout/payment-success')({
 
 function RouteComponent() {
 	const { amount } = Route.useSearch();
+	const { setCartPage } = useCartStore();
+
+	const handleResetCartpage = () => {
+		setCartPage('cart');
+	};
 
 	return (
-		<div className='flex min-h-[70vh] items-center justify-center bg-gray-50 px-4 py-12'>
+		<div className='flex min-h-[70vh] items-center justify-center px-4 py-12'>
 			<div className='flex w-full max-w-md flex-col items-center rounded-xl bg-white p-8 shadow-lg'>
 				<div className='mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100'>
 					<svg
@@ -54,12 +60,24 @@ function RouteComponent() {
 						${amount ? Number(amount).toFixed(2) : '0.00'}
 					</span>
 				</div>
-				<Link
-					to='/cart'
-					className='inline-block rounded-lg bg-green-500 px-6 py-3 font-semibold text-white shadow transition hover:bg-green-600'
-				>
-					Go to Homepage
-				</Link>
+
+				<div className='flex items-center gap-3'>
+					<Link
+						to='/cart'
+						onClick={handleResetCartpage}
+						className='inline-block rounded-lg bg-black px-6 py-3 font-semibold text-white shadow transition hover:bg-black/80'
+					>
+						View Your Cart
+					</Link>
+
+					<Link
+						to='/products'
+						onClick={handleResetCartpage}
+						className='inline-block rounded-lg border border-black bg-white px-6 py-3 font-semibold text-black shadow transition hover:bg-black/10'
+					>
+						Go to Products
+					</Link>
+				</div>
 			</div>
 		</div>
 	);

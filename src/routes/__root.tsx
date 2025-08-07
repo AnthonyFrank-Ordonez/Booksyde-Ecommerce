@@ -77,8 +77,10 @@ export const Route = createRootRouteWithContext<{
 function RootDocument({ children }: { children: React.ReactNode }) {
 	const { session, userCart } = Route.useRouteContext();
 	const location = useLocation();
-	const hideFooterPaths = ['/cart', '/checkout', '/payment'];
+	const hideFooterPaths = ['/cart', '/checkout', '/payment-success'];
+	const hideHeaderPaths = ['/checkout', '/payment-success'];
 	const shouldHideFooter = hideFooterPaths.includes(location.pathname);
+	const shouldHideHeader = hideHeaderPaths.includes(location.pathname);
 	const totalCart =
 		userCart?.items
 			.map((item) => item.quantity)
@@ -90,7 +92,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body>
-				<Header session={session} totalCart={totalCart} />
+				{!shouldHideHeader && (
+					<Header session={session} totalCart={totalCart} />
+				)}
 				<main className='grid grid-cols-1 md:grid-cols-12'>{children}</main>
 				{!shouldHideFooter && <Footer />}
 				<Scripts />
