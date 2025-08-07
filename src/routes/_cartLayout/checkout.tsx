@@ -65,7 +65,6 @@ function RouteComponent() {
 	const checkoutItems = cartItems.filter((item) =>
 		checkedItemIds.has(item.cartItemId)
 	);
-	console.log('🚀 ~ RouteComponent ~ checkoutItems:', checkoutItems);
 
 	const checkOutTotal = checkoutItems
 		.map((item) => item.price * item.quantity)

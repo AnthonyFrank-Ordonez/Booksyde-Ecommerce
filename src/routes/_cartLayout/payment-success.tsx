@@ -1,9 +1,14 @@
-import { Link, createFileRoute } from '@tanstack/react-router';
-import { PaymentSearchSchema } from '@/utils/zod';
+import { Link, createFileRoute, redirect } from '@tanstack/react-router';
+import { MakePaymentSchema } from '@/utils/zod';
 
 export const Route = createFileRoute('/_cartLayout/payment-success')({
 	component: RouteComponent,
-	validateSearch: PaymentSearchSchema,
+	validateSearch: MakePaymentSchema,
+	beforeLoad: ({ search }) => {
+		if (!search.amount || search.amount <= 0) {
+			throw redirect({ to: '/cart' });
+		}
+	},
 });
 
 function RouteComponent() {

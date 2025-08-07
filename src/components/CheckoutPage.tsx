@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	PaymentElement,
 	useElements,
 	useStripe,
 } from '@stripe/react-stripe-js';
+import { useQuery } from '@tanstack/react-query';
+import { useMakePayment } from '@/utils/servers/checkout';
 
 interface CheckoutPageProps {
 	amount: number;
@@ -16,17 +18,22 @@ export default function CheckoutPage({ amount }: CheckoutPageProps) {
 	const [clientSecret, setClientSecret] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		fetch(`${window.location.origin}/api/create-payment-intent`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ amount: Math.round(amount * 100) }),
-		})
-			.then((res) => res.json())
-			.then((data) => setClientSecret(data.clientSecret));
-	}, [amount]);
+	const queryOptions = useMakePayment(amount);
+	const {
+		data: clientSecretData,
+		error: clientSecretError,
+		isLoading: clientSecretLoading,
+	} = useQuery(queryOptions);
+
+	if (clientSecretError) {
+		console.log('Error: ', clientSecretError);
+	} else if (clientSecretLoading) {
+		console.log('loading data...');
+	} else if (clientSecretData) {
+		if (clientSecret !== clientSecretData) {
+			setClientSecret(clientSecretData);
+		}
+	}
 
 	const handleSubmitPayment = async (
 		event: React.FormEvent<HTMLFormElement>
@@ -57,7 +64,6 @@ export default function CheckoutPage({ amount }: CheckoutPageProps) {
 		if (error.message) {
 			setErrorMessage(error.message);
 		} else {
-			//
 		}
 
 		setLoading(false);
