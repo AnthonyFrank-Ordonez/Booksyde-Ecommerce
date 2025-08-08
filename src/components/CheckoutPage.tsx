@@ -5,7 +5,7 @@ import {
 	useStripe,
 } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useMakePayment } from '@/utils/servers/checkout';
 
 interface CheckoutPageProps {
@@ -23,6 +23,7 @@ export default function CheckoutPage({
 }: CheckoutPageProps) {
 	const stripe = useStripe();
 	const elements = useElements();
+	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState<string>('');
 	const [clientSecret, setClientSecret] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -62,9 +63,10 @@ export default function CheckoutPage({
 			return;
 		}
 
-		const { error } = await stripe.confirmPayment({
+		const { error, paymentIntent } = await stripe.confirmPayment({
 			elements,
 			clientSecret,
+			redirect: 'if_required',
 			confirmParams: {
 				return_url: `${window.location.origin}/payment-success?amount=${amount}`,
 				payment_method_data: {
@@ -77,8 +79,31 @@ export default function CheckoutPage({
 			},
 		});
 
-		if (error.message) {
-			setErrorMessage(error.message);
+		if (error) {
+			if (error.type === 'card_error' || error.type === 'validation_error') {
+				setErrorMessage(error.message || 'Payment Failed');
+			} else {
+				setErrorMessage(`An unexpected error occured: ${error.message}`);
+			}
+			setLoading(false);
+			return;
+		}
+
+		if (paymentIntent.status === 'succeeded') {
+			console.log('Payment Successful!, proccessing order...');
+
+			navigate({
+				to: '/payment-success',
+				search: {
+					amount: amount,
+					paymentIntentId: paymentIntent.id,
+					orderId: '123',
+				},
+			});
+		} else if (paymentIntent.status === 'requires_action') {
+			setErrorMessage('Your payment requires additional verification.');
+		} else {
+			setErrorMessage('Payment was not completed successfully.');
 		}
 
 		setLoading(false);

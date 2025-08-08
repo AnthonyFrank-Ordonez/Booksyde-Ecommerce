@@ -1,10 +1,10 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router';
-import { MakePaymentSchema } from '@/utils/zod';
+import { PaymentSuccessSearchSchema } from '@/utils/zod';
 import { useCartStore } from '@/store/cartStore';
 
 export const Route = createFileRoute('/_cartLayout/payment-success')({
 	component: RouteComponent,
-	validateSearch: MakePaymentSchema,
+	validateSearch: PaymentSuccessSearchSchema,
 	beforeLoad: ({ search }) => {
 		if (!search.amount || search.amount <= 0) {
 			throw redirect({ to: '/cart' });
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_cartLayout/payment-success')({
 });
 
 function RouteComponent() {
-	const { amount } = Route.useSearch();
+	const { amount, orderId } = Route.useSearch();
 	const { setCartPage } = useCartStore();
 
 	const handleResetCartpage = () => {
@@ -54,11 +54,14 @@ function RouteComponent() {
 					Thank you for your purchase. Your payment has been processed
 					successfully.
 				</p>
-				<div className='mb-6 flex items-center gap-2 text-lg font-semibold text-gray-700'>
+				<div className='flex items-center gap-2 text-lg font-semibold text-gray-700'>
 					<span>Amount Paid:</span>
 					<span className='text-green-600'>
 						${amount ? Number(amount).toFixed(2) : '0.00'}
 					</span>
+				</div>
+				<div className='mb-6 text-sm text-gray-400'>
+					<p>ORDER ID: {orderId}</p>
 				</div>
 
 				<div className='flex items-center gap-3'>

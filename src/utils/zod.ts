@@ -144,3 +144,9 @@ export const RemoveToWishlistSchema = z.object({
 export const MakePaymentSchema = z.object({
 	amount: z.number(),
 });
+
+export const PaymentSuccessSearchSchema = z.object({
+	amount: z.number(),
+	paymentIntentId: z.string(),
+	orderId: z.string(),
+});
