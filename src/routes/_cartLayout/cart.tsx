@@ -61,6 +61,7 @@ function Cart() {
 						price: Number(item.book?.price) || 0,
 						quantity: item.quantity || 0,
 						isChecked: isItemChecked(item.id),
+						itemType: item.itemType,
 					};
 				case 'MANGA':
 					// In development

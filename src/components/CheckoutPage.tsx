@@ -6,17 +6,26 @@ import {
 } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
+import type { CartItems } from '@/types';
 import { useMakePayment } from '@/utils/servers/checkout';
+import { useCreateOrder } from '@/utils/servers/order';
+import { useCartStore } from '@/store/cartStore';
 
 interface CheckoutPageProps {
+	checkOutItems: Array<CartItems>;
 	amount: number;
+	shippingAddressId: string;
+	userId: string;
 	userName: string;
 	userEmail: string;
 	userPhone: string | null | undefined;
 }
 
 export default function CheckoutPage({
+	checkOutItems,
 	amount,
+	shippingAddressId,
+	userId,
 	userEmail,
 	userName,
 	userPhone,
@@ -24,6 +33,8 @@ export default function CheckoutPage({
 	const stripe = useStripe();
 	const elements = useElements();
 	const navigate = useNavigate();
+	const { clearItemIds } = useCartStore();
+	const { mutateAsync: createOrder } = useCreateOrder();
 	const [errorMessage, setErrorMessage] = useState<string>('');
 	const [clientSecret, setClientSecret] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -91,13 +102,24 @@ export default function CheckoutPage({
 
 		if (paymentIntent.status === 'succeeded') {
 			console.log('Payment Successful!, proccessing order...');
+			const order = {
+				userId: userId,
+				totalAmount: amount,
+				paymentIntentId: paymentIntent.id,
+				shippingAddressId: shippingAddressId,
+				cartItems: checkOutItems,
+			};
+
+			const orderResult = await createOrder({ data: order });
+
+			clearItemIds();
 
 			navigate({
 				to: '/payment-success',
 				search: {
 					amount: amount,
 					paymentIntentId: paymentIntent.id,
-					orderId: '123',
+					orderId: orderResult?.orderId,
 				},
 			});
 		} else if (paymentIntent.status === 'requires_action') {

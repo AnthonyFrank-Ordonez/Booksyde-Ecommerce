@@ -156,6 +156,7 @@ export type CartItems =
 			coverImg?: string | undefined;
 			language?: string | undefined;
 			slug?: string | undefined;
+			itemType: ItemType;
 	  }
 	| undefined;
 

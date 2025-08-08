@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -6,6 +6,7 @@ import { getOrCreateCartQueryOptions } from '@/utils/servers/cart';
 import { useCartStore } from '@/store/cartStore';
 import { getUserDefaultAddQueryOptions } from '@/utils/servers/address';
 import CheckoutPage from '@/components/CheckoutPage';
+import { errorMsg } from '@/utils/utilities';
 
 export const Route = createFileRoute('/_cartLayout/checkout')({
 	component: RouteComponent,
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/_cartLayout/checkout')({
 		await context.queryClient.ensureQueryData(
 			getOrCreateCartQueryOptions(userId)
 		);
+
 		await context.queryClient.ensureQueryData(
 			getUserDefaultAddQueryOptions(session.id)
 		);
@@ -30,6 +32,7 @@ export const Route = createFileRoute('/_cartLayout/checkout')({
 });
 
 function RouteComponent() {
+	const navigate = useNavigate();
 	const { userId, session } = Route.useRouteContext();
 	const { checkedItemIds } = useCartStore();
 	const { data: userCart } = useSuspenseQuery(
@@ -38,6 +41,13 @@ function RouteComponent() {
 	const { data: userDefaultAddress } = useSuspenseQuery(
 		getUserDefaultAddQueryOptions(session.id)
 	);
+
+	if (!userDefaultAddress) {
+		errorMsg('You neeed to add default address first');
+		navigate({ to: '/address' });
+		return;
+	}
+
 	const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 	const cartItems = userCart.items
@@ -50,6 +60,7 @@ function RouteComponent() {
 						price: Number(item.book?.price) || 0,
 						quantity: item.quantity || 0,
 						isChecked: false,
+						itemType: item.itemType,
 					};
 				case 'MANGA':
 					// In development
@@ -68,6 +79,10 @@ function RouteComponent() {
 	const checkOutTotal = checkoutItems
 		.map((item) => item.price * item.quantity)
 		.reduce((sum, total) => sum + total, 0);
+
+	if (checkOutTotal <= 0 || !checkOutTotal) {
+		return;
+	}
 
 	return (
 		<>
@@ -147,9 +162,9 @@ function RouteComponent() {
 
 							<div className='flex items-center justify-between rounded-lg border border-gray-300 p-3 text-sm'>
 								<p className='text-gray-500/90'>
-									{userDefaultAddress?.houseNo} {userDefaultAddress?.street},{' '}
-									{userDefaultAddress?.city}, {userDefaultAddress?.province},{' '}
-									{userDefaultAddress?.country}, {userDefaultAddress?.postal}
+									{userDefaultAddress.houseNo} {userDefaultAddress.street},{' '}
+									{userDefaultAddress.city}, {userDefaultAddress.province},{' '}
+									{userDefaultAddress.country}, {userDefaultAddress.postal}
 								</p>
 							</div>
 						</div>
@@ -168,7 +183,10 @@ function RouteComponent() {
 								}}
 							>
 								<CheckoutPage
+									checkOutItems={checkoutItems}
 									amount={checkOutTotal}
+									shippingAddressId={userDefaultAddress.id}
+									userId={userId}
 									userName={session.name}
 									userEmail={session.email}
 									userPhone={session.phone}
@@ -218,9 +236,9 @@ function RouteComponent() {
 
 						<div className='flex items-center justify-between rounded-lg border border-gray-300 p-3 text-sm'>
 							<p className='text-gray-500/90'>
-								{userDefaultAddress?.houseNo} {userDefaultAddress?.street},{' '}
-								{userDefaultAddress?.city}, {userDefaultAddress?.province},{' '}
-								{userDefaultAddress?.country}, {userDefaultAddress?.postal}
+								{userDefaultAddress.houseNo} {userDefaultAddress.street},{' '}
+								{userDefaultAddress.city}, {userDefaultAddress.province},{' '}
+								{userDefaultAddress.country}, {userDefaultAddress.postal}
 							</p>
 						</div>
 					</div>
@@ -237,7 +255,10 @@ function RouteComponent() {
 							}}
 						>
 							<CheckoutPage
+								checkOutItems={checkoutItems}
 								amount={checkOutTotal}
+								shippingAddressId={userDefaultAddress.id}
+								userId={userId}
 								userName={session.name}
 								userEmail={session.email}
 								userPhone={session.phone}

@@ -1,5 +1,22 @@
 import { z } from 'zod';
 
+export const CartItemSchema = z.object({
+	cartItemId: z.string(),
+	price: z.coerce.number(),
+	quantity: z.number().int().min(1),
+	isChecked: z.boolean(),
+	rating: z.string().optional(),
+	id: z.string().optional(),
+	title: z.string().optional(),
+	description: z.string().optional(),
+	author: z.string().optional(),
+	genres: z.array(z.string()).optional(),
+	coverImg: z.string().optional(),
+	language: z.string().optional(),
+	slug: z.string().optional(),
+	itemType: z.enum(['BOOK', 'MANGA', 'NOVEL']),
+});
+
 export const signUpSchema = z
 	.object({
 		email: z.string().email('Must be valid email'),
@@ -148,5 +165,13 @@ export const MakePaymentSchema = z.object({
 export const PaymentSuccessSearchSchema = z.object({
 	amount: z.number(),
 	paymentIntentId: z.string(),
-	orderId: z.string(),
+	orderId: z.string().optional(),
+});
+
+export const CreateOrderSchema = z.object({
+	userId: z.string(),
+	totalAmount: z.number(),
+	paymentIntentId: z.string(),
+	shippingAddressId: z.string(),
+	cartItems: z.array(CartItemSchema),
 });
