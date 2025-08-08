@@ -15,6 +15,14 @@ enum ItemType {
   NOVEL
 }
 
+enum OrderStatus {
+  PENDING
+  APPROAVED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
 model Review {
   id        String    @id @default(cuid())
   content   String
@@ -44,6 +52,8 @@ model Address {
   userId         String
   user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  orders         Order[]
+
   @@map("address")
 }
 
@@ -63,6 +73,7 @@ model User {
   comments      Review[]
   sessions      Session[]
   address       Address[]
+  orders        Order[]
   cart          Cart?
   wishlist      Wishlist?
 
@@ -130,6 +141,7 @@ model Book {
   comments     Review[]
   cartItem     CartItem[]
   wishlistItem WishlistItems[]
+  orderItems   OrderItem[]
 
   @@map("books")
 }
@@ -223,7 +235,7 @@ model WishlistItems {
   createdAt  DateTime  @default(now())
   updateAt   DateTime  @updatedAt
 
-    // For Perfomance
+  // For Perfomance
   @@index([wishlistId])                    // For cart queries
   @@index([wishlistId, itemType, itemId]) // For duplicate checking
   @@index([itemType, itemId])             // For item-specific queries
@@ -232,4 +244,57 @@ model WishlistItems {
   @@unique([wishlistId, itemType, itemId])
 
   @@map("wishlist_items")
+}
+
+model Order {
+  id                  String @id @default(cuid())
+
+  userId              String
+  user                User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  totalAmount         Decimal @db.Decimal(10, 2)
+  status              OrderStatus @default(PENDING)
+  paymentIntentId     String? @unique
+
+  shippingAddressId   String
+  shippingAddress     Address @relation(fields: [shippingAddressId], references: [id], onDelete: Cascade)
+
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  orderItems          OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+
+  orderId     String
+  order       Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  itemType    ItemType
+  itemId      String
+  quantity    Int @default(1)
+  price       Decimal @db.Decimal(10, 2)
+
+  bookId      String?
+  mangaId     String?
+  novelId     String?
+
+  book        Book? @relation(fields: [bookId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // For Perfomance
+  @@index([orderId])                    // For cart queries
+  @@index([orderId, itemType, itemId]) // For duplicate checking
+  @@index([itemType, itemId])          // For item-specific queries
+
+  // Prevent duplicate items in the same cart
+  @@unique([orderId, itemType, itemId])
+
+
+  @@map("order_items")
 }
