@@ -59,7 +59,7 @@ export const getUserOrdersQueryOptions = (userId: string) =>
 		staleTime: Infinity,
 		retry: 1,
 		refetchOnWindowFocus: false,
-		queryFn: getUserOrdersFn,
+		queryFn: () => getUserOrdersFn({ data: { userId } }),
 	});
 
 export const useGetUserOrders = (userId: string) => {
